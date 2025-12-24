@@ -1,0 +1,1 @@
+@include('auth.authenticate', ['isRegister' => true])

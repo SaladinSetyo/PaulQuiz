@@ -1,0 +1,1 @@
+<img src="{{ asset('logo.svg') }}" alt="Fintech Edu Logo" {{ $attributes }}>
