@@ -14,7 +14,9 @@ class ContentSeeder extends Seeder
      */
     public function run(): void
     {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         Content::truncate(); // Clear the table first
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $fintechModule = Module::where('title', 'Apa itu fintech')->first();
 

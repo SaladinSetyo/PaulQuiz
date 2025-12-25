@@ -13,7 +13,9 @@ class ModuleSeeder extends Seeder
      */
     public function run(): void
     {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         Module::truncate(); // Clear the table first
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $modules = [
             [
