@@ -123,7 +123,14 @@
 
                                 <div class="flex flex-wrap justify-center gap-4">
                                     @foreach($module->quizzes as $quiz)
-                                        <div class="flex flex-col items-center">
+                                        <div class="flex flex-col items-center w-full">
+                                            @if($quiz->description)
+                                                <div
+                                                    class="mb-8 text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed text-center">
+                                                    {!! nl2br(e($quiz->description)) !!}
+                                                </div>
+                                            @endif
+
                                             <a href="{{ route('quizzes.show', $quiz) }}"
                                                 class="inline-flex items-center px-8 py-4 border border-transparent text-base font-bold rounded-full text-white bg-gradient-to-r from-secondary-500 to-emerald-600 hover:from-secondary-600 hover:to-emerald-700 shadow-lg hover:shadow-secondary-500/30 hover:-translate-y-1 transition-all {{ Auth::check() && $isSolved ? 'opacity-75 grayscale-[0.5]' : '' }}">
                                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,11 +139,6 @@
                                                 </svg>
                                                 {{ $isSolved ? 'Ulangi Kuis:' : 'Ambil Kuis:' }} {{ $quiz->title }}
                                             </a>
-                                            @if($quiz->description)
-                                                <p class="mt-4 text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
-                                                    {{ $quiz->description }}
-                                                </p>
-                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
