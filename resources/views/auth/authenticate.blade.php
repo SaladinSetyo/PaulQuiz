@@ -199,9 +199,9 @@
             </div>
 
             <!-- Sliding Overlay (The Slider) -->
-            <div style="width: 55%;"
+            <div
                 class="hidden md:flex absolute top-0 left-0 h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 transition-all duration-700 ease-in-out z-50 items-center justify-center overflow-hidden"
-                :style="isRegister ? 'transform: translateX(0); border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;' : 'transform: translateX(81.8%); border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;'">
+                :style="isRegister ? 'width: 55%; transform: translateX(0); border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;' : 'width: 55%; transform: translateX(81.8%); border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;'">
 
                 <!-- Animated Background -->
                 <div class="absolute inset-0">
