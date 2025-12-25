@@ -30,8 +30,8 @@
         class="relative w-full min-h-screen bg-gray-100 dark:bg-dark-950 flex items-center justify-center p-4 sm:p-6 selection:bg-primary-500 selection:text-white">
 
         <!-- Centered Card Container -->
-        <div
-            class="relative w-full max-w-5xl h-[650px] bg-white dark:bg-dark-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20 dark:border-white/5">
+        <div style="height: 650px;"
+            class="relative w-full max-w-4xl md:max-w-6xl bg-white dark:bg-dark-900 rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-white/5">
 
             <!-- Forms Container -->
             <div class="absolute inset-0">
