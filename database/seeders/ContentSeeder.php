@@ -36,15 +36,15 @@ class ContentSeeder extends Seeder
             // Videos
             $videos = [
                 [
-                    'title' => 'Apa itu Fintech?',
+                    'title' => 'Apa itu Fintech? [BARU]',
                     'media_url' => 'https://www.youtube.com/watch?v=a81bXkES-gg',
                 ],
                 [
-                    'title' => 'Perkembangan Fintech di Indonesia',
+                    'title' => 'Perkembangan Fintech di Indonesia [BARU]',
                     'media_url' => 'https://www.youtube.com/watch?v=t2DBd2FfHCI',
                 ],
                 [
-                    'title' => 'Jenis-Jenis Fintech',
+                    'title' => 'Jenis-Jenis Fintech [BARU]',
                     'media_url' => 'https://www.youtube.com/watch?v=G9qUhcBcRgY',
                 ],
             ];
