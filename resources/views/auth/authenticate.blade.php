@@ -31,6 +31,16 @@
                 display: flex;
             }
         }
+
+        /* Custom Scrollbar for form if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
     <div x-data="{
         isRegister: {{ $isRegister ? 'true' : 'false' }},
@@ -49,13 +59,11 @@
             </div>
         </div>
 
-        <!-- Card Container -->
-        <div
-            class="relative w-full max-w-6xl h-[650px] bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-black/50 border border-white/5 overflow-hidden flex">
+        <!-- Card Container - INLINE STYLES FOR SAFETY -->
+        <div class="relative w-full border border-white/5 overflow-hidden flex"
+            style="height: 650px; max-width: 1150px; width: 100%; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(24px); display: flex;">
 
-            <!-- Login Form Section (Always on Left visually, usually) -->
-            <!-- We use absolute positioning to swap them smoothly -->
-
+            <!-- Login Form Section -->
             <div class="absolute inset-0 w-full h-full">
                 <!-- Login Form -->
                 <div class="absolute top-0 left-0 w-full md:w-[50%] h-full flex items-center justify-center p-8 md:p-12 transition-all duration-700 ease-[cubic-bezier(0.87,0,0.13,1)]"
@@ -260,9 +268,9 @@
             </div>
 
             <!-- Sliding Overlay (The Slider) -->
-            <div class="auth-slider absolute top-0 h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-900 transition-all duration-[800ms] ease-[cubic-bezier(0.87,0,0.13,1)] z-50 items-center justify-center overflow-hidden shadow-2xl"
-                style="width: 50%; height: 100%; top: 0;"
-                :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%);' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%);'">
+            <div class="auth-slider transition-all duration-[800ms] ease-[cubic-bezier(0.87,0,0.13,1)] z-50 items-center justify-center overflow-hidden shadow-2xl"
+                style="position: absolute; width: 50%; height: 100%; top: 0;"
+                :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px; background: linear-gradient(to bottom right, #4F46E5, #6366F1, #8B5CF6);' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px; background: linear-gradient(to bottom right, #4F46E5, #6366F1, #8B5CF6);'">
 
                 <!-- Animated Background -->
                 <div class="absolute inset-0">
