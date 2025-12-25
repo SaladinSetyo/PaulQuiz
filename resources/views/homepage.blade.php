@@ -153,7 +153,7 @@
                             Keuangan</span>
                     </h1>
                     <p class="mt-6 max-w-3xl mx-auto text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-                        Fintech Edu hadir untuk memberdayakan Anda dengan pengetahuan finansial yang relevan, praktis,
+                        Paul Quiz hadir untuk memberdayakan Anda dengan pengetahuan finansial yang relevan, praktis,
                         dan mudah diakses.
                     </p>
                     <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
