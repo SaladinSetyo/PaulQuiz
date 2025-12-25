@@ -29,8 +29,8 @@ class ModuleController extends Controller
             }
 
             return view('modules.index', compact('modules', 'solvedModuleIds'))->render();
-        } catch (\Exception $e) {
-            die("DEBUG ERROR (View/Controller): " . $e->getMessage() . " <br> FILE: " . $e->getFile() . " <br> LINE: " . $e->getLine());
+        } catch (\Throwable $e) {
+            die("<pre>DEBUG ERROR (View/Controller): " . $e->getMessage() . "\nFILE: " . $e->getFile() . "\nLINE: " . $e->getLine() . "\nTRACE:\n" . $e->getTraceAsString() . "</pre>");
         }
     }
 
