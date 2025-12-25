@@ -95,34 +95,35 @@
                 style="height: 700px; max-width: 1200px; border-radius: 40px; box-shadow: 0 0 80px -20px rgba(67, 56, 202, 0.25), 0 30px 60px -10px rgba(0,0,0,0.8);">
 
                 <!-- Login Form Container -->
-                <div class="absolute top-0 left-0 h-full flex flex-col justify-center p-8 md:p-16 form-container"
+                <div class="absolute top-0 left-0 h-full flex flex-col justify-center p-6 md:p-12 form-container"
                     style="width: 50%;" :class="!isRegister ? 'active z-10' : 'z-0 transform -translate-x-10'">
 
-                    <div class="w-full max-w-sm mx-auto space-y-6">
+                    <div class="w-full max-w-sm mx-auto space-y-4">
                         <div class="text-left">
                             <x-application-logo
-                                class="h-10 w-auto fill-current text-indigo-500 mb-6 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
-                            <h1 class="text-4xl font-bold text-white tracking-tight">Selamat Datang</h1>
-                            <p class="text-slate-400 mt-2 text-sm">Masuk untuk mengakses dashboard finansial Anda.</p>
+                                class="h-10 w-auto fill-current text-indigo-500 mb-4 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                            <h1 class="text-3xl font-bold text-white tracking-tight">Selamat Datang</h1>
+                            <p class="text-slate-400 mt-1 text-sm">Masuk untuk mengakses dashboard finansial Anda.</p>
                         </div>
 
                         <!-- Session Status -->
-                        <x-auth-session-status class="mb-4" :status="session('status')" />
+                        <x-auth-session-status class="mb-2" :status="session('status')" />
 
-                        <form method="POST" action="{{ route('login') }}" class="space-y-5">
+                        <form method="POST" action="{{ route('login') }}" class="space-y-4">
                             @csrf
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
-                                <input class="custom-input block w-full px-5 py-4 rounded-xl" type="email" name="email"
-                                    :value="old('email')" required autofocus placeholder="nama@email.com" />
+                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="email"
+                                    name="email" :value="old('email')" required autofocus
+                                    placeholder="nama@email.com" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                             </div>
 
-                            <div class="space-y-2">
+                            <div class="space-y-1.5">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
-                                <input class="custom-input block w-full px-5 py-4 rounded-xl" type="password"
+                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
                                     name="password" required placeholder="••••••••" />
                                 <x-input-error :messages="$errors->get('password')" class="mt-1" />
                             </div>
@@ -150,12 +151,12 @@
                             </div>
 
                             <button type="submit"
-                                class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5">
+                                class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5">
                                 Masuk Sekarang
                             </button>
                         </form>
 
-                        <div class="text-center pt-4">
+                        <div class="text-center pt-2">
                             <p class="text-sm text-slate-500">
                                 Belum punya akun?
                                 <button @click="toggle"
@@ -167,51 +168,51 @@
                 </div>
 
                 <!-- Register Form Container -->
-                <div class="absolute top-0 h-full flex flex-col justify-center p-8 md:p-16 form-container"
+                <div class="absolute top-0 h-full flex flex-col justify-center p-6 md:p-12 form-container"
                     style="width: 50%; right: 0; left: auto;"
                     :class="isRegister ? 'active z-10' : 'z-0 transform translate-x-10'">
 
-                    <div class="w-full max-w-sm mx-auto space-y-6">
+                    <div class="w-full max-w-sm mx-auto space-y-4">
                         <div class="text-left">
                             <x-application-logo
-                                class="h-10 w-auto fill-current text-indigo-500 mb-6 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                                class="h-10 w-auto fill-current text-indigo-500 mb-4 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
                             <h1 class="text-3xl font-bold text-white tracking-tight">Buat Akun Baru</h1>
-                            <p class="text-slate-400 mt-2 text-sm">Bergabunglah dan mulai belajar hari ini.</p>
+                            <p class="text-slate-400 mt-1 text-sm">Bergabunglah dan mulai belajar hari ini.</p>
                         </div>
 
-                        <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                        <form method="POST" action="{{ route('register') }}" class="space-y-3">
                             @csrf
-                            <div class="space-y-1.5">
+                            <div class="space-y-1">
                                 <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Nama
                                     Lengkap</label>
-                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="text" name="name"
+                                <input class="custom-input block w-full px-5 py-3 rounded-xl" type="text" name="name"
                                     :value="old('name')" required placeholder="Nama Anda" />
                             </div>
 
-                            <div class="space-y-1.5">
+                            <div class="space-y-1">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
-                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="email"
-                                    name="email" :value="old('email')" required placeholder="nama@email.com" />
+                                <input class="custom-input block w-full px-5 py-3 rounded-xl" type="email" name="email"
+                                    :value="old('email')" required placeholder="nama@email.com" />
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1.5">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-1">
                                     <label
                                         class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
-                                    <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
+                                    <input class="custom-input block w-full px-5 py-3 rounded-xl" type="password"
                                         name="password" required />
                                 </div>
-                                <div class="space-y-1.5">
+                                <div class="space-y-1">
                                     <label
                                         class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Konfirmasi</label>
-                                    <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
+                                    <input class="custom-input block w-full px-5 py-3 rounded-xl" type="password"
                                         name="password_confirmation" required />
                                 </div>
                             </div>
 
                             <button type="submit"
-                                class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5 mt-2">
+                                class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5 mt-2">
                                 Daftar Sekarang
                             </button>
                         </form>
@@ -227,8 +228,8 @@
                     </div>
                 </div>
 
-                <!-- Slider Overlay - NEW GRADIENT & SHADOW -->
-                <div class="auth-slider absolute top-0 h-full transition-all duration-[1200ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
+                <!-- Slider Overlay - SLOW ANIMATION & HUGE LOGO -->
+                <div class="auth-slider absolute top-0 h-full transition-all duration-[1500ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
                     style="width: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5); background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);"
                     :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px;' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px;'">
 
@@ -248,12 +249,12 @@
 
                     <div class="relative z-10 text-center p-12 text-white max-w-md">
                         <div
-                            class="mb-10 transform transition-transform duration-500 hover:scale-105 drop-shadow-2xl flex justify-center">
+                            class="mb-6 transform transition-transform duration-500 hover:scale-105 drop-shadow-2xl flex justify-center">
                             <x-application-logo
-                                class="h-52 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
+                                class="h-64 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
                         </div>
-                        <h2 class="text-4xl font-extrabold mb-4 tracking-tight drop-shadow-lg">Paul Quiz</h2>
-                        <p class="text-lg text-indigo-100/90 mb-10 leading-relaxed font-light drop-shadow-md">
+                        <h2 class="text-4xl font-extrabold mb-2 tracking-tight drop-shadow-lg">Paul Quiz</h2>
+                        <p class="text-lg text-indigo-100/90 mb-8 leading-relaxed font-light drop-shadow-md">
                             Platform edukasi finansial terdepan untuk masa depan Anda.
                         </p>
 
