@@ -27,11 +27,19 @@
             this.isRegister = !this.isRegister;
         }
     }"
-        class="relative w-full min-h-screen bg-gray-100 dark:bg-dark-950 flex items-center justify-center p-4 sm:p-6 selection:bg-primary-500 selection:text-white">
+        class="relative w-full min-h-screen bg-slate-900 flex items-center justify-center p-4 sm:p-6 selection:bg-primary-500 selection:text-white overflow-hidden">
+
+        <!-- Background Decor -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-primary-900/20 blur-[120px]">
+            </div>
+            <div class="absolute top-[40%] -right-[10%] w-[60%] h-[60%] rounded-full bg-secondary-900/20 blur-[120px]">
+            </div>
+        </div>
 
         <!-- Centered Card Container -->
         <div style="height: 650px;"
-            class="relative w-full max-w-4xl md:max-w-6xl bg-white dark:bg-dark-900 rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-white/5">
+            class="relative w-full max-w-4xl md:max-w-6xl bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-white/10 relative z-10">
 
             <!-- Forms Container -->
             <div class="absolute inset-0">
@@ -58,7 +66,7 @@
                             <div>
                                 <x-input-label for="login_email" :value="__('Email Address')" />
                                 <x-text-input id="login_email"
-                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                     type="email" name="email" :value="old('email')" required autofocus
                                     autocomplete="username" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -67,7 +75,7 @@
                             <div class="mt-4">
                                 <x-input-label for="login_password" :value="__('Password')" />
                                 <x-text-input id="login_password"
-                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                     type="password" name="password" required autocomplete="current-password" />
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
@@ -75,7 +83,7 @@
                             <div class="flex items-center justify-between mt-4">
                                 <label for="remember_me" class="inline-flex items-center">
                                     <input id="remember_me" type="checkbox"
-                                        class="rounded dark:bg-dark-800 border-gray-300 dark:border-gray-700 text-primary-600 shadow-sm focus:ring-primary-500"
+                                        class="rounded dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-primary-600 shadow-sm focus:ring-primary-500"
                                         name="remember">
                                     <span
                                         class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Ingat Saya') }}</span>
@@ -132,7 +140,7 @@
                             <div>
                                 <x-input-label for="name" :value="__('Nama Lengkap')" />
                                 <x-text-input id="name"
-                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                     type="text" name="name" :value="old('name')" required autofocus
                                     autocomplete="name" />
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -141,7 +149,7 @@
                             <div>
                                 <x-input-label for="register_email" :value="__('Email Address')" />
                                 <x-text-input id="register_email"
-                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                    class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                     type="email" name="email" :value="old('email')" required autocomplete="username" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
@@ -150,14 +158,14 @@
                                 <div>
                                     <x-input-label for="register_password" :value="__('Password')" />
                                     <x-text-input id="register_password"
-                                        class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                        class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                         type="password" name="password" required autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
                                 <div>
                                     <x-input-label for="password_confirmation" :value="__('Konfirmasi')" />
                                     <x-text-input id="password_confirmation"
-                                        class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-dark-800 border-gray-200 dark:border-gray-700 focus:ring-primary-500"
+                                        class="block mt-1 w-full rounded-xl bg-gray-50 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600 focus:ring-primary-500"
                                         type="password" name="password_confirmation" required
                                         autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
@@ -191,14 +199,12 @@
             </div>
 
             <!-- Sliding Overlay (The Slider) -->
-            <div class="hidden md:flex absolute top-0 left-0 w-[55%] h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 transition-all duration-700 ease-in-out z-50 items-center justify-center overflow-hidden"
-                :style="isRegister ? 'transform: translateX(0); border-top-right-radius: 3rem; border-bottom-right-radius: 3rem;' : 'transform: translateX(81.8%); border-top-left-radius: 3rem; border-bottom-left-radius: 3rem;'">
+            <div style="width: 55%;"
+                class="hidden md:flex absolute top-0 left-0 h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 transition-all duration-700 ease-in-out z-50 items-center justify-center overflow-hidden"
+                :style="isRegister ? 'transform: translateX(0); border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;' : 'transform: translateX(81.8%); border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;'">
 
                 <!-- Animated Background -->
                 <div class="absolute inset-0">
-                    <div
-                        class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100">
-                    </div>
                     <div
                         class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-500/30 blur-[80px] animate-blob">
                     </div>
