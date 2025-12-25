@@ -27,7 +27,7 @@
     class="font-sans antialiased bg-slate-900 text-white selection:bg-emerald-500 selection:text-white overflow-hidden">
 
     <!-- Game Container (Full Screen) -->
-    <div x-data="traderGame()" x-init="initGame()"
+    <div x-data="traderGame()" x-init="setTimeout(() => initGame(), 100)"
         class="relative min-h-screen flex flex-col items-center justify-center p-4">
 
         <!-- Back Button -->
@@ -83,9 +83,9 @@
 
                 <!-- Timer Overlay (if game not started) -->
                 <div x-show="!gameActive && !gameOver"
-                    class="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/80 backend-blur-sm transition-opacity">
+                    class="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm transition-opacity">
                     <button @click="startGame()"
-                        class="px-12 py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full font-black text-2xl shadow-lg shadow-emerald-500/30 hover:scale-105 hover:shadow-emerald-500/50 transition-all transform flex items-center gap-3">
+                        class="px-12 py-5 bg-emerald-600 hover:bg-emerald-500 rounded-full font-black text-2xl shadow-lg shadow-emerald-500/30 hover:scale-105 hover:shadow-emerald-500/50 transition-all transform flex items-center gap-3 border-2 border-emerald-400">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
