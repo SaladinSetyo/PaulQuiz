@@ -131,7 +131,7 @@
         <!-- Main Content -->
         <main class="flex-grow">
             <!-- Hero Section -->
-            <section class="relative pt-28 pb-12 md:pt-40 md:pb-24 overflow-hidden bg-slate-50 dark:bg-dark-900">
+            <section class="relative overflow-hidden bg-slate-50 dark:bg-dark-900" style="padding-top: 180px; padding-bottom: 6rem;">
                 <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div
                         class="absolute -top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-primary-500/10 blur-[100px]">

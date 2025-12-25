@@ -21,6 +21,17 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-100 dark:bg-dark-900 text-gray-900 dark:text-white">
+    <style>
+        .auth-slider {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .auth-slider {
+                display: flex;
+            }
+        }
+    </style>
     <div x-data="{ 
         isRegister: {{ $isRegister ? 'true' : 'false' }},
         toggle() {
@@ -191,8 +202,7 @@
         </div>
 
         <!-- Sliding Overlay (The Slider) -->
-        <!-- Sliding Overlay (The Slider) -->
-        <div class="hidden md:flex absolute top-0 h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-900 transition-all duration-700 ease-in-out z-50 items-center justify-center overflow-hidden"
+        <div class="auth-slider absolute top-0 h-full bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-900 transition-all duration-700 ease-in-out z-50 items-center justify-center overflow-hidden"
             style="width: 55%; height: 100%;"
             :style="isRegister ? 'left: 0; border-top-right-radius: 3rem; border-bottom-right-radius: 3rem;' : 'left: 45%; border-top-left-radius: 3rem; border-bottom-left-radius: 3rem;'">
 
