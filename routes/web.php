@@ -34,7 +34,14 @@ Route::get('/', function () {
             ->exists();
     }
 
-    return view('homepage', compact('infographics', 'videos', 'firstModule', 'featuredQuiz', 'isFeaturedQuizSolved'));
+    $onlineUsers = collect();
+    if (Auth::check()) {
+        $onlineUsers = \App\Models\User::where('last_seen_at', '>', now()->subMinutes(5))
+            ->take(10)
+            ->get(); // Fetch top 10 online users
+    }
+
+    return view('homepage', compact('infographics', 'videos', 'firstModule', 'featuredQuiz', 'isFeaturedQuizSolved', 'onlineUsers'));
 })->name('homepage');
 
 Route::get('/dashboard', function () {

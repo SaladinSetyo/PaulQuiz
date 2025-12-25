@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'points',
         'role',
+        'last_seen_at',
     ];
 
     /**
@@ -45,8 +46,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_seen_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isOnline()
+    {
+        return $this->last_seen_at && $this->last_seen_at->isAfter(now()->subMinutes(5));
     }
 
     public function userProgress()

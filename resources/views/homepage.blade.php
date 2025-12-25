@@ -252,6 +252,54 @@
             </section>
             @endif
 
+            <!-- Online Users Section (Authenticated Only) -->
+            @auth
+            <section class="py-10 relative z-30">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="relative bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-xl overflow-hidden group">
+                        <!-- Decorative Glow -->
+                        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-700"></div>
+                        
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl text-emerald-600 dark:text-emerald-400">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                        Sobat Fintech Online
+                                        <span class="flex h-3 w-3 relative">
+                                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                                        </span>
+                                    </h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Belajar bersama komunitas sekarang</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center -space-x-4 overflow-x-auto py-2 px-4 scrollbar-hide">
+                                @foreach($onlineUsers as $user)
+                                    <div class="relative group/avatar" title="{{ $user->name }}">
+                                        <div class="w-12 h-12 rounded-full border-2 border-white dark:border-dark-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm font-bold text-gray-600 dark:text-gray-300 shadow-md group-hover/avatar:scale-110 transition-transform cursor-help overflow-hidden">
+                                            {{ substr($user->name, 0, 2) }}
+                                        </div>
+                                        <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-dark-800 rounded-full"></div>
+                                        <!-- Tooltip -->
+                                        <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover/avatar:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                                            {{ $user->name }}
+                                        </div>
+                                    </div>
+                                @endforeach
+                                @if($onlineUsers->isEmpty())
+                                    <span class="text-gray-400 text-sm italic">Belum ada user lain online</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            @endauth
+
             <!-- About / Features Cards -->
             <section class="py-20 bg-white dark:bg-dark-800 border-y border-gray-100 dark:border-dark-700">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
