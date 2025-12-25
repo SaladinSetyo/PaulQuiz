@@ -3,354 +3,407 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }} - Crypto Trader Panic</title>
+    <title>Pintu Pro Trader - BTC/USDT</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         [x-cloak] { display: none !important; }
-        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        body { background-color: #0b0e11; color: #eaecef; font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        /* Pintu Pro Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0b0e11; }
+        ::-webkit-scrollbar-thumb { background: #2b3139; border-radius: 2px; }
+        
+        .order-book-row:hover { background-color: #1e2329; }
+        .blink-green { animation: blinkG 0.5s; }
+        .blink-red { animation: blinkR 0.5s; }
+        
+        @keyframes blinkG { 0% { background-color: rgba(16, 185, 129, 0.2); } 100% { background-color: transparent; } }
+        @keyframes blinkR { 0% { background-color: rgba(244, 63, 94, 0.2); } 100% { background-color: transparent; } }
     </style>
 </head>
 
-<body class="font-sans antialiased bg-slate-900 text-white overflow-hidden selection:bg-emerald-500 selection:text-white">
+<body class="flex flex-col h-screen overflow-hidden bg-[#0b0e11] text-[#eaecef]">
 
-    <!-- Game Container -->
-    <div x-data="candleGame()" x-init="setTimeout(() => initGame(), 100)" x-cloak
-        class="relative min-h-screen flex flex-col items-center justify-center p-4 bg-[#0f172a]">
-
-        <!-- HEADER (Always Visible) -->
-        <div class="absolute top-0 left-0 right-0 p-6 z-50 flex justify-between items-start pointer-events-none">
-            <!-- Back Button (Pointer Events Enabled) -->
-            <a href="{{ route('homepage') }}"
-                class="pointer-events-auto flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-slate-800/80 backdrop-blur px-4 py-2 rounded-full border border-white/5 hover:bg-slate-700/80 shadow-lg">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                <span class="font-bold text-sm">EXIT</span>
-            </a>
-
-            <!-- Balance (Pointer Events Enabled) -->
-            <div class="pointer-events-auto bg-slate-800/90 backdrop-blur px-6 py-2 rounded-2xl border border-slate-700/50 flex items-center gap-4 shadow-xl">
-                <div class="flex flex-col items-end leading-tight">
-                     <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Live Account</span>
-                     <span class="text-xl font-mono font-black text-emerald-400 tracking-tight">$<span x-text="formatMoney(balance)"></span></span>
+    <!-- NAVBAR -->
+    <nav class="h-14 bg-[#181a20] border-b border-[#2b3139] flex items-center px-4 justify-between shrink-0 z-50">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded bg-white text-black font-black flex items-center justify-center text-lg">P</div>
+                <span class="font-bold text-lg tracking-tight">Pro</span>
+            </div>
+            
+            <!-- Asset Info -->
+            <div class="hidden md:flex flex-col">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-lg">BTC/USDT</span>
+                    <span class="text-xs text-emerald-400 bg-emerald-400/10 px-1 rounded">+2.4%</span>
                 </div>
-                <div class="w-10 h-10 rounded-full bg-[#10b98120] flex items-center justify-center border border-emerald-500/30">
-                    <span class="font-bold text-emerald-500 text-lg">$</span>
+                <span class="text-xs text-slate-400">Bitcoin</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="bg-[#2b3139] px-4 py-1.5 rounded flex items-center gap-3">
+                <span class="text-xs text-slate-400 uppercase font-bold">Balance</span>
+                <span class="font-mono font-bold text-white">$<span x-data x-text="window.userBalance?.toFixed(2) ?? '1,000.00'"></span></span>
+            </div>
+            <a href="{{ route('homepage') }}" class="text-slate-400 hover:text-white px-3 py-1.5 hover:bg-[#2b3139] rounded text-sm font-bold transition-colors">Exit</a>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <div x-data="proTrader()" x-init="initTrader()" x-cloak class="flex-grow flex overflow-hidden relative">
+
+        <!-- LEFT: CHART AREA -->
+        <div class="flex-grow flex flex-col relative bg-[#0b0e11]">
+            <!-- Chart Toolbar -->
+            <div class="h-10 border-b border-[#2b3139] flex items-center px-4 gap-4 text-xs font-bold text-slate-400">
+                <span class="text-white cursor-pointer hover:bg-[#2b3139] px-2 py-1 rounded">Time</span>
+                <span class="cursor-pointer hover:bg-[#2b3139] px-2 py-1 rounded text-[#f0b90b]">15m</span>
+                <span class="cursor-pointer hover:bg-[#2b3139] px-2 py-1 rounded">1H</span>
+                <span class="cursor-pointer hover:bg-[#2b3139] px-2 py-1 rounded">4H</span>
+                <div class="w-[1px] h-4 bg-[#2b3139]"></div>
+                <span class="cursor-pointer hover:bg-[#2b3139] px-2 py-1 rounded">Indicators</span>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="flex-grow relative w-full h-full cursor-crosshair">
+                <canvas id="tradeCanvas" class="absolute inset-0 w-full h-full"></canvas>
+                
+                <!-- Game Phase HUD overlay on Chart -->
+                <div class="absolute top-4 left-1/2 transform -translate-x-1/2 flex flex-col items-center pointer-events-none">
+                    
+                    <!-- Phase Badge -->
+                    <div class="bg-[#1e2329]/90 backdrop-blur border border-[#474d57] px-6 py-2 rounded-full shadow-lg mb-4 flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full animate-pulse" 
+                             :class="phase === 'open' ? 'bg-emerald-500' : 'bg-rose-500'"></div>
+                        <span class="font-mono font-bold text-lg" 
+                              :class="phase === 'open' ? 'text-emerald-400' : 'text-rose-400'"
+                              x-text="phase === 'open' ? 'MARKET OPEN' : 'MARKET CLOSED'"></span>
+                        <div class="w-[1px] h-4 bg-[#474d57]"></div>
+                        <span class="font-mono font-bold text-white text-xl w-12 text-center" x-text="formatTimer()"></span>
+                    </div>
+
+                    <!-- Notification Toast -->
+                    <div x-show="phase === 'locked'" 
+                         x-transition:enter="transition ease-out duration-300 transform"
+                         x-transition:enter-start="opacity-0 -translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         class="bg-[#1e2329]/90 backdrop-blur px-4 py-2 rounded text-slate-300 text-xs font-bold border border-rose-500/30">
+                        Trading Locked - Wait for Settlement
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- MAIN CONTENT AREA -->
-        <div class="relative w-full max-w-[1600px] h-[85vh] bg-[#131722] rounded-[32px] overflow-hidden shadow-2xl border border-slate-800 flex flex-col justify-center items-center">
+        <!-- RIGHT: ORDER PANEL + ORDER BOOK -->
+        <div class="w-[320px] bg-[#181a20] border-l border-[#2b3139] flex flex-col shrink-0 z-20">
             
-            <!-- BACKGROUND: CHART (Always rendered but blurred in lobby) -->
-            <div class="absolute inset-0 z-0">
-                 <!-- Grid Pattern -->
-                 <div class="absolute inset-0 opacity-[0.03]"
-                    style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 60px 60px;">
+            <!-- Order Book (Top Half) -->
+            <div class="flex-grow flex flex-col min-h-0 border-b border-[#2b3139]">
+                <div class="h-8 flex items-center px-4 text-xs font-bold text-slate-500 justify-between">
+                    <span>Price(USDT)</span>
+                    <span>Amount(BTC)</span>
                 </div>
-                <canvas id="candleChart" class="w-full h-full cursor-crosshair"></canvas>
+                <div class="overflow-hidden relative flex-grow text-xs font-mono">
+                    <!-- Sells (Red) -->
+                    <div class="flex flex-col-reverse justify-end h-1/2 overflow-hidden pb-1">
+                        <template x-for="ask in asks" :key="ask.price">
+                            <div class="flex justify-between px-4 py-0.5 cursor-pointer order-book-row hover:bg-[#2b3139]">
+                                <span class="text-[#f6465d]" x-text="ask.price.toFixed(2)"></span>
+                                <span class="text-slate-300" x-text="ask.amount.toFixed(4)"></span>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <!-- Current Price -->
+                    <div class="h-10 flex items-center justify-center border-y border-[#2b3139] bg-[#0b0e11]">
+                        <span class="text-xl font-bold font-mono" 
+                              :class="lastPrice >= prevPrice ? 'text-[#0ecb81]' : 'text-[#f6465d]'"
+                              x-text="lastPrice.toFixed(2)"></span>
+                        <svg x-show="lastPrice >= prevPrice" class="w-4 h-4 text-[#0ecb81] ml-1" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                        <svg x-show="lastPrice < prevPrice" class="w-4 h-4 text-[#f6465d] ml-1" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </div>
+
+                    <!-- Buys (Green) -->
+                    <div class="h-1/2 overflow-hidden pt-1">
+                        <template x-for="bid in bids" :key="bid.price">
+                            <div class="flex justify-between px-4 py-0.5 cursor-pointer order-book-row hover:bg-[#2b3139]">
+                                <span class="text-[#0ecb81]" x-text="bid.price.toFixed(2)"></span>
+                                <span class="text-slate-300" x-text="bid.amount.toFixed(4)"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
 
-            <!-- STATE: LOBBY (Start Screen) -->
-            <div x-show="phase === 'idle'"
-                 class="absolute inset-0 z-40 bg-[#0f172a]/80 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-500">
-                
-                <div class="bg-[#1e293b] p-10 rounded-[40px] shadow-2xl border border-slate-700/50 text-center max-w-md mx-4 transform transition-all hover:scale-105 duration-300">
-                    <div class="w-24 h-24 bg-emerald-500/10 rounded-full mx-auto mb-6 flex items-center justify-center border-4 border-emerald-500/20">
-                        <svg class="w-12 h-12 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            <!-- Trading Panel (Bottom Half) -->
+            <div class="p-4 bg-[#1e2329]">
+                <!-- Tabs -->
+                <div class="flex bg-[#0b0e11] p-1 rounded mb-4">
+                    <button class="flex-1 py-1.5 rounded text-sm font-bold bg-[#2b3139] text-white">Spot</button>
+                    <button class="flex-1 py-1.5 rounded text-sm font-bold text-slate-500 hover:text-white">Cross 3x</button>
+                </div>
+
+                <!-- Inputs -->
+                <div class="space-y-3 mb-6">
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-400 mb-1">
+                            <span>Avbl</span>
+                            <span><span x-text="balance.toFixed(2)"></span> USDT</span>
+                        </div>
+                        <div class="relative">
+                             <div class="absolute inset-y-0 left-3 flex items-center text-xs font-bold text-slate-400">Price</div>
+                             <input type="text" disabled value="Market" class="w-full bg-[#2b3139] border border-transparent rounded h-10 pl-14 pr-3 text-right text-sm font-bold text-white focus:outline-none focus:border-[#f0b90b]">
+                        </div>
                     </div>
-                    <h1 class="text-4xl font-black text-white mb-2 tracking-tight">Trader Panic</h1>
-                    <p class="text-slate-400 mb-8 font-medium">Binary Options Simulator.<br>Predict the next candle color.</p>
+
+                    <div>
+                        <div class="relative">
+                             <div class="absolute inset-y-0 left-3 flex items-center text-xs font-bold text-slate-400">Amount</div>
+                             <input type="number" x-model="betAmount" class="w-full bg-[#2b3139] border border-transparent rounded h-10 pl-16 pr-10 text-right text-sm font-bold text-white focus:outline-none focus:border-[#f0b90b]">
+                             <div class="absolute inset-y-0 right-3 flex items-center text-xs font-bold text-slate-400">USDT</div>
+                        </div>
+                    </div>
                     
-                    <button @click="startCycle()" 
-                        class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-[#0f172a] font-black text-xl rounded-2xl shadow-[0_10px_40px_-10px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-1">
-                        Start Trading
+                    <!-- Slider -->
+                    <input type="range" class="w-full h-1 bg-[#474d57] rounded-lg appearance-none cursor-pointer accent-[#f0b90b]">
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button @click="placeOrder('buy')" 
+                            :disabled="phase !== 'open' || myPosition"
+                            class="h-12 bg-[#0ecb81] hover:bg-[#0da86b] disabled:opacity-50 disabled:cursor-not-allowed rounded text-white font-bold text-sm transition-colors flex flex-col items-center justify-center leading-none shadow-lg">
+                        <span class="text-base">Buy Long</span>
+                    </button>
+                    
+                    <button @click="placeOrder('sell')" 
+                            :disabled="phase !== 'open' || myPosition"
+                            class="h-12 bg-[#f6465d] hover:bg-[#d93a4e] disabled:opacity-50 disabled:cursor-not-allowed rounded text-white font-bold text-sm transition-colors flex flex-col items-center justify-center leading-none shadow-lg">
+                        <span class="text-base">Sell Short</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- STATE: GAME OVER -->
-            <div x-show="phase === 'gameover'"
-                 class="absolute inset-0 z-50 bg-[#0f172a]/95 backdrop-blur-xl flex flex-col items-center justify-center text-center"
-                 style="display: none;">
-                <div class="text-8xl mb-4 animate-bounce">💀</div>
-                <h2 class="text-6xl font-black text-white mb-2">LIQUIDATED</h2>
-                <p class="text-xl text-slate-400 mb-8 font-mono">Balance: $0.00</p>
-                <div class="flex gap-4">
-                    <button @click="fullReset()" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl shadow-lg transition-transform hover:scale-105">Re-Deposit $1,000</button>
-                    <a href="{{ route('homepage') }}" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition-colors">Quit Game</a>
-                </div>
-            </div>
-
-            <!-- HUD LAYERS (Visible only when Active) -->
-            <div x-show="phase !== 'idle' && phase !== 'gameover'" class="absolute inset-0 z-10 pointer-events-none" style="display: none;">
-                
-                <!-- Left: Asset Info -->
-                <div class="absolute top-8 left-8 pointer-events-auto">
-                    <div class="bg-[#1e293b]/90 backdrop-blur-md border border-slate-700/50 p-4 rounded-2xl shadow-xl flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-[#F7931A] flex items-center justify-center shadow-inner">
-                            <span class="text-white font-black text-sm">₿</span>
-                        </div>
-                        <div>
-                            <div class="text-white font-bold leading-none">Bitcoin / USD</div>
-                            <div class="text-xs text-slate-400 font-bold mt-1">Payout 82%</div>
-                        </div>
+                 <!-- Users Position Info -->
+                <div x-show="myPosition" class="mt-4 p-3 bg-[#0b0e11] rounded border border-[#2b3139]">
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-slate-400">Entry Price</span>
+                        <span class="font-mono text-white" x-text="myPosition?.entry.toFixed(2)"></span>
                     </div>
-                    
-                    <div class="mt-4 bg-[#1e293b]/90 backdrop-blur-md border border-slate-700/50 p-5 rounded-2xl shadow-xl w-64">
-                         <div class="text-xs text-slate-500 font-bold uppercase mb-1">Market Price</div>
-                         <div class="text-3xl font-mono font-black text-white flex items-center gap-2">
-                            <span x-text="price.toFixed(2)"></span>
-                         </div>
-                         <div class="mt-2 flex items-center gap-2 text-sm font-bold p-1 rounded bg-black/20 w-max px-2" :class="lastClose >= lastOpen ? 'text-emerald-400' : 'text-rose-400'">
-                             <span x-text="lastClose >= lastOpen ? '▲' : '▼'"></span>
-                             <span x-text="Math.abs((lastClose - lastOpen) / lastOpen * 100).toFixed(2) + '%'"></span>
-                         </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-slate-400">PnL (Est)</span>
+                        <span class="font-mono font-bold" 
+                            :class="(lastPrice - myPosition?.entry) * (myPosition?.type==='buy'?1:-1) > 0 ? 'text-[#0ecb81]' : 'text-[#f6465d]'">
+                            <span x-text="(lastPrice - myPosition?.entry) * (myPosition?.type==='buy'?1:-1) > 0 ? '+' : ''"></span>
+                            <span x-text="((lastPrice - myPosition?.entry) * (myPosition?.type==='buy'?1:-1)).toFixed(2)"></span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- Right: Control Panel -->
-                <div class="absolute right-8 top-8 bottom-8 w-[360px] pointer-events-auto flex flex-col">
-                    <div class="flex-grow bg-[#1e293b]/95 backdrop-blur-xl border border-slate-700/50 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden relative">
-                        
-                        <!-- Top Gradient Line -->
-                        <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 via-yellow-500 to-emerald-500 opacity-50"></div>
-
-                        <!-- Phase Indicator -->
-                        <div class="p-6 text-center border-b border-slate-700/30">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
-                                :class="phase === 'watching' ? 'bg-sky-500/10 text-sky-400 border-sky-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'">
-                                <span class="w-2 h-2 rounded-full animate-pulse" :class="phase === 'watching' ? 'bg-sky-400' : 'bg-yellow-400'"></span>
-                                <span x-text="phase === 'watching' ? 'DETECTING TREND' : 'ORDER WINDOW OPEN'"></span>
-                            </div>
-                        </div>
-
-                        <!-- Main Timer -->
-                        <div class="flex-grow flex flex-col items-center justify-center p-6 relative">
-                             <!-- Timer Circle -->
-                             <div class="relative w-48 h-48 flex items-center justify-center">
-                                 <svg class="w-full h-full transform -rotate-90">
-                                     <circle cx="96" cy="96" r="88" stroke="#334155" stroke-width="6" fill="none"></circle>
-                                     <circle cx="96" cy="96" r="88" 
-                                        :stroke="phase === 'watching' ? '#38bdf8' : '#eab308'" 
-                                        stroke-width="6" fill="none"
-                                        stroke-dasharray="553"
-                                        :stroke-dashoffset="553 - (553 * timer / (phase === 'watching' ? 20 : 10))"
-                                        stroke-linecap="round"
-                                        class="transition-all duration-1000 ease-linear shadow-[0_0_20px_currentColor]"></circle>
-                                 </svg>
-                                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                     <span class="text-6xl font-black text-white font-mono tracking-tighter leading-none" x-text="timer"></span>
-                                     <span class="text-xs font-bold text-slate-500 uppercase mt-1 tracking-widest">Seconds</span>
-                                 </div>
-                             </div>
-
-                             <div class="mt-8 text-center px-4">
-                                 <p x-show="phase === 'watching'" class="text-slate-400 text-sm font-medium animate-pulse">Wait for price freeze...</p>
-                                 <p x-show="phase === 'deciding'" class="text-yellow-400 text-lg font-black animate-bounce">PLACE BET NOW!</p>
-                             </div>
-                        </div>
-
-                        <!-- Control Buttons -->
-                        <div class="p-6 bg-[#0f172a]/50 border-t border-slate-700/50">
-                            <div class="grid grid-cols-2 gap-4">
-                                <button @click="placeOrder('buy')" :disabled="phase !== 'deciding'"
-                                    class="relative h-20 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-30 disabled:cursor-not-allowed rounded-2xl shadow-lg group overflow-hidden transition-all active:scale-95">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                                    <span class="relative z-10 block text-2xl font-black text-white">UP</span>
-                                    <span class="relative z-10 block text-[10px] font-bold text-emerald-200 uppercase mt-[-2px]">Green</span>
-                                </button>
-
-                                <button @click="placeOrder('sell')" :disabled="phase !== 'deciding'"
-                                    class="relative h-20 bg-rose-600 hover:bg-rose-500 disabled:opacity-30 disabled:cursor-not-allowed rounded-2xl shadow-lg group overflow-hidden transition-all active:scale-95">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                                    <span class="relative z-10 block text-2xl font-black text-white">DOWN</span>
-                                    <span class="relative z-10 block text-[10px] font-bold text-rose-200 uppercase mt-[-2px]">Red</span>
-                                </button>
-                            </div>
-                            <div class="mt-4 flex justify-between items-center text-xs font-bold text-slate-500">
-                                <span>Investment: $<span x-text="Math.floor(balance/2)"></span></span>
-                                <span>Return: 182%</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Floating Result Notification (Center) -->
-                <div x-show="showResult" 
-                     class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
-                     style="display: none;"
-                     x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 scale-50"
-                     x-transition:enter-end="opacity-100 scale-100">
-                     <div class="bg-[#1e293b] border-2 px-10 py-8 rounded-[30px] shadow-[0_0_50px_rgba(0,0,0,0.5)] text-center"
-                          :class="lastWin ? 'border-emerald-500 shadow-emerald-500/20' : 'border-rose-500 shadow-rose-500/20'">
-                        <div class="text-6xl mb-2" x-text="lastWin ? '🚀' : '📉'"></div>
-                        <h2 class="text-4xl font-black text-white mb-1" x-text="lastWin ? 'PROFIT!' : 'LOSS'"></h2>
-                        <p class="text-2xl font-mono font-bold" :class="lastWin ? 'text-emerald-400' : 'text-rose-400'" x-text="(lastWin ? '+' : '-') + '$' + lastResultAmt"></p>
-                     </div>
-                </div>
-
             </div>
+        </div>
 
+        <!-- Result Overlay (Absolute Center) -->
+        <div x-show="showResult" 
+             style="display: none;"
+             class="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+            <div class="bg-[#1e2329] border border-[#474d57] p-8 rounded-xl shadow-2xl text-center transform scale-100 animate-bounce">
+                <div class="text-5xl mb-2" x-text="lastWin ? '💰' : '📉'"></div>
+                <h2 class="text-3xl font-black mb-1" :class="lastWin ? 'text-[#0ecb81]' : 'text-[#f6465d]'" x-text="lastWin ? 'Win' : 'Loss'"></h2>
+                <div class="text-white font-mono font-bold text-xl" x-text="(lastWin ? '+' : '-') + '$' + lastPnL.toFixed(2)"></div>
+            </div>
         </div>
 
     </div>
 
-    <!-- Logic -->
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('candleGame', () => ({
-                phase: 'idle', // idle, watching, deciding, gameover
+            Alpine.data('proTrader', () => ({
+                // Game Config
+                phase: 'open', // 'open' (10s), 'locked' (20s)
+                timer: 10,
                 balance: 1000,
-                price: 15500.00,
-                candles: [],
-                timer: 0,
-                gameInterval: null,
+                lastPrice: 43500.00,
+                prevPrice: 43500.00,
+                betAmount: 100,
+                
+                // Candles Data
+                candles: [], // {t, o, h, l, c}
+                asks: [],
+                bids: [],
+                
+                // User State
+                myPosition: null, // {type: 'buy'|'sell', entry: 123}
                 showResult: false,
                 lastWin: false,
-                lastResultAmt: 0,
+                lastPnL: 0,
                 
-                // Canvas
+                // Internals
+                interval: null,
                 canvas: null,
                 ctx: null,
 
-                get lastOpen() { return this.candles.length ? this.candles[this.candles.length-1].o : this.price },
-                get lastClose() { return this.candles.length ? this.candles[this.candles.length-1].c : this.price },
-
-                initGame() {
-                    this.canvas = document.getElementById('candleChart');
+                initTrader() {
+                    window.userBalance = this.balance;
+                    this.canvas = document.getElementById('tradeCanvas');
                     this.setupCanvas();
-                    this.generateInitialCandles(60);
-                    this.drawCandles();
+                    this.generateHistory();
+                    this.generateOrderBook();
+                    this.startLoop();
                     
-                    // Live resize
-                    window.addEventListener('resize', () => {
-                        this.setupCanvas();
-                        this.drawCandles();
-                    });
+                    window.addEventListener('resize', () => { this.setupCanvas(); this.draw(); });
                 },
 
                 setupCanvas() {
                     if(!this.canvas) return;
                     const dpr = window.devicePixelRatio || 1;
-                    const rect = this.canvas.parentElement.getBoundingClientRect(); // Use parent size
+                    const rect = this.canvas.parentElement.getBoundingClientRect();
                     this.canvas.width = rect.width * dpr;
                     this.canvas.height = rect.height * dpr;
                     this.ctx = this.canvas.getContext('2d');
                     this.ctx.scale(dpr, dpr);
                 },
 
-                formatMoney(val) {
-                    return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                },
-
-                generateInitialCandles(count) {
-                    this.candles = [];
-                    let currentPrice = this.price;
-                    for(let i=0; i<count; i++) {
-                        let o = currentPrice;
-                        let c = o + (Math.random() - 0.5) * 30;
-                        let h = Math.max(o, c) + Math.random() * 10;
-                        let l = Math.min(o, c) - Math.random() * 10;
-                        this.candles.push({o, h, l, c});
-                        currentPrice = c;
+                generateHistory() {
+                    let p = this.lastPrice;
+                    let t = Date.now() - (60 * 1000);
+                    for(let i=0; i<60; i++) {
+                        let o = p;
+                        let c = o + (Math.random() - 0.5) * 20;
+                        let h = Math.max(o, c) + Math.random() * 5;
+                        let l = Math.min(o, c) - Math.random() * 5;
+                        this.candles.push({t, o, h, l, c});
+                        p = c;
+                        t += 1000;
                     }
-                    this.price = currentPrice;
+                    this.lastPrice = p;
                 },
 
-                startCycle() {
-                    if(this.balance <= 0) {
-                        this.phase = 'gameover';
-                        return;
+                generateOrderBook() {
+                    this.asks = [];
+                    this.bids = [];
+                    for(let i=0; i<8; i++) {
+                        this.asks.push({ price: this.lastPrice + (i*2) + Math.random(), amount: Math.random() * 2 });
+                        this.bids.push({ price: this.lastPrice - (i*2) - Math.random(), amount: Math.random() * 2 });
                     }
-                    this.showResult = false;
-                    this.phase = 'watching';
-                    this.timer = 20;
-                    
-                    if(this.gameInterval) clearInterval(this.gameInterval);
-                    this.gameInterval = setInterval(() => {
-                        this.tickMarket();
-                        this.timer--;
-                        if(this.timer <= 0) this.enterDecisionPhase();
-                    }, 1000); 
                 },
 
-                tickMarket() {
-                    let o = this.price;
-                    let c = o + (Math.random() - 0.5) * 25; // Volatility
-                    let h = Math.max(o, c) + Math.random() * 8;
-                    let l = Math.min(o, c) - Math.random() * 8;
-                    
-                    this.candles.push({o, h, l, c});
-                    if(this.candles.length > 80) this.candles.shift();
-                    this.price = c;
-                    this.drawCandles();
+                formatTimer() {
+                    return `00:${this.timer.toString().padStart(2, '0')}`;
                 },
 
-                enterDecisionPhase() {
-                    this.phase = 'deciding';
-                    this.timer = 10;
-                    clearInterval(this.gameInterval);
-                    this.gameInterval = setInterval(() => {
-                        this.timer--;
-                        if(this.timer <= 0) this.startCycle();
+                startLoop() {
+                    if(this.interval) clearInterval(this.interval);
+                    
+                    this.interval = setInterval(() => {
+                        this.tick();
                     }, 1000);
                 },
 
+                tick() {
+                    // Timer Logic
+                    this.timer--;
+                    
+                    // State Transitions
+                    if(this.phase === 'open' && this.timer <= 0) {
+                        this.phase = 'locked';
+                        this.timer = 20; // 20s locked
+                    } else if(this.phase === 'locked' && this.timer <= 0) {
+                        this.settle();
+                        this.phase = 'open';
+                        this.timer = 10; // 10s open
+                    }
+
+                    // Market Movement (Simulated Tick)
+                    this.prevPrice = this.lastPrice;
+                    let move = (Math.random() - 0.5) * 15;
+                    // Bias if 'locked' to create suspense? No, keep random.
+                    this.lastPrice += move;
+                    
+                    // Update Candle
+                    let lastCandle = this.candles[this.candles.length-1];
+                    lastCandle.c = this.lastPrice;
+                    if(this.lastPrice > lastCandle.h) lastCandle.h = this.lastPrice;
+                    if(this.lastPrice < lastCandle.l) lastCandle.l = this.lastPrice;
+                    
+                    // New Candle every second? No, keeping it realistic-ish.
+                    // Let's add new candle every 5 ticks.
+                    if(Date.now() % 5 === 0 || this.phaseTransitioned) { // Simple hack
+                        // Push new
+                        let o = this.lastPrice;
+                        this.candles.push({t: Date.now(), o, h:o, l:o, c:o});
+                        if(this.candles.length > 80) this.candles.shift();
+                    }
+
+                    // Orderbook shimmy
+                    this.generateOrderBook(); // Naive refresh
+                    
+                    this.draw();
+                },
+
                 placeOrder(type) {
-                    if(this.phase !== 'deciding') return;
-                    clearInterval(this.gameInterval);
+                    if(this.phase !== 'open') return;
+                    if(this.balance < this.betAmount) return;
                     
-                    let o = this.price;
-                    let move = (Math.random() - 0.5) * 60;
-                    if(Math.abs(move) < 10) move = move > 0 ? 20 : -20;
+                    this.balance -= parseInt(this.betAmount);
+                    window.userBalance = this.balance;
                     
-                    let c = o + move;
-                    let h = Math.max(o, c) + Math.random() * 5;
-                    let l = Math.min(o, c) - Math.random() * 5;
-                    
-                    this.candles.push({o, h, l, c});
-                    if(this.candles.length > 80) this.candles.shift();
-                    this.price = c;
-                    this.drawCandles();
+                    this.myPosition = {
+                        type: type,
+                        entry: this.lastPrice,
+                        amount: parseInt(this.betAmount)
+                    };
+                },
 
-                    let isGreen = c > o;
-                    let won = (type === 'buy' && isGreen) || (type === 'sell' && !isGreen);
-                    let bet = Math.floor(this.balance * 0.5);
-                    this.lastResultAmt = won ? Math.floor(bet * 0.82) : bet;
-                    this.lastWin = won;
+                settle() {
+                    if(!this.myPosition) return;
                     
-                    if(won) this.balance += this.lastResultAmt;
-                    else this.balance -= this.lastResultAmt;
+                    let diff = this.lastPrice - this.myPosition.entry;
+                    let win = false;
                     
-                    if(this.balance < 1) this.balance = 0;
+                    if(this.myPosition.type === 'buy' && diff > 0) win = true;
+                    if(this.myPosition.type === 'sell' && diff < 0) win = true;
+                    
+                    this.lastWin = win;
+                    if(win) {
+                        let profit = this.myPosition.amount * 1.82; // 82% return
+                        this.lastPnL = profit - this.myPosition.amount;
+                        this.balance += profit;
+                    } else {
+                        this.lastPnL = this.myPosition.amount;
+                    }
+                    
+                    window.userBalance = this.balance;
                     this.showResult = true;
+                    setTimeout(() => { this.showResult = false; }, 3000);
                     
-                    setTimeout(() => this.startCycle(), 2000);
+                    this.myPosition = null;
                 },
 
-                fullReset() {
-                    this.balance = 1000;
-                    this.generateInitialCandles(60);
-                    this.drawCandles();
-                    this.startCycle();
-                },
-
-                drawCandles() {
-                    if(!this.ctx || !this.canvas) return;
+                draw() {
                     const ctx = this.ctx;
-                    // Always use offsetWidth/Height for canvas size calc in loop
-                    const dpr = window.devicePixelRatio || 1;
-                    const w = this.canvas.width / dpr;
-                    const h = this.canvas.height / dpr;
+                    const w = this.canvas.width / (window.devicePixelRatio || 1);
+                    const h = this.canvas.height / (window.devicePixelRatio || 1);
                     
                     ctx.clearRect(0, 0, w, h);
                     
+                    // Grid
+                    ctx.strokeStyle = '#2b3139';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    // Vertical
+                    for(let x=0; x<w; x+=60) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+                    // Horizontal
+                    for(let y=0; y<h; y+=60) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
+                    ctx.stroke();
+                    
+                    // Calc Scale
                     let min = Infinity, max = -Infinity;
                     this.candles.forEach(c => {
                         if(c.l < min) min = c.l;
@@ -360,71 +413,61 @@
                     min -= pad; max += pad;
                     let range = max - min;
                     
-                    let candleW = (w / 80) * 0.6;
-                    let spacing = (w / 80) * 0.4;
+                    // Draw Candles
+                    let candleW = (w / 80) * 0.7;
+                    let spacing = (w / 80) * 0.3;
                     
-                    // Grid
-                    ctx.strokeStyle = '#334155';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    for(let i=1; i<6; i++) {
-                       let y = i * (h/6);
-                       ctx.moveTo(0, y);
-                       ctx.lineTo(w, y);
-                    }
-                    for(let i=1; i<10; i++) {
-                       let x = i * (w/10);
-                       ctx.moveTo(x, 0);
-                       ctx.lineTo(x, h);
-                    }
-                    ctx.globalAlpha = 0.2;
-                    ctx.stroke();
-                    ctx.globalAlpha = 1.0;
-
-                    // Candles
                     this.candles.forEach((c, i) => {
                         let isGreen = c.c >= c.o;
-                        // Use CSS variable style colors
-                        ctx.fillStyle = isGreen ? '#10b981' : '#f43f5e';
-                        ctx.strokeStyle = isGreen ? '#10b981' : '#f43f5e';
+                        ctx.fillStyle = isGreen ? '#0ecb81' : '#f6465d';
+                        ctx.strokeStyle = isGreen ? '#0ecb81' : '#f6465d';
                         
                         let x = i * (candleW + spacing) + spacing;
-                        let yH = h - ((c.h - min) / range) * h;
-                        let yL = h - ((c.l - min) / range) * h;
                         let yO = h - ((c.o - min) / range) * h;
                         let yC = h - ((c.c - min) / range) * h;
+                        let yH = h - ((c.h - min) / range) * h;
+                        let yL = h - ((c.l - min) / range) * h;
                         
+                        // Wick
                         ctx.beginPath();
                         ctx.moveTo(x + candleW/2, yH);
                         ctx.lineTo(x + candleW/2, yL);
                         ctx.stroke();
                         
-                        let bodyTop = Math.min(yO, yC);
-                        let bodyH = Math.abs(yO - yC);
-                        if(bodyH < 1) bodyH = 1;
-                        ctx.fillRect(x, bodyTop, candleW, bodyH);
+                        // Body
+                        let top = Math.min(yO, yC);
+                        let height = Math.abs(yO - yC);
+                        if(height < 1) height = 1;
+                        ctx.fillRect(x, top, candleW, height);
                     });
                     
-                    // Price Line
-                    let lastY = h - ((this.price - min) / range) * h;
-                    ctx.beginPath();
-                    ctx.strokeStyle = '#ffffff';
+                    // Current Price Line
+                    let lastY = h - ((this.lastPrice - min) / range) * h;
+                    ctx.strokeStyle = '#f0b90b'; // Binance Yellow / Pintu Gold
                     ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
                     ctx.moveTo(0, lastY);
                     ctx.lineTo(w, lastY);
                     ctx.stroke();
                     ctx.setLineDash([]);
                     
-                    // Price Bubble
-                    ctx.fillStyle = '#ffffff';
-                    ctx.beginPath();
-                    ctx.roundRect(w - 60, lastY - 11, 55, 22, 4);
-                    ctx.fill();
-                    
-                    ctx.fillStyle = '#0f172a';
-                    ctx.font = 'bold 10px Inter';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(this.price.toFixed(2), w - 32, lastY + 4);
+                    // Entry Line (if active)
+                    if(this.myPosition) {
+                        let entryY = h - ((this.myPosition.entry - min) / range) * h;
+                        ctx.strokeStyle = '#3b82f6';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(0, entryY);
+                        ctx.lineTo(w, entryY);
+                        ctx.stroke();
+                        
+                        // Badge
+                        ctx.fillStyle = '#3b82f6';
+                        ctx.fillRect(w - 60, entryY - 10, 60, 20);
+                        ctx.fillStyle = '#fff';
+                        ctx.font = '10px sans-serif';
+                        ctx.fillText('ENTRY', w - 50, entryY + 4);
+                    }
                 }
             }));
         });
