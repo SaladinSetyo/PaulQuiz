@@ -18,7 +18,10 @@ class ContentSeeder extends Seeder
         Content::truncate(); // Clear the table first
         \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
-        $fintechModule = Module::where('title', 'Apa itu fintech')->first();
+        $fintechModule = Module::firstOrCreate(
+            ['title' => 'Apa itu fintech'],
+            ['description' => 'Memahami konsep dasar Financial Technology (Fintech) dan dampaknya.']
+        );
 
         if ($fintechModule) {
             // Article
@@ -30,7 +33,6 @@ class ContentSeeder extends Seeder
                 'order' => 1,
             ]);
 
-            // Videos
             // Videos
             $videos = [
                 [
