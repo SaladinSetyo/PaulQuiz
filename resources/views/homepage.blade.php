@@ -122,7 +122,7 @@
 
                                                 <x-dropdown-link :href="route('logout')"
                                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                                            this.closest('form').submit();">
+                                                                                                                                                                                                                                                                    this.closest('form').submit();">
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                             </form>
@@ -397,7 +397,7 @@
                                     Feature</span>
                                 <h2 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Can You Beat
                                     the <br><span
-                                        class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Market?</span>
+                                        class="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">Market?</span>
                                 </h2>
                                 <p class="text-lg text-slate-400 mb-8 leading-relaxed">
                                     Uji insting trading Anda tanpa risiko! Mainkan <strong>Crypto Trader Panic</strong>,
