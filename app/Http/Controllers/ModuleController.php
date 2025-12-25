@@ -20,8 +20,10 @@ class ModuleController extends Controller
         if (Auth::check()) {
             $userId = Auth::id();
             // Get IDs of modules where the user has at least one quiz with a 100% score
-            $solvedModuleIds = Module::whereHas('quizzes.attempts', function ($query) use ($userId) {
-                $query->where('user_id', $userId)->where('score', 100);
+            $solvedModuleIds = Module::whereHas('quizzes', function ($query) use ($userId) {
+                $query->whereHas('attempts', function ($q) use ($userId) {
+                    $q->where('user_id', $userId)->where('score', 100);
+                });
             })->pluck('id')->toArray();
         }
 
