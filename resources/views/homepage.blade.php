@@ -437,7 +437,7 @@
                             </div>
                             <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Email</h4>
                             <p class="text-gray-500 mb-4">Kirimkan pertanyaan kapan saja.</p>
-                            <a href="mailto:hello@paulquiz.com" class="text-primary-600 font-bold hover:underline">support@paulquiz.com</a>
+                            <a href="mailto:support@paulquiz.my.id" class="text-primary-600 font-bold hover:underline">support@paulquiz.my.id</a>
                         </div>
 
                         <!-- Contact Card 2 -->
