@@ -100,8 +100,7 @@
 
                     <div class="w-full max-w-sm mx-auto space-y-4">
                         <div class="text-left">
-                            <x-application-logo
-                                class="h-10 w-auto fill-current text-indigo-500 mb-4 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                            <!-- Removed Small Logo -->
                             <h1 class="text-3xl font-bold text-white tracking-tight">Selamat Datang</h1>
                             <p class="text-slate-400 mt-1 text-sm">Masuk untuk mengakses dashboard finansial Anda.</p>
                         </div>
@@ -174,8 +173,7 @@
 
                     <div class="w-full max-w-sm mx-auto space-y-4">
                         <div class="text-left">
-                            <x-application-logo
-                                class="h-10 w-auto fill-current text-indigo-500 mb-4 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                            <!-- Removed Small Logo -->
                             <h1 class="text-3xl font-bold text-white tracking-tight">Buat Akun Baru</h1>
                             <p class="text-slate-400 mt-1 text-sm">Bergabunglah dan mulai belajar hari ini.</p>
                         </div>
@@ -228,8 +226,8 @@
                     </div>
                 </div>
 
-                <!-- Slider Overlay - SLOW ANIMATION & HUGE LOGO & NO DOTS -->
-                <div class="auth-slider absolute top-0 h-full transition-all duration-[2000ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
+                <!-- Slider Overlay - SLOW ANIMATION (4000ms) & HUGE LOGO -->
+                <div class="auth-slider absolute top-0 h-full transition-all duration-[4000ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
                     style="width: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5); background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);"
                     :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px;' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px;'">
 
