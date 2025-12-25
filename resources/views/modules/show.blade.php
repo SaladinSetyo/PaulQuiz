@@ -20,15 +20,6 @@
                             </svg>
                         </a>
                     </div>
-                    <a href="{{ route('quizzes.show', $quiz) }}"
-                        class="inline-flex items-center justify-center w-full md:w-auto px-8 py-4 border border-transparent text-base font-bold rounded-full text-white bg-gradient-to-r from-secondary-500 to-emerald-600 hover:from-secondary-600 hover:to-emerald-700 shadow-lg hover:shadow-secondary-500/30 hover:-translate-y-1 transition-all {{ Auth::check() && $isSolved ? 'opacity-75 grayscale-[0.5]' : '' }}">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        {{ $isSolved ? 'Ulangi Kuis:' : 'Ambil Kuis:' }} {{ $quiz->title }}
-                    </a>
-
                     <div class="max-w-4xl mx-auto">
                         <div class="mb-10 text-center">
                             <h3
