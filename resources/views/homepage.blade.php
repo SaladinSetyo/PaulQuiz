@@ -377,8 +377,8 @@
                     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         @foreach($videos as $video)
                             <div
-                                class="group relative aspect-video rounded-3xl overflow-hidden shadow-lg border border-gray-200 dark:border-dark-700 bg-black transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:border-primary-500/50">
-                                <iframe class="w-full h-full"
+                                class="group relative aspect-video rounded-3xl overflow-hidden shadow-lg border border-gray-200 dark:border-dark-700 bg-black transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-primary-500 z-0 hover:z-10">
+                                <iframe class="w-full h-full pointer-events-auto"
                                     src="{{ $video->embed_url }}"
                                     title="{{ $video->title }}" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
