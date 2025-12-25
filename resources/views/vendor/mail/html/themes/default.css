@@ -100,6 +100,7 @@ img {
 .header {
     padding: 25px 0;
     text-align: center;
+    background-color: #f3e8ff;
 }
 
 .header a {
@@ -239,11 +240,11 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #18181b;
-    border-bottom: 8px solid #18181b;
-    border-left: 18px solid #18181b;
-    border-right: 18px solid #18181b;
-    border-top: 8px solid #18181b;
+    background-color: #7e22ce;
+    border-bottom: 8px solid #7e22ce;
+    border-left: 18px solid #7e22ce;
+    border-right: 18px solid #7e22ce;
+    border-top: 8px solid #7e22ce;
 }
 
 .button-green,
