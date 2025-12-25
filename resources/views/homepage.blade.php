@@ -56,6 +56,16 @@
             box-shadow: 0 20px 40px -5px rgba(16, 185, 129, 0.7),
                 0 0 20px 2px rgba(16, 185, 129, 0.5);
         }
+
+        .neon-card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .neon-card-hover:hover {
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+            border-color: rgba(16, 185, 129, 0.5) !important;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -109,7 +119,7 @@
 
                                                 <x-dropdown-link :href="route('logout')"
                                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                    this.closest('form').submit();">
+                                                                                                                                                                                                                                            this.closest('form').submit();">
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                             </form>
@@ -299,7 +309,7 @@
                 <section class="py-10 relative z-30">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div
-                            class="relative bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-xl overflow-hidden group hover:shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:border-emerald-500/50 transition-all duration-500">
+                            class="relative bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-xl overflow-hidden group neon-card-hover">
                             <!-- Decorative Glow -->
                             <div
                                 class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-700">
@@ -464,10 +474,12 @@
                                     class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-left">
                                     <h4
                                         class="text-white font-bold text-lg mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                                        {{ $infographic->title }}</h4>
+                                        {{ $infographic->title }}
+                                    </h4>
                                     <p
                                         class="text-gray-300 text-xs line-clamp-2 mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                                        {{ $infographic->description }}</p>
+                                        {{ $infographic->description }}
+                                    </p>
                                     <div
                                         class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150">
                                         <span
