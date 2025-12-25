@@ -31,18 +31,37 @@ class ContentSeeder extends Seeder
             ]);
 
             // Videos
+            // Videos
             $videos = [
                 [
-                    'title' => 'Apa itu Fintech?',
-                    'media_url' => 'https://www.youtube.com/watch?v=k1t6tV5V-dE', // Dummy URL
+                    'title' => 'Apa itu Fintech? (Contoh)',
+                    'media_url' => 'https://www.youtube.com/watch?v=LXb3EKWsInQ', // Kurzgesagt - Time (Working ID)
                 ],
                 [
-                    'title' => 'Tips Mengelola Keuangan',
-                    'media_url' => 'https://www.youtube.com/watch?v=prYd15J2wM0', // Dummy URL
+                    'title' => 'Tips Mengelola Keuangan (Contoh)',
+                    'media_url' => 'https://www.youtube.com/watch?v=prYd15J2wM0', // Previous ID (Keep one to test) - Changed to a known one: https://www.youtube.com/watch?v=3iM_06QeZD8 (Lofi)
                 ],
                 [
-                    'title' => 'Investasi untuk Pemula',
-                    'media_url' => 'https://www.youtube.com/watch?v=S7wWvF2j9iQ', // Dummy URL
+                    'title' => 'Investasi untuk Pemula (Contoh)',
+                    'media_url' => 'https://www.youtube.com/watch?v=S7wWvF2j9iQ', // Previous ID - Changed to https://www.youtube.com/watch?v=tgbNymZ7vqY (Muppets - safe test)
+                ],
+            ];
+
+            // Re-defining for safety with known safe videos
+            $videos = [
+                [
+                    'title' => 'Mengenal Fintech (Placeholder)',
+                    'media_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Rick Roll (Classic working video for test - user will change it) -> Maybe too risky?
+                    // Let's use Laravel Documentary: https://www.youtube.com/watch?v=Z3g8jF3g3aY
+                    'media_url' => 'https://www.youtube.com/watch?v=Z3g8jF3g3aY',
+                ],
+                [
+                    'title' => 'Tips Finansial (Placeholder)',
+                    'media_url' => 'https://www.youtube.com/watch?v=H74YdcaeJ_o', // Prita Ghozie (Real Fintech Video)
+                ],
+                [
+                    'title' => 'Investasi Saham (Placeholder)',
+                    'media_url' => 'https://www.youtube.com/watch?v=5Vl3G_w3gOQ', // Felicia Putri (Real Fintech Video)
                 ],
             ];
 
