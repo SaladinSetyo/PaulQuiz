@@ -98,7 +98,7 @@
                 <div class="absolute top-0 left-0 h-full flex flex-col justify-center p-8 md:p-16 form-container"
                     style="width: 50%;" :class="!isRegister ? 'active z-10' : 'z-0 transform -translate-x-10'">
 
-                    <div class="w-full max-w-sm mx-auto space-y-8">
+                    <div class="w-full max-w-sm mx-auto space-y-6">
                         <div class="text-left">
                             <x-application-logo
                                 class="h-10 w-auto fill-current text-indigo-500 mb-6 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
@@ -109,7 +109,7 @@
                         <!-- Session Status -->
                         <x-auth-session-status class="mb-4" :status="session('status')" />
 
-                        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+                        <form method="POST" action="{{ route('login') }}" class="space-y-5">
                             @csrf
                             <div class="space-y-2">
                                 <label
@@ -228,7 +228,7 @@
                 </div>
 
                 <!-- Slider Overlay - NEW GRADIENT & SHADOW -->
-                <div class="auth-slider absolute top-0 h-full transition-all duration-[800ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
+                <div class="auth-slider absolute top-0 h-full transition-all duration-[1200ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
                     style="width: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5); background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);"
                     :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px;' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px;'">
 
@@ -250,7 +250,7 @@
                         <div
                             class="mb-10 transform transition-transform duration-500 hover:scale-105 drop-shadow-2xl flex justify-center">
                             <x-application-logo
-                                class="h-40 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
+                                class="h-52 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
                         </div>
                         <h2 class="text-4xl font-extrabold mb-4 tracking-tight drop-shadow-lg">Paul Quiz</h2>
                         <p class="text-lg text-indigo-100/90 mb-10 leading-relaxed font-light drop-shadow-md">
