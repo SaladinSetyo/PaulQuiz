@@ -43,7 +43,6 @@
                 scrollbar-width: none;
             }
 
-            /* Smooth Transitions */
             .form-container {
                 opacity: 0;
                 pointer-events: none;
@@ -55,40 +54,55 @@
                 pointer-events: auto;
             }
 
-            /* Input Focus Ring Custom */
+            /* Modern Input Styling */
+            .custom-input {
+                background: #0f172a;
+                /* Slate 900 */
+                border: 1px solid rgba(30, 41, 59, 0.8);
+                /* Slate 800 */
+                transition: all 0.3s ease;
+                box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+                color: white;
+            }
+
+            .custom-input::placeholder {
+                color: #64748b;
+            }
+
             .custom-input:focus {
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+                outline: none;
                 border-color: #6366f1;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+                transform: translateY(-1px);
             }
         </style>
-        <div x-data="{
+        <div x-data="{ 
         isRegister: {{ $isRegister ? 'true' : 'false' }},
-        toggle() {
-            this.isRegister = !this.isRegister;
-        }
-    }" class="min-h-screen w-full flex items-center justify-center bg-[#0d1526] p-4 relative overflow-hidden font-sans">
+        toggle() { this.isRegister = !this.isRegister; }
+    }" class="min-h-screen w-full flex items-center justify-center bg-[#050b14] p-4 relative overflow-hidden font-sans">
 
-            <!-- Background Decor -->
+            <!-- Ambient Background Glows -->
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
-                    class="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] bg-indigo-900/20 rounded-full blur-[100px]">
+                    class="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-indigo-900/10 rounded-full blur-[120px]">
                 </div>
-                <div class="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-blue-900/10 rounded-full blur-[100px]">
+                <div class="absolute top-[30%] -right-[20%] w-[60vw] h-[60vw] bg-blue-900/10 rounded-full blur-[120px]">
                 </div>
             </div>
 
             <!-- Main Card -->
-            <div class="relative w-full shadow-2xl overflow-hidden flex bg-slate-900/90 backdrop-blur-2xl border border-white/5"
-                style="height: 700px; max-width: 1200px; border-radius: 30px; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.6);">
+            <div class="relative w-full overflow-hidden flex bg-[#0B1120]"
+                style="height: 700px; max-width: 1200px; border-radius: 40px; box-shadow: 0 0 80px -20px rgba(67, 56, 202, 0.25), 0 30px 60px -10px rgba(0,0,0,0.8);">
 
-                <!-- Login Form Container (Visible on Left) -->
+                <!-- Login Form Container -->
                 <div class="absolute top-0 left-0 h-full flex flex-col justify-center p-8 md:p-16 form-container"
                     style="width: 50%;" :class="!isRegister ? 'active z-10' : 'z-0 transform -translate-x-10'">
 
                     <div class="w-full max-w-sm mx-auto space-y-8">
                         <div class="text-left">
-                            <x-application-logo class="h-10 w-auto fill-current text-indigo-500 mb-6" />
-                            <h1 class="text-3xl font-bold text-white tracking-tight">Selamat Datang</h1>
+                            <x-application-logo
+                                class="h-10 w-auto fill-current text-indigo-500 mb-6 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                            <h1 class="text-4xl font-bold text-white tracking-tight">Selamat Datang</h1>
                             <p class="text-slate-400 mt-2 text-sm">Masuk untuk mengakses dashboard finansial Anda.</p>
                         </div>
 
@@ -97,104 +111,107 @@
 
                         <form method="POST" action="{{ route('login') }}" class="space-y-6">
                             @csrf
-                            <div class="space-y-1.5">
+                            <div class="space-y-2">
                                 <label
-                                    class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Email</label>
-                                <input
-                                    class="custom-input block w-full px-5 py-4 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                    type="email" name="email" :value="old('email')" required autofocus
-                                    placeholder="nama@email.com" />
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
+                                <input class="custom-input block w-full px-5 py-4 rounded-xl" type="email" name="email"
+                                    :value="old('email')" required autofocus placeholder="nama@email.com" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                             </div>
 
-                            <div class="space-y-1.5">
+                            <div class="space-y-2">
                                 <label
-                                    class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Password</label>
-                                <input
-                                    class="custom-input block w-full px-5 py-4 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                    type="password" name="password" required placeholder="••••••••" />
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
+                                <input class="custom-input block w-full px-5 py-4 rounded-xl" type="password"
+                                    name="password" required placeholder="••••••••" />
                                 <x-input-error :messages="$errors->get('password')" class="mt-1" />
                             </div>
 
                             <div class="flex items-center justify-between">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox"
-                                        class="rounded bg-slate-800 border-slate-700 text-indigo-500 shadow-sm focus:ring-indigo-500"
-                                        name="remember">
-                                    <span class="ms-2 text-sm text-slate-400">Ingat Saya</span>
+                                <label class="inline-flex items-center cursor-pointer group">
+                                    <div class="relative flex items-center">
+                                        <input type="checkbox" class="peer sr-only" name="remember">
+                                        <div
+                                            class="w-5 h-5 border-2 border-slate-700 rounded-md peer-checked:bg-indigo-600 peer-checked:border-indigo-600 transition-all">
+                                        </div>
+                                        <svg class="absolute w-3 h-3 text-white left-1 top-1 opacity-0 peer-checked:opacity-100 pointer-events-none"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        class="ms-2 text-sm text-slate-400 group-hover:text-slate-300 transition-colors">Ingat
+                                        Saya</span>
                                 </label>
                                 @if (Route::has('password.request'))
-                                    <a class="text-sm text-indigo-400 hover:text-indigo-300 font-bold"
+                                    <a class="text-sm text-indigo-400 hover:text-indigo-300 font-bold transition-colors"
                                         href="{{ route('password.request') }}">Lupa Password?</a>
                                 @endif
                             </div>
 
                             <button type="submit"
-                                class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/30 transition-all transform hover:-translate-y-0.5">
+                                class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5">
                                 Masuk Sekarang
                             </button>
                         </form>
 
-                        <div class="text-center pt-2">
+                        <div class="text-center pt-4">
                             <p class="text-sm text-slate-500">
                                 Belum punya akun?
-                                <button @click="toggle" class="text-indigo-400 font-bold hover:underline">Daftar
+                                <button @click="toggle"
+                                    class="text-indigo-400 font-bold hover:underline hover:text-indigo-300 transition-colors">Daftar
                                     Gratis</button>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Register Form Container (Visible on Right) -->
+                <!-- Register Form Container -->
                 <div class="absolute top-0 h-full flex flex-col justify-center p-8 md:p-16 form-container"
                     style="width: 50%; right: 0; left: auto;"
                     :class="isRegister ? 'active z-10' : 'z-0 transform translate-x-10'">
 
                     <div class="w-full max-w-sm mx-auto space-y-6">
                         <div class="text-left">
-                            <x-application-logo class="h-10 w-auto fill-current text-indigo-500 mb-6" />
+                            <x-application-logo
+                                class="h-10 w-auto fill-current text-indigo-500 mb-6 drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
                             <h1 class="text-3xl font-bold text-white tracking-tight">Buat Akun Baru</h1>
                             <p class="text-slate-400 mt-2 text-sm">Bergabunglah dan mulai belajar hari ini.</p>
                         </div>
 
-                        <form method="POST" action="{{ route('register') }}" class="space-y-5">
+                        <form method="POST" action="{{ route('register') }}" class="space-y-4">
                             @csrf
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Nama
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Nama
                                     Lengkap</label>
-                                <input
-                                    class="custom-input block w-full px-5 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                    type="text" name="name" :value="old('name')" required placeholder="Nama Anda" />
+                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="text" name="name"
+                                    :value="old('name')" required placeholder="Nama Anda" />
                             </div>
 
-                            <div class="space-y-1">
+                            <div class="space-y-1.5">
                                 <label
-                                    class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Email</label>
-                                <input
-                                    class="custom-input block w-full px-5 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                    type="email" name="email" :value="old('email')" required
-                                    placeholder="nama@email.com" />
+                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
+                                <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="email"
+                                    name="email" :value="old('email')" required placeholder="nama@email.com" />
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="space-y-1">
+                                <div class="space-y-1.5">
                                     <label
-                                        class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Password</label>
-                                    <input
-                                        class="custom-input block w-full px-5 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                        type="password" name="password" required />
+                                        class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
+                                    <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
+                                        name="password" required />
                                 </div>
-                                <div class="space-y-1">
+                                <div class="space-y-1.5">
                                     <label
-                                        class="text-xs font-bold text-slate-300 uppercase tracking-wider ml-1">Konfirmasi</label>
-                                    <input
-                                        class="custom-input block w-full px-5 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-600 focus:outline-none transition-all"
-                                        type="password" name="password_confirmation" required />
+                                        class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Konfirmasi</label>
+                                    <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
+                                        name="password_confirmation" required />
                                 </div>
                             </div>
 
                             <button type="submit"
-                                class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/30 transition-all transform hover:-translate-y-0.5 mt-2">
+                                class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-indigo-600/50 transition-all transform hover:-translate-y-0.5 mt-2">
                                 Daftar Sekarang
                             </button>
                         </form>
@@ -202,37 +219,58 @@
                         <div class="text-center pt-2">
                             <p class="text-sm text-slate-500">
                                 Sudah punya akun?
-                                <button @click="toggle" class="text-indigo-400 font-bold hover:underline">Masuk
+                                <button @click="toggle"
+                                    class="text-indigo-400 font-bold hover:underline hover:text-indigo-300 transition-colors">Masuk
                                     Saja</button>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Slider Overlay - Absolute Positioning -->
-                <div class="auth-slider absolute top-0 h-full bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-800 transition-all duration-700 ease-in-out z-20 items-center justify-center overflow-hidden shadow-2xl"
-                    style="width: 50%;"
-                    :style="isRegister ? 'left: 0; border-top-right-radius: 30px; border-bottom-right-radius: 30px;' : 'left: 50%; border-top-left-radius: 30px; border-bottom-left-radius: 30px;'">
+                <!-- Slider Overlay - NEW GRADIENT & SHADOW -->
+                <div class="auth-slider absolute top-0 h-full transition-all duration-[800ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
+                    style="width: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5); background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);"
+                    :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px;' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px;'">
+
+                    <!-- Noise & Shapes -->
+                    <div class="absolute inset-0 pointer-events-none">
+                        <div
+                            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 mix-blend-overlay">
+                        </div>
+                        <!-- Vivid Blobs -->
+                        <div
+                            class="absolute top-[-50px] left-[-50px] w-64 h-64 bg-indigo-500 rounded-full blur-[80px] opacity-40 animate-pulse">
+                        </div>
+                        <div
+                            class="absolute bottom-[-50px] right-[-50px] w-64 h-64 bg-blue-500 rounded-full blur-[80px] opacity-40">
+                        </div>
+                    </div>
 
                     <div class="relative z-10 text-center p-12 text-white max-w-md">
                         <div
-                            class="mb-8 transform transition-transform duration-500 hover:scale-110 drop-shadow-2xl flex justify-center">
-                            <x-application-logo class="h-32 w-auto fill-current text-white" />
+                            class="mb-10 transform transition-transform duration-500 hover:scale-105 drop-shadow-2xl flex justify-center">
+                            <x-application-logo
+                                class="h-40 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
                         </div>
-                        <h2 class="text-3xl font-extrabold mb-4">Paul Quiz</h2>
-                        <p class="text-lg text-indigo-100 mb-8 opacity-90">Platform edukasi finansial terdepan untuk
-                            masa
-                            depan Anda.</p>
+                        <h2 class="text-4xl font-extrabold mb-4 tracking-tight drop-shadow-lg">Paul Quiz</h2>
+                        <p class="text-lg text-indigo-100/90 mb-10 leading-relaxed font-light drop-shadow-md">
+                            Platform edukasi finansial terdepan untuk masa depan Anda.
+                        </p>
 
                         <button @click="toggle"
-                            class="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/30 backdrop-blur-md rounded-full font-bold transition-all">
+                            class="px-8 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md rounded-full font-bold transition-all shadow-lg hover:shadow-white/20 hover:-translate-y-1">
                             <span x-text="isRegister ? 'Sudah Punya Akun?' : 'Belum Punya Akun?'"></span>
                         </button>
+
+                        <div class="mt-8 flex justify-center space-x-2 opacity-50">
+                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                        </div>
                     </div>
                 </div>
 
             </div>
-        </div>
     </body>
 
 </html>
