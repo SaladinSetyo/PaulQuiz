@@ -13,6 +13,8 @@ class LogLastActivity
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+    public function handle(Request $request, Closure $next): Response
+    {
         if (\Illuminate\Support\Facades\Auth::check()) {
             $user = \Illuminate\Support\Facades\Auth::user();
             // Update only if last_seen_at is null or older than 2 minutes to reduce DB writes
@@ -21,4 +23,5 @@ class LogLastActivity
             }
         }
         return $next($request);
+    }
 }
