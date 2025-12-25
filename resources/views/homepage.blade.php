@@ -86,7 +86,9 @@
                         </a>
                     </div>
                     <div class="hidden sm:flex items-center space-x-8">
-                        <a href="{{ route('games.trader') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Game Zone</a>
+                        <a href="{{ route('games.trader') }}"
+                            class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Game
+                            Zone</a>
                         @if (Route::has('login'))
                             @auth
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -120,7 +122,7 @@
 
                                                 <x-dropdown-link :href="route('logout')"
                                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                            this.closest('form').submit();">
+                                                                                                                                                                                                                                                    this.closest('form').submit();">
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                             </form>
@@ -375,49 +377,76 @@
 
             <!-- NEW GAME PROMO SECTION -->
             <section class="py-20 relative overflow-hidden">
-                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                     <div class="relative rounded-[2.5rem] overflow-hidden bg-slate-900 shadow-2xl border border-slate-700">
-                         <!-- Details Background -->
-                         <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-                         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none"></div>
-                         
-                         <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-10 sm:p-16">
-                             <div>
-                                 <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-widest mb-6">New Feature</span>
-                                 <h2 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Can You Beat the <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Market?</span></h2>
-                                 <p class="text-lg text-slate-400 mb-8 leading-relaxed">
-                                     Uji insting trading Anda tanpa risiko! Mainkan <strong>Crypto Trader Panic</strong>, game simulasi pasar yang cepat dan mendebarkan. Bisakah Anda mengubah $1000 menjadi profit dalam 60 detik?
-                                 </p>
-                                 <div class="flex flex-wrap gap-4">
-                                     <a href="{{ route('games.trader') }}" class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-extrabold rounded-xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] flex items-center gap-2">
-                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                         MAIN SEKARANG
-                                     </a>
-                                 </div>
-                             </div>
-                             
-                             <!-- Visual Representation -->
-                             <div class="relative group">
-                                 <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/30 to-cyan-500/30 blur-2xl transform group-hover:scale-105 transition-transform duration-700"></div>
-                                 <div class="relative bg-slate-800 border border-slate-600 rounded-2xl p-4 shadow-2xl transform rotate-2 group-hover:rotate-0 transition-all duration-500">
-                                     <!-- Mock Chart -->
-                                     <div class="h-64 rounded-xl bg-slate-900 border border-slate-700 overflow-hidden relative">
-                                          <!-- Grid -->
-                                          <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;"></div>
-                                          <!-- Line -->
-                                          <svg class="absolute inset-0 w-full h-full" overflow="visible">
-                                              <path d="M0,200 Q50,150 100,180 T200,100 T300,140 T400,50" fill="none" stroke="#34d399" stroke-width="4" stroke-linecap="round" class="drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-                                          </svg>
-                                          <!-- Badge -->
-                                          <div class="absolute top-4 right-4 bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg text-xs font-bold border border-emerald-500/30 animate-pulse">
-                                              LIVE +154%
-                                          </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div
+                        class="relative rounded-[2.5rem] overflow-hidden bg-slate-900 shadow-2xl transition-shadow duration-500 hover:shadow-emerald-500/10">
+                        <!-- Details Background -->
+                        <div
+                            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20">
+                        </div>
+                        <div
+                            class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none">
+                        </div>
+
+                        <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-10 sm:p-16">
+                            <div>
+                                <span
+                                    class="inline-block py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6">New
+                                    Feature</span>
+                                <h2 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">Can You Beat
+                                    the <br><span
+                                        class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Market?</span>
+                                </h2>
+                                <p class="text-lg text-slate-400 mb-8 leading-relaxed">
+                                    Uji insting trading Anda tanpa risiko! Mainkan <strong>Crypto Trader Panic</strong>,
+                                    game simulasi pasar yang cepat dan mendebarkan. Bisakah Anda mengubah $1000 menjadi
+                                    profit dalam 60 detik?
+                                </p>
+                                <div class="flex flex-wrap gap-4">
+                                    <a href="{{ route('games.trader') }}"
+                                        class="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-extrabold rounded-xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] flex items-center gap-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        MAIN SEKARANG
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Visual Representation -->
+                            <div class="relative group">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-tr from-emerald-500/30 to-cyan-500/30 blur-2xl transform group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <div
+                                    class="relative bg-white/5 backdrop-blur-sm rounded-2xl p-4 shadow-2xl transform rotate-2 group-hover:rotate-0 transition-all duration-500 ring-1 ring-white/10">
+                                    <!-- Mock Chart -->
+                                    <div class="h-64 rounded-xl bg-slate-900/50 overflow-hidden relative">
+                                        <!-- Grid -->
+                                        <div class="absolute inset-0 opacity-20"
+                                            style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;">
+                                        </div>
+                                        <!-- Line -->
+                                        <svg class="absolute inset-0 w-full h-full" overflow="visible">
+                                            <path d="M0,200 Q50,150 100,180 T200,100 T300,140 T400,50" fill="none"
+                                                stroke="#34d399" stroke-width="4" stroke-linecap="round"
+                                                class="drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                                        </svg>
+                                        <!-- Badge -->
+                                        <div
+                                            class="absolute top-4 right-4 bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg text-xs font-bold animate-pulse">
+                                            LIVE +154%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- About / Features Cards -->
