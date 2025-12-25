@@ -34,34 +34,16 @@ class ContentSeeder extends Seeder
             // Videos
             $videos = [
                 [
-                    'title' => 'Apa itu Fintech? (Contoh)',
-                    'media_url' => 'https://www.youtube.com/watch?v=LXb3EKWsInQ', // Kurzgesagt - Time (Working ID)
+                    'title' => 'Apa itu Fintech?',
+                    'media_url' => 'https://www.youtube.com/watch?v=a81bXkES-gg',
                 ],
                 [
-                    'title' => 'Tips Mengelola Keuangan (Contoh)',
-                    'media_url' => 'https://www.youtube.com/watch?v=prYd15J2wM0', // Previous ID (Keep one to test) - Changed to a known one: https://www.youtube.com/watch?v=3iM_06QeZD8 (Lofi)
+                    'title' => 'Perkembangan Fintech di Indonesia',
+                    'media_url' => 'https://www.youtube.com/watch?v=t2DBd2FfHCI',
                 ],
                 [
-                    'title' => 'Investasi untuk Pemula (Contoh)',
-                    'media_url' => 'https://www.youtube.com/watch?v=S7wWvF2j9iQ', // Previous ID - Changed to https://www.youtube.com/watch?v=tgbNymZ7vqY (Muppets - safe test)
-                ],
-            ];
-
-            // Re-defining for safety with known safe videos
-            $videos = [
-                [
-                    'title' => 'Mengenal Fintech (Placeholder)',
-                    'media_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Rick Roll (Classic working video for test - user will change it) -> Maybe too risky?
-                    // Let's use Laravel Documentary: https://www.youtube.com/watch?v=Z3g8jF3g3aY
-                    'media_url' => 'https://www.youtube.com/watch?v=Z3g8jF3g3aY',
-                ],
-                [
-                    'title' => 'Tips Finansial (Placeholder)',
-                    'media_url' => 'https://www.youtube.com/watch?v=H74YdcaeJ_o', // Prita Ghozie (Real Fintech Video)
-                ],
-                [
-                    'title' => 'Investasi Saham (Placeholder)',
-                    'media_url' => 'https://www.youtube.com/watch?v=5Vl3G_w3gOQ', // Felicia Putri (Real Fintech Video)
+                    'title' => 'Jenis-Jenis Fintech',
+                    'media_url' => 'https://www.youtube.com/watch?v=G9qUhcBcRgY',
                 ],
             ];
 
@@ -79,19 +61,19 @@ class ContentSeeder extends Seeder
             // Infographics
             $infographics = [
                 [
-                    'title' => 'Cara Kerja P2P Lending',
-                    'media_url' => 'https://img.freepik.com/free-vector/infographic-template-with-steps_23-2147851609.jpg', // Placeholder
-                    'description' => 'Memahami alur pinjaman online yang aman dan legal.',
+                    'title' => 'Perkembangan Fintech Lending',
+                    'media_url' => 'https://img.alinea.id/img/library/library-2020-03/images/bisnis/Perkembangan%20Fintech%20Lending%20Indonesia-01.jpg',
+                    'description' => 'Data perkembangan pinjaman online di Indonesia.',
                 ],
                 [
-                    'title' => 'Tips Hemat Ala Milenial',
-                    'media_url' => 'https://img.freepik.com/free-vector/business-infographic-template-with-four-steps_23-2148729962.jpg', // Placeholder
-                    'description' => 'Strategi menabung untuk masa depan yang lebih cerah.',
+                    'title' => 'IPO Fintech',
+                    'media_url' => 'https://img.alinea.id/img/library/library-2021-03/images/bisnis/IGR_IPO%20Fintech-01.jpg',
+                    'description' => 'Infografis mengenai penawaran saham perdana perusahaan Fintech.',
                 ],
                 [
-                    'title' => 'Instrumen Investasi',
-                    'media_url' => 'https://img.freepik.com/free-vector/modern-business-infographic-template_23-2148466185.jpg', // Placeholder
-                    'description' => 'Mengenal jenis-jenis investasi risiko rendah hingga tinggi.',
+                    'title' => 'Mengenal Fintech',
+                    'media_url' => 'https://cdn.antaranews.com/cache/infografis/1140x2100/2018/10/201810242018-10-24-Fintech.jpg?quality=85',
+                    'description' => 'Penjelasan visual mengenai apa itu Fintech.',
                 ],
             ];
 
