@@ -85,7 +85,8 @@
                 <div x-show="!gameActive && !gameOver"
                     class="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm transition-opacity">
                     <button @click="startGame()"
-                        class="px-12 py-5 bg-emerald-600 hover:bg-emerald-500 rounded-full font-black text-2xl shadow-lg shadow-emerald-500/30 hover:scale-105 hover:shadow-emerald-500/50 transition-all transform flex items-center gap-3 border-2 border-emerald-400">
+                        style="background-color: #10b981; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);"
+                        class="px-12 py-5 rounded-full font-black text-2xl text-white hover:scale-105 transition-all transform flex items-center gap-3 border-2 border-emerald-400/50">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
@@ -175,8 +176,8 @@
 
     <!-- Game Logic -->
     <script>
-        function traderGame() {
-            return {
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('traderGame', () => ({
                 wallet: 1000,
                 shares: 0,
                 price: 100,
@@ -192,6 +193,8 @@
 
                 initGame() {
                     this.canvas = document.getElementById('tradeChart');
+                    if (!this.canvas) return;
+
                     // Resize canvas for high DPI
                     const dpr = window.devicePixelRatio || 1;
                     const rect = this.canvas.getBoundingClientRect();
@@ -214,6 +217,11 @@
                 startGame() {
                     this.resetState();
                     this.gameActive = true;
+                    this.gameOver = false;
+
+                    // Clear any existing intervals just in case
+                    if (this.marketInterval) clearInterval(this.marketInterval);
+                    if (this.timerInterval) clearInterval(this.timerInterval);
 
                     // Market Loop (Updates 10 times per second for smoothness)
                     this.marketInterval = setInterval(() => {
@@ -235,11 +243,14 @@
                     this.price = 100;
                     this.history = new Array(100).fill(100);
                     this.timeLeft = 60;
-                    this.gameOver = false;
                 },
 
                 resetGame() {
                     this.resetState();
+                    this.gameActive = false;
+                    this.gameOver = false;
+                    if (this.marketInterval) clearInterval(this.marketInterval);
+                    if (this.timerInterval) clearInterval(this.timerInterval);
                     this.drawMarket();
                 },
 
@@ -248,22 +259,24 @@
                     this.gameOver = true;
                     clearInterval(this.timerInterval);
                     clearInterval(this.marketInterval);
-                    // Force final sell to consolidate net worth (optional, currently we just calc net worth)
+
+                    // Force final sell to consolidate net worth into cash? 
+                    // No, usually net worth is (cash + assets). We display net worth.
                 },
 
                 updateMarket() {
                     // Random Walk Logic
-                    const volatility = 2.5; // Adjusted for fun
+                    const volatility = 2.5;
                     const change = (Math.random() - 0.5) * volatility;
 
                     this.price += change;
-                    if (this.price < 1) this.price = 1; // Prevent negative
+                    if (this.price < 1) this.price = 1;
 
                     this.lastCandle = change >= 0 ? 'up' : 'down';
 
                     // Update History
                     this.history.push(this.price);
-                    if (this.history.length > 200) this.history.shift(); // Keep graph moving
+                    if (this.history.length > 200) this.history.shift();
 
                     this.drawMarket();
                 },
@@ -287,8 +300,12 @@
                 drawMarket() {
                     if (!this.ctx) return;
                     const ctx = this.ctx;
-                    const width = this.canvas.width / window.devicePixelRatio;
-                    const height = this.canvas.height / window.devicePixelRatio;
+                    const width = this.canvas.width / getInputDevicePixelRatio();
+                    const height = this.canvas.height / getInputDevicePixelRatio();
+
+                    function getInputDevicePixelRatio() {
+                        return window.devicePixelRatio || 1;
+                    }
 
                     // Clear
                     ctx.clearRect(0, 0, width, height);
@@ -341,8 +358,8 @@
                     ctx.stroke();
                     ctx.shadowBlur = 0; // Reset
                 }
-            }
-        }
+            }));
+        });
     </script>
 </body>
 
