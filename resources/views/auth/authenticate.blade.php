@@ -109,9 +109,9 @@
                         <!-- Session Status -->
                         <x-auth-session-status class="mb-2" :status="session('status')" />
 
-                        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+                        <form method="POST" action="{{ route('login') }}" class="space-y-3">
                             @csrf
-                            <div class="space-y-1.5">
+                            <div class="space-y-1">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
                                 <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="email"
@@ -120,7 +120,7 @@
                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                             </div>
 
-                            <div class="space-y-1.5">
+                            <div class="space-y-1">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
                                 <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="password"
@@ -228,8 +228,8 @@
                     </div>
                 </div>
 
-                <!-- Slider Overlay - SLOW ANIMATION & HUGE LOGO -->
-                <div class="auth-slider absolute top-0 h-full transition-all duration-[1500ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
+                <!-- Slider Overlay - SLOW ANIMATION & HUGE LOGO & NO DOTS -->
+                <div class="auth-slider absolute top-0 h-full transition-all duration-[2000ms] ease-[cubic-bezier(0.85,0,0.15,1)] z-20 items-center justify-center overflow-hidden"
                     style="width: 50%; box-shadow: 0 0 50px rgba(0,0,0,0.5); background: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%);"
                     :style="isRegister ? 'left: 0; mask-image: linear-gradient(to right, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 95%, transparent 100%); border-top-right-radius: 40px; border-bottom-right-radius: 40px;' : 'left: 50%; mask-image: linear-gradient(to left, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to left, black 95%, transparent 100%); border-top-left-radius: 40px; border-bottom-left-radius: 40px;'">
 
@@ -251,7 +251,7 @@
                         <div
                             class="mb-6 transform transition-transform duration-500 hover:scale-105 drop-shadow-2xl flex justify-center">
                             <x-application-logo
-                                class="h-64 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
+                                class="h-80 w-auto fill-current text-white filter drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]" />
                         </div>
                         <h2 class="text-4xl font-extrabold mb-2 tracking-tight drop-shadow-lg">Paul Quiz</h2>
                         <p class="text-lg text-indigo-100/90 mb-8 leading-relaxed font-light drop-shadow-md">
@@ -263,11 +263,7 @@
                             <span x-text="isRegister ? 'Sudah Punya Akun?' : 'Belum Punya Akun?'"></span>
                         </button>
 
-                        <div class="mt-8 flex justify-center space-x-2 opacity-50">
-                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
-                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
-                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
-                        </div>
+                        <!-- Dots Removed -->
                     </div>
                 </div>
 
