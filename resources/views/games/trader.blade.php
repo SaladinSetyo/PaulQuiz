@@ -43,8 +43,7 @@
         <!-- Header Status -->
         <div class="w-full max-w-5xl flex justify-between items-end mb-6 z-10">
             <div>
-                <h1
-                    class="text-4xl font-extrabold tracking-tight mb-1 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 neon-text-glow">
+                <h1 class="text-4xl font-extrabold tracking-tight mb-1 text-emerald-400 neon-text-glow">
                     CRYPTO TRADER PANIC</h1>
                 <p class="text-slate-400 font-medium">Buy Low. Sell High. Don't Panic.</p>
             </div>
@@ -83,7 +82,7 @@
 
                 <!-- Timer Overlay (if game not started) -->
                 <div x-show="!gameActive && !gameOver"
-                    class="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm transition-opacity">
+                    class="absolute inset-0 z-50 flex items-center justify-center bg-slate-900 transition-opacity">
                     <button @click="startGame()"
                         style="background-color: #10b981; box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);"
                         class="px-12 py-5 rounded-full font-black text-2xl text-white hover:scale-105 transition-all transform flex items-center gap-3 border-2 border-emerald-400/50">
