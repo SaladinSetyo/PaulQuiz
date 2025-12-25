@@ -14,20 +14,24 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        $modules = Module::all();
-        $solvedModuleIds = [];
+        try {
+            $modules = Module::all();
+            $solvedModuleIds = [];
 
-        if (Auth::check()) {
-            $userId = Auth::id();
-            // Get IDs of modules where the user has at least one quiz with a 100% score
-            $solvedModuleIds = Module::whereHas('quizzes', function ($query) use ($userId) {
-                $query->whereHas('attempts', function ($q) use ($userId) {
-                    $q->where('user_id', $userId)->where('score', 100);
-                });
-            })->pluck('id')->toArray();
+            if (Auth::check()) {
+                $userId = Auth::id();
+                // Get IDs of modules where the user has at least one quiz with a 100% score
+                $solvedModuleIds = Module::whereHas('quizzes', function ($query) use ($userId) {
+                    $query->whereHas('attempts', function ($q) use ($userId) {
+                        $q->where('user_id', $userId)->where('score', 100);
+                    });
+                })->pluck('id')->toArray();
+            }
+
+            return view('modules.index', compact('modules', 'solvedModuleIds'));
+        } catch (\Exception $e) {
+            die("DEBUG ERROR: " . $e->getMessage());
         }
-
-        return view('modules.index', compact('modules', 'solvedModuleIds'));
     }
 
     /**
