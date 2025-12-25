@@ -28,9 +28,9 @@ class ModuleController extends Controller
                 })->pluck('id')->toArray();
             }
 
-            return view('modules.index', compact('modules', 'solvedModuleIds'));
+            return view('modules.index', compact('modules', 'solvedModuleIds'))->render();
         } catch (\Exception $e) {
-            die("DEBUG ERROR: " . $e->getMessage());
+            die("DEBUG ERROR (View/Controller): " . $e->getMessage() . " <br> FILE: " . $e->getFile() . " <br> LINE: " . $e->getLine());
         }
     }
 
