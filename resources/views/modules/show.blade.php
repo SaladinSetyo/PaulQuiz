@@ -116,9 +116,8 @@
                                             modul ini dengan nilai sempurna.</p>
                                     </div>
                                 @else
-                                    <h4 class="text-2xl font-bold mb-2">Sudah Paham Materinya?</h4>
-                                    <p class="text-gray-600 dark:text-gray-400 mb-8">Uji pemahaman Anda sekarang dan dapatkan
-                                        poin!</p>
+                                    <h4 class="text-2xl font-bold mb-2"></h4>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-8"></p>
                                 @endif
 
                                 <div class="flex flex-wrap justify-center gap-4">
@@ -129,6 +128,12 @@
                                                     class="mb-8 text-base text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed text-center">
                                                     {!! nl2br(e($quiz->description)) !!}
                                                 </div>
+                                            @endif
+
+                                            @if(!(Auth::check() && $isSolved))
+                                                <h4 class="text-2xl font-bold mb-2">Sudah Paham Materinya?</h4>
+                                                <p class="text-gray-600 dark:text-gray-400 mb-6">Uji pemahaman Anda sekarang dan
+                                                    dapatkan poin!</p>
                                             @endif
 
                                             <a href="{{ route('quizzes.show', $quiz) }}"
