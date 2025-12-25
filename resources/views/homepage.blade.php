@@ -122,7 +122,7 @@
 
                                                 <x-dropdown-link :href="route('logout')"
                                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                                    this.closest('form').submit();">
+                                                                                                                                                                                                                                                            this.closest('form').submit();">
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                             </form>
@@ -376,16 +376,18 @@
             @endauth
 
             <!-- NEW GAME PROMO SECTION -->
-            <section class="py-20 relative overflow-hidden">
+            <section class="py-20 relative">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div
-                        class="relative rounded-[2.5rem] overflow-hidden bg-slate-900 shadow-2xl transition-shadow duration-500 hover:shadow-emerald-500/10">
-                        <!-- Details Background -->
-                        <div
-                            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20">
-                        </div>
-                        <div
-                            class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none">
+                        class="relative rounded-[2.5rem] bg-slate-900 shadow-2xl transition-shadow duration-500 hover:shadow-emerald-500/10 group">
+                        <!-- Background Elements (Contained) -->
+                        <div class="absolute inset-0 rounded-[2.5rem] overflow-hidden">
+                            <div
+                                class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20">
+                            </div>
+                            <div
+                                class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none">
+                            </div>
                         </div>
 
                         <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center p-10 sm:p-16">
