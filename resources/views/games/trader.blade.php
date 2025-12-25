@@ -28,19 +28,21 @@
 <body
     class="font-sans antialiased bg-slate-900 text-white selection:bg-emerald-500 selection:text-white overflow-hidden">
 
-    <!-- Game Container -->
+    <!-- Game Container (Full Screen) -->
     <div x-data="binaryGame()" x-init="document.addEventListener('alpine:init', () => initGame())" x-cloak
         class="relative min-h-screen flex flex-col items-center justify-center p-4">
 
-        <!-- Back Button -->
-        <a href="{{ route('homepage') }}"
-            class="absolute top-6 left-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors z-50">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
-                </path>
-            </svg>
-            <span class="font-bold tracking-wider">EXIT GAME</span>
-        </a>
+        <!-- Back Button (Static Flow) -->
+        <div class="w-full max-w-5xl mb-6 z-50">
+            <a href="{{ route('homepage') }}"
+                class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700/50 hover:bg-slate-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                    </path>
+                </svg>
+                <span class="font-bold tracking-wider text-sm">EXIT GAME</span>
+            </a>
+        </div>
 
         <!-- Header -->
         <div class="w-full max-w-5xl flex justify-between items-end mb-6 z-10">
