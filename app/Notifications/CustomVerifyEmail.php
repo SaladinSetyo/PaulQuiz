@@ -42,7 +42,8 @@ class CustomVerifyEmail extends Notification
             ->line('Terima kasih telah mendaftar di PaulQuiz / Fintech Edu.')
             ->line('Mohon klik tombol di bawah ini untuk memverifikasi alamat email Anda.')
             ->action('Verifikasi Email', $verificationUrl)
-            ->line('Jika Anda tidak merasa mendaftar akun, abaikan email ini.');
+            ->line('Jika Anda tidak merasa mendaftar akun, abaikan email ini.')
+            ->salutation('Salam, Tim PaulQuiz');
     }
 
     /**

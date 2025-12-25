@@ -48,7 +48,8 @@ class CustomResetPassword extends Notification
                 'email' => $notifiable->getEmailForPasswordReset(),
             ], false)))
             ->line('Link reset password ini akan kadaluarsa dalam 60 menit.')
-            ->line('Jika Anda tidak meminta reset password, tidak ada tindakan lebih lanjut yang diperlukan.');
+            ->line('Jika Anda tidak meminta reset password, tidak ada tindakan lebih lanjut yang diperlukan.')
+            ->salutation('Salam, Tim PaulQuiz');
     }
 
     /**
