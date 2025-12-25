@@ -131,7 +131,7 @@
         <!-- Main Content -->
         <main class="flex-grow">
             <!-- Hero Section -->
-            <section class="relative pt-32 pb-24 overflow-hidden bg-slate-50 dark:bg-dark-900">
+            <section class="relative pt-24 pb-12 md:pt-32 md:pb-24 overflow-hidden bg-slate-50 dark:bg-dark-900">
                 <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div
                         class="absolute -top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-primary-500/10 blur-[100px]">
@@ -146,7 +146,7 @@
                         class="inline-block py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-sm font-semibold mb-6">Masa
                         Depan Finansial</span>
                     <h1
-                        class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
+                        class="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
                         Platform Inovatif untuk <br>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-500">Literasi
