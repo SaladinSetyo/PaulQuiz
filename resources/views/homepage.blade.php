@@ -277,10 +277,10 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center -space-x-4 overflow-x-auto py-2 px-4 scrollbar-hide">
+                            <div class="flex items-center -space-x-4 overflow-x-auto py-6 px-4 [&::-webkit-scrollbar]:hidden" style="scrollbar-width: none; -ms-overflow-style: none;">
                                 @foreach($onlineUsers as $user)
                                     <div class="relative group/avatar" title="{{ $user->name }}">
-                                        <div class="w-12 h-12 rounded-full border-2 border-white dark:border-dark-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm font-bold text-gray-600 dark:text-gray-300 shadow-md group-hover/avatar:scale-110 group-hover/avatar:shadow-[0_0_20px_rgba(16,185,129,0.6)] group-hover/avatar:border-emerald-400 transition-all duration-300 cursor-help overflow-hidden relative z-10">
+                                        <div class="w-12 h-12 rounded-full border-2 border-white dark:border-dark-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-sm font-bold text-gray-600 dark:text-gray-300 shadow-md transform transition-all duration-300 group-hover/avatar:scale-110 group-hover/avatar:shadow-[0_0_25px_rgba(16,185,129,1)] group-hover/avatar:border-emerald-400 group-hover/avatar:z-20 cursor-help relative z-10">
                                             {{ substr($user->name, 0, 2) }}
                                         </div>
                                         <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-dark-800 rounded-full z-20 group-hover/avatar:shadow-[0_0_10px_rgba(16,185,129,0.8)] transition-shadow"></div>
