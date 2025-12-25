@@ -26,6 +26,9 @@
                     <x-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.index')">
                         {{ __('Leaderboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('games.trader')" :active="request()->routeIs('games.trader')">
+                        {{ __('Game Zone') }}
+                    </x-nav-link>
                     @auth
                         @if(Auth::user()->role === 'admin')
                             <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
@@ -42,84 +45,84 @@
                     <!-- Notification Dropdown -->
                     <div class="relative mr-4" x-data="{
 
-                                                                                                                                        count: 0,
-                                                                                                                                        lastId: null,
-                                                                                                                                        toastVisible: false,
-                                                                                                                                        toastTitle: '',
-                                                                                                                                        toastMessage: '',
-                                                                                                                                        initialized: false,
-                                                                                                                                        init() {
-                                                                                                                                            console.log('Navbar Notification System Starting...');
+                                                                                                                                                count: 0,
+                                                                                                                                                lastId: null,
+                                                                                                                                                toastVisible: false,
+                                                                                                                                                toastTitle: '',
+                                                                                                                                                toastMessage: '',
+                                                                                                                                                initialized: false,
+                                                                                                                                                init() {
+                                                                                                                                                    console.log('Navbar Notification System Starting...');
 
-                                                                                                                                            // 1. Initial Fetch (Baseline)
-                                                                                                                                            fetch('{{ route('notifications.check') }}')
-                                                                                                                                                .then(response => response.json())
-                                                                                                                                                .then(data => {
-                                                                                                                                                    this.count = data.count;
-                                                                                                                                                    if (data.latest) {
-                                                                                                                                                        this.lastId = data.latest.id;
-                                                                                                                                                    } else {
-                                                                                                                                                        this.lastId = 0;
-                                                                                                                                                    }
-                                                                                                                                                    this.initialized = true;
-                                                                                                                                                })
-                                                                                                                                                .catch(err => console.error('Initial notification check failed', err));
+                                                                                                                                                    // 1. Initial Fetch (Baseline)
+                                                                                                                                                    fetch('{{ route('notifications.check') }}')
+                                                                                                                                                        .then(response => response.json())
+                                                                                                                                                        .then(data => {
+                                                                                                                                                            this.count = data.count;
+                                                                                                                                                            if (data.latest) {
+                                                                                                                                                                this.lastId = data.latest.id;
+                                                                                                                                                            } else {
+                                                                                                                                                                this.lastId = 0;
+                                                                                                                                                            }
+                                                                                                                                                            this.initialized = true;
+                                                                                                                                                        })
+                                                                                                                                                        .catch(err => console.error('Initial notification check failed', err));
 
-                                                                                                                                            // 2. Polling
-                                                                                                                                            setInterval(() => {
-                                                                                                                                                if (!this.initialized) return;
+                                                                                                                                                    // 2. Polling
+                                                                                                                                                    setInterval(() => {
+                                                                                                                                                        if (!this.initialized) return;
 
-                                                                                                                                                fetch('{{ route('notifications.check') }}')
-                                                                                                                                                    .then(response => response.json())
-                                                                                                                                                    .then(data => {
-                                                                                                                                    // Update badge count
-                                                                                                                                    this.count = data.count;
+                                                                                                                                                        fetch('{{ route('notifications.check') }}')
+                                                                                                                                                            .then(response => response.json())
+                                                                                                                                                            .then(data => {
+                                                                                                                                            // Update badge count
+                                                                                                                                            this.count = data.count;
 
-                                                                                                                                    // Check for NEW notification (Loose equality for safety)
-                                                                                                                                    if (data.latest && data.latest.id != this.lastId) {
-                                                                                                                                        console.log('New notification found:', data.latest);
-                                                                                                                                        console.log('Previous ID:', this.lastId, 'New ID:', data.latest.id);
+                                                                                                                                            // Check for NEW notification (Loose equality for safety)
+                                                                                                                                            if (data.latest && data.latest.id != this.lastId) {
+                                                                                                                                                console.log('New notification found:', data.latest);
+                                                                                                                                                console.log('Previous ID:', this.lastId, 'New ID:', data.latest.id);
 
-                                                                                                                                        this.lastId = data.latest.id; // Update first to prevent loop
+                                                                                                                                                this.lastId = data.latest.id; // Update first to prevent loop
 
-                                                                                                                                        this.toastTitle = data.latest.title;
-                                                                                                                                        this.toastMessage = data.latest.message;
-                                                                                                                                        this.toastVisible = true;
+                                                                                                                                                this.toastTitle = data.latest.title;
+                                                                                                                                                this.toastMessage = data.latest.message;
+                                                                                                                                                this.toastVisible = true;
 
-                                                                                                                                            // Play Sound (Base64 Beep - Reliable & Fast)
-                                                                                                                                        const beep = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU';
+                                                                                                                                                    // Play Sound (Base64 Beep - Reliable & Fast)
+                                                                                                                                                const beep = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU';
 
-                                                                                                                                        // Actual pleasant notification sound (Base64)
-                                                                                                                                        const notificationSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAbXA0MgBUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzb21tcDQyAFRTU0UAAAAPAAADTGF2ZjU3LjU2LjEwMAAAAAAAAAAAAAAA//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7uQZAAAAAAABAAAAAAAAAAAAkJbzz////////');
+                                                                                                                                                // Actual pleasant notification sound (Base64)
+                                                                                                                                                const notificationSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAbXA0MgBUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzb21tcDQyAFRTU0UAAAAPAAADTGF2ZjU3LjU2LjEwMAAAAAAAAAAAAAAA//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7kGQAAAAAAAACAAAAAAAAAAAAQU1FMy45OS41//uQZAAAAAAAABAAAAAAAAAAAAkJbzz///////7uQZAAAAAAABAAAAAAAAAAAAkJbzz////////');
 
-                                                                                                                                        notificationSound.volume = 1.0;
-                                                                                                                                        // Attempt to play
-                                                                                                                                        const playPromise = notificationSound.play();
-                                                                                                                                        if (playPromise !== undefined) {
-                                                                                                                                            playPromise.catch(error => {
-                                                                                                                                                console.log('Autoplay prevented. User interaction required.');
-                                                                                                                                            });
-                                                                                                                                        }
+                                                                                                                                                notificationSound.volume = 1.0;
+                                                                                                                                                // Attempt to play
+                                                                                                                                                const playPromise = notificationSound.play();
+                                                                                                                                                if (playPromise !== undefined) {
+                                                                                                                                                    playPromise.catch(error => {
+                                                                                                                                                        console.log('Autoplay prevented. User interaction required.');
+                                                                                                                                                    });
+                                                                                                                                                }
 
-                                                                                                                                        // Auto-hide
-                                                                                                                                        setTimeout(() => {
-                                                                                                                                            this.toastVisible = false;
-                                                                                                                                        }, 15000);
+                                                                                                                                                // Auto-hide
+                                                                                                                                                setTimeout(() => {
+                                                                                                                                                    this.toastVisible = false;
+                                                                                                                                                }, 15000);
+                                                                                                                                            }
+                                                                                                                                            })
+                                                                                                                                            .catch(error => console.error('Polling error:', error));
+                                                                                                                                    }, 3000);
+
+                                                                                                                                // Unlock Audio on First Click
+                                                                                                                                document.addEventListener('click', () => {
+                                                                                                                                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                                                                                                                                    if (AudioContext) {
+                                                                                                                                        const ctx = new AudioContext();
+                                                                                                                                        ctx.resume();
                                                                                                                                     }
-                                                                                                                                    })
-                                                                                                                                    .catch(error => console.error('Polling error:', error));
-                                                                                                                            }, 3000);
-
-                                                                                                                        // Unlock Audio on First Click
-                                                                                                                        document.addEventListener('click', () => {
-                                                                                                                            const AudioContext = window.AudioContext || window.webkitAudioContext;
-                                                                                                                            if (AudioContext) {
-                                                                                                                                const ctx = new AudioContext();
-                                                                                                                                ctx.resume();
-                                                                                                                            }
-                                                                                                                        }, { once: true });
-                                                                                                                }
-                                                                                                            }"
+                                                                                                                                }, { once: true });
+                                                                                                                        }
+                                                                                                                    }"
                         x-init="init()">
 
                         <button @click="open = !open"
@@ -189,10 +192,10 @@
                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                             x-transition:leave-end="opacity-0 translate-y-[-2rem] scale-90"
                             style="display: none; 
-                                               background: rgba(255, 255, 255, 0.1); 
-                                               backdrop-filter: blur(20px); 
-                                               border: 1px solid rgba(255, 255, 255, 0.2);
-                                               box-shadow: -8px 8px 24px rgba(16, 185, 129, 0.6), -4px 4px 12px rgba(16, 185, 129, 0.4);"
+                                                       background: rgba(255, 255, 255, 0.1); 
+                                                       backdrop-filter: blur(20px); 
+                                                       border: 1px solid rgba(255, 255, 255, 0.2);
+                                                       box-shadow: -8px 8px 24px rgba(16, 185, 129, 0.6), -4px 4px 12px rgba(16, 185, 129, 0.4);"
                             class="fixed top-24 right-5 z-[99999] max-w-sm w-full rounded-2xl pointer-events-auto font-sans transform hover:scale-[1.02] transition-transform duration-200">
                             <!-- Close Button (Absolute Top-Right) -->
                             <button @click="toastVisible = false"
@@ -265,7 +268,7 @@
 
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
-                                                                                                                                                                                            this.closest('form').submit();">
+                                                                                                                                                                                                    this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
@@ -310,6 +313,9 @@
             <x-responsive-nav-link :href="route('leaderboard.index')" :active="request()->routeIs('leaderboard.index')">
                 {{ __('Leaderboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('games.trader')" :active="request()->routeIs('games.trader')">
+                {{ __('Game Zone') }}
+            </x-responsive-nav-link>
             @auth
                 @if(Auth::user()->role === 'admin')
                     <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
@@ -341,7 +347,7 @@
 
                         <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
-                                                                                                                                                                        this.closest('form').submit();">
+                                                                                                                                                                                this.closest('form').submit();">
                             {{ __('Log Out') }}
                         </x-responsive-nav-link>
                     </form>
