@@ -114,8 +114,8 @@
         class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]">
 
         <!-- COL 1: CHART (Main) -->
-        <!-- COL 1: CHART (Main) -->
-        <div class="flex flex-col min-w-0 min-h-[400px] lg:min-h-0 bg-[#0b0e11] relative border-r border-[#2b3139]">
+        <div
+            class="flex flex-col min-w-0 min-h-[400px] lg:min-h-0 bg-[#0b0e11] relative border-r border-[#2b3139] overflow-hidden">
             <!-- Chart Toolbar -->
             <div
                 class="h-9 border-b border-[#2b3139] flex items-center px-4 gap-4 text-[11px] font-bold text-slate-500 bg-[#0b0e11]">
@@ -265,7 +265,7 @@
 
         <!-- COL 2: ORDER BOOK (Fixed 280px on Desktop) -->
         <div
-            class="flex flex-col border-r border-[#2b3139] bg-[#14161b] min-w-0 h-[300px] lg:h-auto order-3 lg:order-none border-t lg:border-t-0 border-[#2b3139]">
+            class="flex flex-col border-r border-[#2b3139] bg-[#14161b] min-w-0 h-[300px] lg:h-auto order-3 lg:order-none border-t lg:border-t-0 border-[#2b3139] overflow-hidden">
             <div class="h-9 flex items-center px-3 border-b border-[#2b3139] bg-[#181a20]">
                 <span class="text-[11px] font-bold text-white">Order Book</span>
             </div>
@@ -276,7 +276,8 @@
                 <span>Total</span>
             </div>
 
-            <div class="flex-grow overflow-hidden flex flex-col font-mono text-[10px] relative">
+            <div class="flex-1 overflow-y-auto font-mono text-[10px] relative"
+                style="scrollbar-width: thin; scrollbar-color: #2b3139 #14161b;">
                 <!-- Sells -->
                 <div class="flex-1 overflow-hidden flex flex-col-reverse justify-start">
                     <template x-for="ask in asks" :key="ask.id">
