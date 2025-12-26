@@ -446,12 +446,16 @@
 
         <!-- GAME OVER MODAL -->
         <div x-show="showGameOverModal" style="display: none;"
-            class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            class="fixed inset-0 z-[998] flex items-center justify-center"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100">
 
+            <!-- Dark overlay background -->
+            <div class="absolute inset-0 bg-black/98 backdrop-blur-xl"></div>
+
+            <!-- Modal content -->
             <div
-                class="bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md mx-4 transform scale-100 transition-transform">
+                class="relative bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md mx-4 transform scale-100 transition-transform z-10">
                 <div class="text-7xl mb-4">💀</div>
                 <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase tracking-tighter">GAME OVER</h2>
                 <p class="text-slate-400 mb-6">Balance habis! Survival streak kamu berakhir.</p>
@@ -495,14 +499,17 @@
 
         <!-- TUTORIAL MODAL -->
         <div x-show="showTutorial" style="display: none;"
-            class="fixed inset-0 z-[250] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
-            @click.self="showTutorial = false">
+            class="fixed inset-0 z-[999] flex items-center justify-center p-4" @click.self="showTutorial = false">
 
+            <!-- Dark overlay background -->
+            <div class="absolute inset-0 bg-black/98 backdrop-blur-xl"></div>
+
+            <!-- Modal content -->
             <div
-                class="bg-[#1e2329]/95 backdrop-blur-lg rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                class="relative bg-[#1e2329] rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto z-10">
                 <!-- Tutorial Header -->
                 <div
-                    class="sticky top-0 bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
+                    class="sticky top-0 bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center z-20">
                     <div>
                         <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
                         <p class="text-xs text-slate-500 mt-1">Step <span x-text="tutorialStep + 1"></span> of 6</p>
@@ -765,7 +772,7 @@
                     this.resizeObserver.observe(document.getElementById('chartContainer'));
 
                     this.startInternalLoops();
-                    
+
                     // Show tutorial for first-time users
                     if (!this.tutorialCompleted) {
                         setTimeout(() => this.showTutorial = true, 1000);
