@@ -1049,6 +1049,210 @@
                 }));
             });
         </script>
+
+        <!-- MODALS - AT BODY LEVEL FOR PROPER Z-INDEX -->
+        <div x-data>
+            <!-- GAME OVER MODAL -->
+            <div x-show="window.game?.showGameOverModal"
+                style="display: none; position: fixed; inset: 0; z-index: 9999999 !important;">
+
+                <!-- SOLID BLACK BACKGROUND -->
+                <div
+                    style="position: absolute; inset: 0; background-color: rgb(0, 0, 0) !important; z-index: 9999998 !important;">
+                </div>
+
+                <!-- MODAL CONTENT -->
+                <div style="position: relative; z-index: 9999999 !important;"
+                    class="flex items-center justify-center min-h-screen p-4">
+                    <div
+                        class="bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md w-full">
+                        <div class="text-7xl mb-4">💀</div>
+                        <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase">GAME OVER</h2>
+                        <p class="text-slate-400 mb-6">Balance habis! Survival streak berakhir.</p>
+
+                        <div class="bg-[#14161b] rounded-xl p-4 mb-6 space-y-2 text-left">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400 text-sm">Total Trades:</span>
+                                <span class="text-white font-bold" x-text="window.game?.totalTrades || 0"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400 text-sm">Win Rate:</span>
+                                <span class="text-emerald-400 font-bold"
+                                    x-text="window.game?.totalTrades > 0 ? ((window.game.winningTrades / window.game.totalTrades) * 100).toFixed(1) + '%' : '0%'"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400 text-sm">Best Streak:</span>
+                                <span class="text-[#f0b90b] font-bold" x-text="window.game?.bestStreak || 0"></span>
+                            </div>
+                            <div class="flex justify-between border-t border-[#2b3139] pt-2">
+                                <span class="text-slate-400 text-sm">Total P&L:</span>
+                                <span class="font-bold"
+                                    :class="(window.game?.totalProfit || 0) >= 0 ? 'text-emerald-400' : 'text-[#f6465d]'"
+                                    x-text="'$' + ((window.game?.totalProfit || 0).toFixed(2))"></span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <button @click="window.game?.restartGame()"
+                                class="flex-1 bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] hover:from-[#f8d12f] hover:to-[#f0b90b] text-[#0b0e11] font-bold py-3 rounded-lg">
+                                Restart Game
+                            </button>
+                            <a href="{{ route('homepage') }}"
+                                class="flex-1 bg-[#2b3139] hover:bg-[#474d57] text-white font-bold py-3 rounded-lg text-center flex items-center justify-center">
+                                Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TUTORIAL MODAL -->
+            <div x-show="window.game?.showTutorial"
+                style="display: none; position: fixed; inset: 0; z-index: 9999999 !important;"
+                @click.self="window.game.showTutorial = false">
+
+                <!-- SOLID BLACK BACKGROUND -->
+                <div
+                    style="position: absolute; inset: 0; background-color: rgb(0, 0, 0) !important; z-index: 9999998 !important;">
+                </div>
+
+                <!-- MODAL CONTENT -->
+                <div style="position: relative; z-index: 9999999 !important;"
+                    class="flex items-center justify-center min-h-screen p-4">
+                    <div
+                        class="bg-[#1e2329] rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+                        <!-- Header -->
+                        <div class="bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
+                                <p class="text-xs text-slate-500 mt-1">Step <span
+                                        x-text="(window.game?.tutorialStep || 0) + 1"></span> of 6</p>
+                            </div>
+                            <button
+                                @click="window.game.showTutorial = false; window.game.tutorialCompleted = true; window.game.saveGame();"
+                                class="text-slate-500 hover:text-white text-2xl font-bold">×</button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="bg-[#0b0e11] h-1.5">
+                            <div class="bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] h-full transition-all"
+                                :style="`width: ${(((window.game?.tutorialStep || 0) + 1) / 6) * 100}%`"></div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="overflow-y-auto flex-1 p-6">
+                            <div x-show="(window.game?.tutorialStep || 0) === 0" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">🎮</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Selamat Datang!</h2>
+                                    <p class="text-slate-300">Game survival trading edukatif</p>
+                                </div>
+                                <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
+                                    <p class="text-white font-bold">⏱️ Mekanik Game:</p>
+                                    <p class="text-slate-300 text-sm">• 20 detik Open Market</p>
+                                    <p class="text-slate-300 text-sm">• 10 detik Locked Phase</p>
+                                    <p class="text-slate-300 text-sm">• Balance $0 = GAME OVER</p>
+                                </div>
+                            </div>
+
+                            <div x-show="(window.game?.tutorialStep || 0) === 1" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">📊</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Candlestick Chart</h2>
+                                </div>
+                                <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
+                                    <p class="text-emerald-400 font-bold">🟢 Candle Hijau = Harga NAIK</p>
+                                    <p class="text-[#f6465d] font-bold">🔴 Candle Merah = Harga TURUN</p>
+                                </div>
+                            </div>
+
+                            <div x-show="(window.game?.tutorialStep || 0) === 2" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">⚔️</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Long vs Short</h2>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-emerald-500/10 border-2 border-emerald-500/30 p-4 rounded-xl">
+                                        <p class="text-emerald-400 font-bold mb-2">📈 LONG</p>
+                                        <p class="text-slate-300 text-sm">Bet harga NAIK ⬆️</p>
+                                    </div>
+                                    <div class="bg-rose-500/10 border-2 border-rose-500/30 p-4 rounded-xl">
+                                        <p class="text-[#f6465d] font-bold mb-2">📉 SHORT</p>
+                                        <p class="text-slate-300 text-sm">Bet harga TURUN ⬇️</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div x-show="(window.game?.tutorialStep || 0) === 3" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">🛡️</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Risk Management</h2>
+                                </div>
+                                <div class="bg-[#f6465d]/10 border-2 border-[#f6465d] p-5 rounded-xl">
+                                    <p class="text-[#f6465d] font-black text-2xl mb-2">🚨 JANGAN BET SEMUA!</p>
+                                    <p class="text-slate-300 text-sm">Satu loss = Game Over</p>
+                                </div>
+                                <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl">
+                                    <p class="text-emerald-400 font-bold">✅ Bet 10-20% Balance</p>
+                                    <p class="text-slate-300 text-sm">Agar bisa survive</p>
+                                </div>
+                            </div>
+
+                            <div x-show="(window.game?.tutorialStep || 0) === 4" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">📖</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Order Book</h2>
+                                </div>
+                                <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
+                                    <p class="text-[#f6465d] font-bold">🔴 Asks = Sell Orders</p>
+                                    <p class="text-emerald-400 font-bold">🟢 Bids = Buy Orders</p>
+                                </div>
+                            </div>
+
+                            <div x-show="(window.game?.tutorialStep || 0) === 5" class="space-y-4">
+                                <div class="text-center mb-6">
+                                    <div class="text-6xl mb-4">🚀</div>
+                                    <h2 class="text-3xl font-black text-white mb-2">Siap Trading!</h2>
+                                </div>
+                                <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl">
+                                    <p class="text-emerald-400 font-bold mb-2">Yang Sudah Dipelajari:</p>
+                                    <p class="text-slate-300 text-sm">✅ Candlestick Chart</p>
+                                    <p class="text-slate-300 text-sm">✅ Long vs Short</p>
+                                    <p class="text-slate-300 text-sm">✅ Risk Management</p>
+                                    <p class="text-slate-300 text-sm">✅ Order Book</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="bg-[#181a20] px-6 py-4 border-t border-[#2b3139] flex justify-between items-center">
+                            <button @click="if((window.game?.tutorialStep || 0) > 0) window.game.tutorialStep--"
+                                :disabled="(window.game?.tutorialStep || 0) === 0"
+                                :class="(window.game?.tutorialStep || 0) === 0 ? 'opacity-30' : 'hover:bg-[#2b3139]/50'"
+                                class="px-4 py-2 rounded-lg font-bold text-sm text-slate-400">
+                                ← Previous
+                            </button>
+
+                            <div class="flex gap-2">
+                                <template x-for="i in 6" :key="i">
+                                    <div class="h-2 rounded-full transition-all"
+                                        :class="(window.game?.tutorialStep || 0) === i-1 ? 'bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] w-8' : 'bg-slate-700 w-2'">
+                                    </div>
+                                </template>
+                            </div>
+
+                            <button
+                                @click="if((window.game?.tutorialStep || 0) < 5) { window.game.tutorialStep++ } else { window.game.showTutorial = false; window.game.tutorialCompleted = true; window.game.saveGame(); }"
+                                class="px-6 py-3 rounded-lg font-bold text-sm bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] hover:from-[#f8d12f] hover:to-[#f0b90b] text-[#0b0e11]">
+                                <span
+                                    x-text="(window.game?.tutorialStep || 0) === 5 ? 'Mulai Trading! 🚀' : 'Next →'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </body>
 
 </html>
