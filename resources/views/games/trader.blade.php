@@ -450,12 +450,12 @@
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100">
 
-            <!-- SOLID Dark overlay background - NO transparency -->
-            <div class="absolute inset-0 bg-[#0b0e11]"></div>
+            <!-- SOLID Black overlay - Covers everything -->
+            <div class="absolute inset-0 bg-black"></div>
 
-            <!-- Modal content -->
+            <!-- Glassmorphism Modal Box -->
             <div
-                class="relative bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md mx-4 transform scale-100 transition-transform z-10">
+                class="relative bg-gradient-to-br from-[#1e2329]/80 to-[#14161b]/80 backdrop-blur-2xl p-8 rounded-3xl border border-white/10 text-center shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] max-w-md mx-4 z-10">
                 <div class="text-7xl mb-4">💀</div>
                 <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase tracking-tighter">GAME OVER</h2>
                 <p class="text-slate-400 mb-6">Balance habis! Survival streak kamu berakhir.</p>
@@ -501,15 +501,15 @@
         <div x-show="showTutorial" style="display: none;"
             class="fixed inset-0 z-[999] flex items-center justify-center p-4" @click.self="showTutorial = false">
 
-            <!-- SOLID Dark overlay background - NO transparency -->
-            <div class="absolute inset-0 bg-[#0b0e11]"></div>
+            <!-- SOLID Black overlay - Covers everything -->
+            <div class="absolute inset-0 bg-black"></div>
 
-            <!-- Modal content -->
+            <!-- Glassmorphism Modal Box -->
             <div
-                class="relative bg-[#1e2329] rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto z-10">
-                <!-- Tutorial Header -->
+                class="relative bg-gradient-to-br from-[#1e2329]/85 to-[#14161b]/85 backdrop-blur-3xl rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] max-w-2xl w-full max-h-[90vh] overflow-hidden z-10">
+                <!-- Tutorial Header with Glassmorphism -->
                 <div
-                    class="sticky top-0 bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center z-20">
+                    class="bg-gradient-to-r from-[#181a20]/90 to-[#1e2329]/90 backdrop-blur-xl px-6 py-4 border-b border-white/5 flex justify-between items-center">
                     <div>
                         <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
                         <p class="text-xs text-slate-500 mt-1">Step <span x-text="tutorialStep + 1"></span> of 6</p>
@@ -524,528 +524,534 @@
                 </div>
 
                 <!-- Progress Bar -->
-                <div class="bg-[#0b0e11] h-1.5">
-                    <div class="bg-[#f0b90b] h-full transition-all duration-300"
+                <div class="bg-black/30 h-1.5">
+                    <div class="bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/70 h-full transition-all duration-300 shadow-[0_0_10px_rgba(240,185,11,0.5)]"
                         :style="`width: ${((tutorialStep + 1) / 6) * 100}%`"></div>
                 </div>
 
-                <!-- Tutorial Content -->
-                <div class="p-6">
-                    <!-- Step 0: Welcome -->
-                    <div x-show="tutorialStep === 0" class="space-y-4">
-                        <div class="text-center mb-6">
-                            <div class="text-6xl mb-4">🎮</div>
-                            <h4 class="text-2xl font-bold text-white mb-2">Selamat Datang!</h4>
-                            <p class="text-slate-400">Di Crypto Trading Panic - Game survival trading yang edukatif</p>
-                        </div>
-
-                        <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#2b3139] space-y-3">
-                            <div class="flex items-start gap-3">
-                                <span class="text-2xl">⏱️</span>
-                                <div>
-                                    <p class="font-bold text-white">Mekanik Game:</p>
-                                    <ul class="text-sm text-slate-400 mt-1 space-y-1">
-                                        <li>• 20 detik untuk trading (Open Market)</li>
-                                        <li>• 10 detik untuk settlement (Locked)</li>
-                                        <li>• Balance $0 = <span class="text-[#f6465d] font-bold">GAME OVER</span></li>
-                                    </ul>
-                                </div>
+                <!-- Scrollable Content -->
+                <div class="overflow-y-auto max-h-[calc(90vh-180px)]"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div class="p-6">
+                        <!-- Step 0: Welcome -->
+                        <div x-show="tutorialStep === 0" class="space-y-4">
+                            <div class="text-center mb-6">
+                                <div class="text-6xl mb-4">🎮</div>
+                                <h4 class="text-2xl font-bold text-white mb-2">Selamat Datang!</h4>
+                                <p class="text-slate-400">Di Crypto Trading Panic - Game survival trading yang edukatif
+                                </p>
                             </div>
 
-                            <div class="flex items-start gap-3">
-                                <span class="text-2xl">🎯</span>
-                                <div>
-                                    <p class="font-bold text-white">Tujuan:</p>
-                                    <p class="text-sm text-slate-400 mt-1">Profit untuk bertahan hidup & belajar trading
-                                        crypto!</p>
+                            <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#2b3139] space-y-3">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-2xl">⏱️</span>
+                                    <div>
+                                        <p class="font-bold text-white">Mekanik Game:</p>
+                                        <ul class="text-sm text-slate-400 mt-1 space-y-1">
+                                            <li>• 20 detik untuk trading (Open Market)</li>
+                                            <li>• 10 detik untuk settlement (Locked)</li>
+                                            <li>• Balance $0 = <span class="text-[#f6465d] font-bold">GAME OVER</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <span class="text-2xl">🎯</span>
+                                    <div>
+                                        <p class="font-bold text-white">Tujuan:</p>
+                                        <p class="text-sm text-slate-400 mt-1">Profit untuk bertahan hidup & belajar
+                                            trading
+                                            crypto!</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Step 1: Chart -->
-                    <div x-show="tutorialStep === 1" class="space-y-4">
-                        <h4 class="text-xl font-bold text-white">📊 Memahami Chart</h4>
-                        <div class="bg-[#0b0e11] p-4 rounded-lg">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='100' viewBox='0 0 400 100'%3E%3Crect x='20' y='30' width='8' height='40' fill='%230ecb81'/%3E%3Cline x1='24' y1='20' x2='24' y2='80' stroke='%230ecb81' stroke-width='1'/%3E%3Crect x='80' y='50' width='8' height='30' fill='%23f6465d'/%3E%3Cline x1='84' y1='40' x2='84' y2='85' stroke='%23f6465d' stroke-width='1'/%3E%3C/svg%3E"
-                                alt="Candles" class="w-full">
-                        </div>
-                        <div class="text-sm text-slate-300 space-y-2">
-                            <p><span class="text-emerald-400 font-bold">■ Candle Hijau</span> = Harga NAIK (Close >
-                                Open)</p>
-                            <p><span class="text-[#f6465d] font-bold">■ Candle Merah</span> = Harga TURUN (Close <
+                        <!-- Step 1: Chart -->
+                        <div x-show="tutorialStep === 1" class="space-y-4">
+                            <h4 class="text-xl font-bold text-white">📊 Memahami Chart</h4>
+                            <div class="bg-[#0b0e11] p-4 rounded-lg">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='100' viewBox='0 0 400 100'%3E%3Crect x='20' y='30' width='8' height='40' fill='%230ecb81'/%3E%3Cline x1='24' y1='20' x2='24' y2='80' stroke='%230ecb81' stroke-width='1'/%3E%3Crect x='80' y='50' width='8' height='30' fill='%23f6465d'/%3E%3Cline x1='84' y1='40' x2='84' y2='85' stroke='%23f6465d' stroke-width='1'/%3E%3C/svg%3E"
+                                    alt="Candles" class="w-full">
+                            </div>
+                            <div class="text-sm text-slate-300 space-y-2">
+                                <p><span class="text-emerald-400 font-bold">■ Candle Hijau</span> = Harga NAIK (Close >
                                     Open)</p>
-                                    <p class="mt-3 text-slate-500">💡 <strong>Tips:</strong> Perhatikan pola candle
-                                        untuk prediksi harga selanjutnya!</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Long vs Short -->
-                    <div x-show="tutorialStep === 2" class="space-y-4">
-                        <h4 class="text-xl font-bold text-white">📈 Long vs Short</h4>
-
-                        <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-emerald-400 space-y-2">
-                            <p class="font-bold text-emerald-400">LONG (Buy) = Bet harga NAIK ⬆️</p>
-                            <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $65,500 = <span
-                                    class="text-emerald-400">+$41 profit!</span></p>
-                        </div>
-
-                        <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-[#f6465d] space-y-2">
-                            <p class="font-bold text-[#f6465d]">SHORT (Sell) = Bet harga TURUN ⬇️</p>
-                            <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $64,500 = <span
-                                    class="text-emerald-400">+$41 profit!</span></p>
-                        </div>
-
-                        <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-lg">
-                            <p class="text-xs text-amber-200">⚠️ ROE = 82% dari bet amount jika WIN!</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Risk Management -->
-                    <div x-show="tutorialStep === 3" class="space-y-4">
-                        <h4 class="text-xl font-bold text-white">⚖️ Risk Management</h4>
-
-                        <div class="bg-[#f6465d]/10 border-2 border-[#f6465d] p-4 rounded-lg">
-                            <p class="font-bold text-[#f6465d] mb-2">🚨 JANGAN BET SEMUA!</p>
-                            <p class="text-sm text-slate-300">Jika kalah 1x, balance langsung $0 = GAME OVER</p>
-                        </div>
-
-                        <div class="bg-[#0b0e11] p-4 rounded-lg border border-emerald-500/30">
-                            <p class="font-bold text-emerald-400 mb-3">✅ Rekomendasi: Bet 10-20% per trade</p>
-                            <div class="text-xs text-slate-400 space-y-1 font-mono">
-                                <p>Balance: $1,000</p>
-                                <p>Bet Amount: $100-200 (10-20%)</p>
-                                <p>= Bisa bertahan 5-10 trades meski kalah!</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Order Book -->
-                    <div x-show="tutorialStep === 4" class="space-y-4">
-                        <h4 class="text-xl font-bold text-white">📖 Membaca Order Book</h4>
-
-                        <div class="bg-[#0b0e11] p-3 rounded-lg text-xs font-mono space-y-1">
-                            <div class="flex justify-between text-[#f6465d]">
-                                <span>65,105.50</span><span class="text-slate-500">0.245</span><span
-                                    class="text-slate-600">15k</span>
-                            </div>
-                            <div class="flex justify-between text-[#f6465d]">
-                                <span>65,103.20</span><span class="text-slate-500">0.892</span><span
-                                    class="text-slate-600">58k</span>
-                            </div>
-                            <div class="border-t border-b border-[#2b3139] py-2 text-center text-white font-bold">
-                                65,100.00</div>
-                            <div class="flex justify-between text-emerald-400">
-                                <span>65,098.50</span><span class="text-slate-500">0.534</span><span
-                                    class="text-slate-600">34k</span>
-                            </div>
-                            <div class="flex justify-between text-emerald-400">
-                                <span>65,096.20</span><span class="text-slate-500">1.203</span><span
-                                    class="text-slate-600">78k</span>
+                                <p><span class="text-[#f6465d] font-bold">■ Candle Merah</span> = Harga TURUN (Close <
+                                        Open)</p>
+                                        <p class="mt-3 text-slate-500">💡 <strong>Tips:</strong> Perhatikan pola candle
+                                            untuk prediksi harga selanjutnya!</p>
                             </div>
                         </div>
 
-                        <div class="text-sm text-slate-300 space-y-2">
-                            <p><span class="text-[#f6465d] font-bold">Red (Asks)</span> = Sell orders
-                                (Resistance/Tekanan jual)</p>
-                            <p><span class="text-emerald-400 font-bold">Green (Bids)</span> = Buy orders
-                                (Support/Tekanan beli)</p>
-                            <p class="text-slate-500 text-xs mt-3">💡 Spread kecil = Likuiditas tinggi = Lebih mudah
-                                masuk/keluar posisi</p>
-                        </div>
-                    </div>
+                        <!-- Step 2: Long vs Short -->
+                        <div x-show="tutorialStep === 2" class="space-y-4">
+                            <h4 class="text-xl font-bold text-white">📈 Long vs Short</h4>
 
-                    <!-- Step 5: Ready to Trade -->
-                    <div x-show="tutorialStep === 5" class="space-y-4">
-                        <div class="text-center">
-                            <div class="text-6xl mb-4">🚀</div>
-                            <h4 class="text-2xl font-bold text-white mb-2">Siap Trading!</h4>
-                            <p class="text-slate-400">Kamu sudah siap untuk memulai Crypto Trading Panic</p>
-                        </div>
+                            <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-emerald-400 space-y-2">
+                                <p class="font-bold text-emerald-400">LONG (Buy) = Bet harga NAIK ⬆️</p>
+                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $65,500 = <span
+                                        class="text-emerald-400">+$41 profit!</span></p>
+                            </div>
 
-                        <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-lg">
-                            <p class="font-bold text-emerald-400 mb-2">Yang Sudah Kamu Pelajari:</p>
-                            <ul class="text-sm text-slate-300 space-y-1">
-                                <li>✅ Cara baca candlestick chart</li>
-                                <li>✅ Perbedaan Long vs Short</li>
-                                <li>✅ Risk management (bet 10-20%)</li>
-                                <li>✅ Membaca order book</li>
-                            </ul>
+                            <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-[#f6465d] space-y-2">
+                                <p class="font-bold text-[#f6465d]">SHORT (Sell) = Bet harga TURUN ⬇️</p>
+                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $64,500 = <span
+                                        class="text-emerald-400">+$41 profit!</span></p>
+                            </div>
+
+                            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-lg">
+                                <p class="text-xs text-amber-200">⚠️ ROE = 82% dari bet amount jika WIN!</p>
+                            </div>
                         </div>
 
-                        <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#f0b90b]/30">
-                            <p class="text-xs text-slate-400 mb-2">🎯 <strong class="text-white">Goal:</strong></p>
-                            <p class="text-sm text-slate-300">Profit untuk bertahan hidup & capai high score!</p>
+                        <!-- Step 3: Risk Management -->
+                        <div x-show="tutorialStep === 3" class="space-y-4">
+                            <h4 class="text-xl font-bold text-white">⚖️ Risk Management</h4>
+
+                            <div class="bg-[#f6465d]/10 border-2 border-[#f6465d] p-4 rounded-lg">
+                                <p class="font-bold text-[#f6465d] mb-2">🚨 JANGAN BET SEMUA!</p>
+                                <p class="text-sm text-slate-300">Jika kalah 1x, balance langsung $0 = GAME OVER</p>
+                            </div>
+
+                            <div class="bg-[#0b0e11] p-4 rounded-lg border border-emerald-500/30">
+                                <p class="font-bold text-emerald-400 mb-3">✅ Rekomendasi: Bet 10-20% per trade</p>
+                                <div class="text-xs text-slate-400 space-y-1 font-mono">
+                                    <p>Balance: $1,000</p>
+                                    <p>Bet Amount: $100-200 (10-20%)</p>
+                                    <p>= Bisa bertahan 5-10 trades meski kalah!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Order Book -->
+                        <div x-show="tutorialStep === 4" class="space-y-4">
+                            <h4 class="text-xl font-bold text-white">📖 Membaca Order Book</h4>
+
+                            <div class="bg-[#0b0e11] p-3 rounded-lg text-xs font-mono space-y-1">
+                                <div class="flex justify-between text-[#f6465d]">
+                                    <span>65,105.50</span><span class="text-slate-500">0.245</span><span
+                                        class="text-slate-600">15k</span>
+                                </div>
+                                <div class="flex justify-between text-[#f6465d]">
+                                    <span>65,103.20</span><span class="text-slate-500">0.892</span><span
+                                        class="text-slate-600">58k</span>
+                                </div>
+                                <div class="border-t border-b border-[#2b3139] py-2 text-center text-white font-bold">
+                                    65,100.00</div>
+                                <div class="flex justify-between text-emerald-400">
+                                    <span>65,098.50</span><span class="text-slate-500">0.534</span><span
+                                        class="text-slate-600">34k</span>
+                                </div>
+                                <div class="flex justify-between text-emerald-400">
+                                    <span>65,096.20</span><span class="text-slate-500">1.203</span><span
+                                        class="text-slate-600">78k</span>
+                                </div>
+                            </div>
+
+                            <div class="text-sm text-slate-300 space-y-2">
+                                <p><span class="text-[#f6465d] font-bold">Red (Asks)</span> = Sell orders
+                                    (Resistance/Tekanan jual)</p>
+                                <p><span class="text-emerald-400 font-bold">Green (Bids)</span> = Buy orders
+                                    (Support/Tekanan beli)</p>
+                                <p class="text-slate-500 text-xs mt-3">💡 Spread kecil = Likuiditas tinggi = Lebih mudah
+                                    masuk/keluar posisi</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Ready to Trade -->
+                        <div x-show="tutorialStep === 5" class="space-y-4">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🚀</div>
+                                <h4 class="text-2xl font-bold text-white mb-2">Siap Trading!</h4>
+                                <p class="text-slate-400">Kamu sudah siap untuk memulai Crypto Trading Panic</p>
+                            </div>
+
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-lg">
+                                <p class="font-bold text-emerald-400 mb-2">Yang Sudah Kamu Pelajari:</p>
+                                <ul class="text-sm text-slate-300 space-y-1">
+                                    <li>✅ Cara baca candlestick chart</li>
+                                    <li>✅ Perbedaan Long vs Short</li>
+                                    <li>✅ Risk management (bet 10-20%)</li>
+                                    <li>✅ Membaca order book</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#f0b90b]/30">
+                                <p class="text-xs text-slate-400 mb-2">🎯 <strong class="text-white">Goal:</strong></p>
+                                <p class="text-sm text-slate-300">Profit untuk bertahan hidup & capai high score!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tutorial Navigation -->
+                <!-- Tutorial Navigation with Glassmorphism -->
                 <div
-                    class="sticky bottom-0 bg-[#181a20] px-6 py-4 border-t border-[#2b3139] flex justify-between items-center">
+                    class="bg-gradient-to-r from-[#181a20]/90 to-[#1e2329]/90 backdrop-blur-xl px-6 py-4 border-t border-white/5 flex justify-between items-center">
                     <button @click="if(tutorialStep > 0) tutorialStep--" :disabled="tutorialStep === 0"
-                        :class="tutorialStep === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#2b3139]'"
+                        :class="tutorialStep === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/5'"
                         class="px-4 py-2 rounded-lg font-bold text-sm transition-all text-slate-400">
                         ← Previous
                     </button>
 
-                    <div class="flex gap-1">
+                    <div class="flex gap-1.5">
                         <template x-for="i in 6" :key="i">
-                            <div class="w-2 h-2 rounded-full transition-all"
-                                :class="tutorialStep === i-1 ? 'bg-[#f0b90b] w-6' : 'bg-slate-600'"></div>
+                            <div class="h-2 rounded-full transition-all duration-300"
+                                :class="tutorialStep === i-1 ? 'bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/70 w-8 shadow-[0_0_8px_rgba(240,185,11,0.6)]' : 'bg-white/10 w-2'">
+                            </div>
                         </template>
                     </div>
 
                     <button
                         @click="if(tutorialStep < 5) { tutorialStep++ } else { showTutorial = false; tutorialCompleted = true; saveGame(); }"
-                        class="px-6 py-2 rounded-lg font-bold text-sm transition-all bg-[#f0b90b] hover:bg-[#f0b90b]/80 text-[#0b0e11]">
-                        <span x-text="tutorialStep === 5 ? 'Mulai Trading!' : 'Next →'"></span>
+                        class="px-6 py-2 rounded-lg font-bold text-sm transition-all bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/80 hover:from-[#f0b90b]/90 hover:to-[#f0b90b]/70 text-[#0b0e11] shadow-[0_0_10px_rgba(240,185,11,0.3)]">
+                        <span x-text="tutorialStep === 5 ? 'Mulai Trading! 🚀' : 'Next →'"></span>
                     </button>
                 </div>
             </div>
+
         </div>
 
-    </div>
+        <!-- MAIN LOGIC -->
+        <script>
+            document.addEventListener('alpine:init', () => {
+                window.game = {};
+                Alpine.data('proTrader', () => ({
+                    // Game States
+                    phase: 'open',
+                    timer: 20,
+                    gameOver: false,
+                    showGameOverModal: false,
+                    showTutorial: false,
+                    tutorialStep: 0,
 
-    <!-- MAIN LOGIC -->
-    <script>
-        document.addEventListener('alpine:init', () => {
-            window.game = {};
-            Alpine.data('proTrader', () => ({
-                // Game States
-                phase: 'open',
-                timer: 20,
-                gameOver: false,
-                showGameOverModal: false,
-                showTutorial: false,
-                tutorialStep: 0,
+                    // Player Stats
+                    balance: 1000,
+                    totalTrades: 0,
+                    winningTrades: 0,
+                    losingTrades: 0,
+                    survivalStreak: 0,
+                    bestStreak: 0,
+                    totalProfit: 0,
 
-                // Player Stats
-                balance: 1000,
-                totalTrades: 0,
-                winningTrades: 0,
-                losingTrades: 0,
-                survivalStreak: 0,
-                bestStreak: 0,
-                totalProfit: 0,
+                    // Trading
+                    lastPrice: 65000.00,
+                    prevPrice: 65000.00,
+                    spreadPercent: '0.01',
+                    betAmount: 100,
+                    candles: [],
+                    asks: [],
+                    bids: [],
+                    myPosition: null,
+                    showResult: false,
+                    lastWin: false,
+                    lastPnL: 0,
+                    tradeHistory: [],
 
-                // Trading
-                lastPrice: 65000.00,
-                prevPrice: 65000.00,
-                spreadPercent: '0.01',
-                betAmount: 100,
-                candles: [],
-                asks: [],
-                bids: [],
-                myPosition: null,
-                showResult: false,
-                lastWin: false,
-                lastPnL: 0,
-                tradeHistory: [],
+                    // Canvas
+                    crosshair: { x: 0, y: 0, visible: false, price: 0 },
+                    canvas: null,
+                    ctx: null,
+                    maxCandles: 50,
+                    resizeObserver: null,
 
-                // Canvas
-                crosshair: { x: 0, y: 0, visible: false, price: 0 },
-                canvas: null,
-                ctx: null,
-                maxCandles: 50,
-                resizeObserver: null,
+                    initTrader() {
+                        // Load saved game or start fresh
+                        this.loadGame();
 
-                initTrader() {
-                    // Load saved game or start fresh
-                    this.loadGame();
+                        window.userBalance = this.balance;
+                        window.game = this;
+                        this.canvas = document.getElementById('tradeCanvas');
+                        this.fillHistory();
+                        this.generateOrderBook();
 
-                    window.userBalance = this.balance;
-                    window.game = this;
-                    this.canvas = document.getElementById('tradeCanvas');
-                    this.fillHistory();
-                    this.generateOrderBook();
-
-                    // Robust Resize Observer
-                    this.resizeObserver = new ResizeObserver(entries => {
-                        for (let entry of entries) {
-                            if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-                                this.setupCanvas();
-                                this.draw();
+                        // Robust Resize Observer
+                        this.resizeObserver = new ResizeObserver(entries => {
+                            for (let entry of entries) {
+                                if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+                                    this.setupCanvas();
+                                    this.draw();
+                                }
                             }
+                        });
+                        this.resizeObserver.observe(document.getElementById('chartContainer'));
+
+                        this.startInternalLoops();
+
+                        // Show tutorial for first-time users
+                        if (!this.tutorialCompleted) {
+                            setTimeout(() => this.showTutorial = true, 1000);
                         }
-                    });
-                    this.resizeObserver.observe(document.getElementById('chartContainer'));
+                    },
 
-                    this.startInternalLoops();
+                    setupCanvas() {
+                        if (!this.canvas) return;
+                        const container = this.canvas.parentElement;
+                        const dpr = window.devicePixelRatio || 1;
+                        // Ensure container has dimensions
+                        if (container.clientWidth === 0 || container.clientHeight === 0) return;
 
-                    // Show tutorial for first-time users
-                    if (!this.tutorialCompleted) {
-                        setTimeout(() => this.showTutorial = true, 1000);
-                    }
-                },
+                        this.canvas.width = container.clientWidth * dpr;
+                        this.canvas.height = container.clientHeight * dpr;
+                        this.ctx = this.canvas.getContext('2d');
+                        this.ctx.scale(dpr, dpr);
+                    },
 
-                setupCanvas() {
-                    if (!this.canvas) return;
-                    const container = this.canvas.parentElement;
-                    const dpr = window.devicePixelRatio || 1;
-                    // Ensure container has dimensions
-                    if (container.clientWidth === 0 || container.clientHeight === 0) return;
-
-                    this.canvas.width = container.clientWidth * dpr;
-                    this.canvas.height = container.clientHeight * dpr;
-                    this.ctx = this.canvas.getContext('2d');
-                    this.ctx.scale(dpr, dpr);
-                },
-
-                fillHistory() {
-                    this.candles = [];
-                    let p = this.lastPrice;
-                    for (let i = 0; i < this.maxCandles; i++) {
-                        let o = p; let c = o + (Math.random() - 0.5) * 40;
-                        let h = Math.max(o, c) + Math.random() * 8; let l = Math.min(o, c) - Math.random() * 8;
-                        this.candles.push({ o, h, l, c }); p = c;
-                    }
-                    this.lastPrice = p;
-                },
-
-                startInternalLoops() {
-                    setInterval(() => {
-                        if (this.gameOver) return; // Stop timer if game over
-
-                        this.timer--;
-                        if (this.phase === 'open' && this.timer <= 0) {
-                            this.phase = 'locked';
-                            this.timer = 10; // Changed: now 10 seconds for locked
+                    fillHistory() {
+                        this.candles = [];
+                        let p = this.lastPrice;
+                        for (let i = 0; i < this.maxCandles; i++) {
+                            let o = p; let c = o + (Math.random() - 0.5) * 40;
+                            let h = Math.max(o, c) + Math.random() * 8; let l = Math.min(o, c) - Math.random() * 8;
+                            this.candles.push({ o, h, l, c }); p = c;
                         }
-                        else if (this.phase === 'locked' && this.timer <= 0) {
-                            this.settle();
-                            this.phase = 'open';
-                            this.timer = 20; // Changed: now 20 seconds for open
+                        this.lastPrice = p;
+                    },
+
+                    startInternalLoops() {
+                        setInterval(() => {
+                            if (this.gameOver) return; // Stop timer if game over
+
+                            this.timer--;
+                            if (this.phase === 'open' && this.timer <= 0) {
+                                this.phase = 'locked';
+                                this.timer = 10; // Changed: now 10 seconds for locked
+                            }
+                            else if (this.phase === 'locked' && this.timer <= 0) {
+                                this.settle();
+                                this.phase = 'open';
+                                this.timer = 20; // Changed: now 20 seconds for open
+                            }
+                        }, 1000);
+
+                        // Update price every 1 second (instead of 60 FPS)
+                        setInterval(() => {
+                            if (this.gameOver) return;
+
+                            this.prevPrice = this.lastPrice;
+                            // Reduced volatility: 0.1% - 0.3% per second
+                            let volatility = this.phase === 'locked' ? 0.003 : 0.001;
+                            let change = (Math.random() - 0.5) * 2 * this.lastPrice * volatility;
+                            this.lastPrice += change;
+
+                            let lc = this.candles[this.candles.length - 1];
+                            lc.c = this.lastPrice;
+                            if (this.lastPrice > lc.h) lc.h = this.lastPrice;
+                            if (this.lastPrice < lc.l) lc.l = this.lastPrice;
+
+                            this.draw();
+                        }, 1000); // 1 second update
+
+                        setInterval(() => {
+                            let o = this.lastPrice; this.candles.push({ o, h: o, l: o, c: o });
+                            if (this.candles.length > this.maxCandles) this.candles.shift();
+                        }, 2000);
+                        setInterval(() => this.generateOrderBook(), 1000);
+                    },
+
+                    // Removed renderLoop - now using setInterval in startInternalLoops
+
+                    placeOrder(type) {
+                        if (this.balance < this.betAmount) return;
+                        this.balance -= this.betAmount; window.userBalance = this.balance;
+                        this.myPosition = { type: type, entry: this.lastPrice, amount: this.betAmount };
+                    },
+
+                    settle() {
+                        if (!this.myPosition) return;
+
+                        let diff = this.lastPrice - this.myPosition.entry;
+                        let win = (this.myPosition.type === 'buy' && diff > 0) || (this.myPosition.type === 'sell' && diff < 0);
+                        this.lastWin = win;
+
+                        // Calculate PnL
+                        let pnl = 0;
+                        if (win) {
+                            pnl = this.myPosition.amount * 0.82;
+                            this.lastPnL = pnl;
+                            this.balance += this.myPosition.amount + pnl;
+                        } else {
+                            pnl = -this.myPosition.amount;
+                            this.lastPnL = pnl;
                         }
-                    }, 1000);
 
-                    // Update price every 1 second (instead of 60 FPS)
-                    setInterval(() => {
-                        if (this.gameOver) return;
-
-                        this.prevPrice = this.lastPrice;
-                        // Reduced volatility: 0.1% - 0.3% per second
-                        let volatility = this.phase === 'locked' ? 0.003 : 0.001;
-                        let change = (Math.random() - 0.5) * 2 * this.lastPrice * volatility;
-                        this.lastPrice += change;
-
-                        let lc = this.candles[this.candles.length - 1];
-                        lc.c = this.lastPrice;
-                        if (this.lastPrice > lc.h) lc.h = this.lastPrice;
-                        if (this.lastPrice < lc.l) lc.l = this.lastPrice;
-
-                        this.draw();
-                    }, 1000); // 1 second update
-
-                    setInterval(() => {
-                        let o = this.lastPrice; this.candles.push({ o, h: o, l: o, c: o });
-                        if (this.candles.length > this.maxCandles) this.candles.shift();
-                    }, 2000);
-                    setInterval(() => this.generateOrderBook(), 1000);
-                },
-
-                // Removed renderLoop - now using setInterval in startInternalLoops
-
-                placeOrder(type) {
-                    if (this.balance < this.betAmount) return;
-                    this.balance -= this.betAmount; window.userBalance = this.balance;
-                    this.myPosition = { type: type, entry: this.lastPrice, amount: this.betAmount };
-                },
-
-                settle() {
-                    if (!this.myPosition) return;
-
-                    let diff = this.lastPrice - this.myPosition.entry;
-                    let win = (this.myPosition.type === 'buy' && diff > 0) || (this.myPosition.type === 'sell' && diff < 0);
-                    this.lastWin = win;
-
-                    // Calculate PnL
-                    let pnl = 0;
-                    if (win) {
-                        pnl = this.myPosition.amount * 0.82;
-                        this.lastPnL = pnl;
-                        this.balance += this.myPosition.amount + pnl;
-                    } else {
-                        pnl = -this.myPosition.amount;
-                        this.lastPnL = pnl;
-                    }
-
-                    // Track statistics
-                    this.totalTrades++;
-                    if (win) {
-                        this.winningTrades++;
-                        this.survivalStreak++;
-                        if (this.survivalStreak > this.bestStreak) {
-                            this.bestStreak = this.survivalStreak;
+                        // Track statistics
+                        this.totalTrades++;
+                        if (win) {
+                            this.winningTrades++;
+                            this.survivalStreak++;
+                            if (this.survivalStreak > this.bestStreak) {
+                                this.bestStreak = this.survivalStreak;
+                            }
+                        } else {
+                            this.losingTrades++;
+                            this.survivalStreak = 0;
                         }
-                    } else {
-                        this.losingTrades++;
+                        this.totalProfit += pnl;
+
+                        // Save to history
+                        this.tradeHistory.unshift({
+                            timestamp: new Date().toISOString(),
+                            side: this.myPosition.type,
+                            entry: this.myPosition.entry,
+                            exit: this.lastPrice,
+                            pnl: pnl,
+                            roe: ((pnl / this.myPosition.amount) * 100).toFixed(2)
+                        });
+
+                        // Keep only last 50 trades
+                        if (this.tradeHistory.length > 50) this.tradeHistory.pop();
+
+                        this.myPosition = null;
+                        this.showResult = true;
+                        setTimeout(() => this.showResult = false, 3000);
+                        window.userBalance = this.balance;
+
+                        // Save game state
+                        this.saveGame();
+
+                        // Check for game over
+                        if (this.balance <= 0) {
+                            this.gameOver = true;
+                            this.showGameOverModal = true;
+                            this.saveGame(); // Final save with game over state
+                        }
+                    },
+
+                    // localStorage Methods
+                    loadGame() {
+                        try {
+                            const saved = localStorage.getItem('cryptoTradingPanic');
+                            if (saved) {
+                                const data = JSON.parse(saved);
+                                this.balance = data.balance || 1000;
+                                this.totalTrades = data.totalTrades || 0;
+                                this.winningTrades = data.winningTrades || 0;
+                                this.losingTrades = data.losingTrades || 0;
+                                this.bestStreak = data.bestStreak || 0;
+                                this.totalProfit = data.totalProfit || 0;
+                                this.tradeHistory = data.tradeHistory || [];
+                                this.tutorialCompleted = data.tutorialCompleted || false;
+                            }
+                        } catch (e) {
+                            console.error('Error loading game:', e);
+                        }
+                    },
+
+                    saveGame() {
+                        try {
+                            const data = {
+                                balance: this.balance,
+                                totalTrades: this.totalTrades,
+                                winningTrades: this.winningTrades,
+                                losingTrades: this.losingTrades,
+                                bestStreak: this.bestStreak,
+                                totalProfit: this.totalProfit,
+                                tradeHistory: this.tradeHistory,
+                                tutorialCompleted: this.tutorialCompleted || false,
+                                lastSaved: new Date().toISOString()
+                            };
+                            localStorage.setItem('cryptoTradingPanic', JSON.stringify(data));
+                        } catch (e) {
+                            console.error('Error saving game:', e);
+                        }
+                    },
+
+                    restartGame() {
+                        // Reset all game states
+                        this.balance = 1000;
+                        this.totalTrades = 0;
+                        this.winningTrades = 0;
+                        this.losingTrades = 0;
                         this.survivalStreak = 0;
-                    }
-                    this.totalProfit += pnl;
+                        this.totalProfit = 0;
+                        this.tradeHistory = [];
+                        this.myPosition = null;
+                        this.gameOver = false;
+                        this.showGameOverModal = false;
+                        this.phase = 'open';
+                        this.timer = 20;
+                        window.userBalance = this.balance;
+                        this.saveGame();
+                    },
 
-                    // Save to history
-                    this.tradeHistory.unshift({
-                        timestamp: new Date().toISOString(),
-                        side: this.myPosition.type,
-                        entry: this.myPosition.entry,
-                        exit: this.lastPrice,
-                        pnl: pnl,
-                        roe: ((pnl / this.myPosition.amount) * 100).toFixed(2)
-                    });
+                    formatTimer() { return `00:${this.timer.toString().padStart(2, '0')}`; },
 
-                    // Keep only last 50 trades
-                    if (this.tradeHistory.length > 50) this.tradeHistory.pop();
+                    generateOrderBook() {
+                        const price = this.lastPrice;
+                        this.asks = Array.from({ length: 15 }, (_, i) => ({ id: 'a' + i, price: price + 0.5 + (i * 1.5) + Math.random(), amount: Math.random() }));
+                        this.bids = Array.from({ length: 15 }, (_, i) => ({ id: 'b' + i, price: price - 0.5 - (i * 1.5) - Math.random(), amount: Math.random() }));
 
-                    this.myPosition = null;
-                    this.showResult = true;
-                    setTimeout(() => this.showResult = false, 3000);
-                    window.userBalance = this.balance;
-
-                    // Save game state
-                    this.saveGame();
-
-                    // Check for game over
-                    if (this.balance <= 0) {
-                        this.gameOver = true;
-                        this.showGameOverModal = true;
-                        this.saveGame(); // Final save with game over state
-                    }
-                },
-
-                // localStorage Methods
-                loadGame() {
-                    try {
-                        const saved = localStorage.getItem('cryptoTradingPanic');
-                        if (saved) {
-                            const data = JSON.parse(saved);
-                            this.balance = data.balance || 1000;
-                            this.totalTrades = data.totalTrades || 0;
-                            this.winningTrades = data.winningTrades || 0;
-                            this.losingTrades = data.losingTrades || 0;
-                            this.bestStreak = data.bestStreak || 0;
-                            this.totalProfit = data.totalProfit || 0;
-                            this.tradeHistory = data.tradeHistory || [];
-                            this.tutorialCompleted = data.tutorialCompleted || false;
+                        if (this.asks.length > 0 && this.bids.length > 0) {
+                            let bestAsk = this.asks[0].price;
+                            let bestBid = this.bids[0].price;
+                            this.spreadPercent = (((bestAsk - bestBid) / bestAsk) * 100).toFixed(3);
                         }
-                    } catch (e) {
-                        console.error('Error loading game:', e);
-                    }
-                },
+                    },
 
-                saveGame() {
-                    try {
-                        const data = {
-                            balance: this.balance,
-                            totalTrades: this.totalTrades,
-                            winningTrades: this.winningTrades,
-                            losingTrades: this.losingTrades,
-                            bestStreak: this.bestStreak,
-                            totalProfit: this.totalProfit,
-                            tradeHistory: this.tradeHistory,
-                            tutorialCompleted: this.tutorialCompleted || false,
-                            lastSaved: new Date().toISOString()
-                        };
-                        localStorage.setItem('cryptoTradingPanic', JSON.stringify(data));
-                    } catch (e) {
-                        console.error('Error saving game:', e);
-                    }
-                },
+                    draw() {
+                        if (!this.ctx || !this.canvas) return;
+                        const w = this.canvas.width / (window.devicePixelRatio || 1);
+                        const h = this.canvas.height / (window.devicePixelRatio || 1);
+                        const ctx = this.ctx;
 
-                restartGame() {
-                    // Reset all game states
-                    this.balance = 1000;
-                    this.totalTrades = 0;
-                    this.winningTrades = 0;
-                    this.losingTrades = 0;
-                    this.survivalStreak = 0;
-                    this.totalProfit = 0;
-                    this.tradeHistory = [];
-                    this.myPosition = null;
-                    this.gameOver = false;
-                    this.showGameOverModal = false;
-                    this.phase = 'open';
-                    this.timer = 20;
-                    window.userBalance = this.balance;
-                    this.saveGame();
-                },
+                        ctx.clearRect(0, 0, w, h);
 
-                formatTimer() { return `00:${this.timer.toString().padStart(2, '0')}`; },
+                        // Background
+                        ctx.fillStyle = '#0b0e11'; ctx.fillRect(0, 0, w, h);
 
-                generateOrderBook() {
-                    const price = this.lastPrice;
-                    this.asks = Array.from({ length: 15 }, (_, i) => ({ id: 'a' + i, price: price + 0.5 + (i * 1.5) + Math.random(), amount: Math.random() }));
-                    this.bids = Array.from({ length: 15 }, (_, i) => ({ id: 'b' + i, price: price - 0.5 - (i * 1.5) - Math.random(), amount: Math.random() }));
+                        // Grid
+                        ctx.strokeStyle = '#2b3139'; ctx.lineWidth = 1; ctx.beginPath();
+                        for (let x = w % 80; x < w; x += 80) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+                        for (let y = h % 80; y < h; y += 80) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
+                        ctx.stroke();
 
-                    if (this.asks.length > 0 && this.bids.length > 0) {
-                        let bestAsk = this.asks[0].price;
-                        let bestBid = this.bids[0].price;
-                        this.spreadPercent = (((bestAsk - bestBid) / bestAsk) * 100).toFixed(3);
-                    }
-                },
+                        let min = Math.min(...this.candles.map(c => c.l)) - 20;
+                        let max = Math.max(...this.candles.map(c => c.h)) + 20;
+                        let range = max - min; if (range < 1) range = 1;
 
-                draw() {
-                    if (!this.ctx || !this.canvas) return;
-                    const w = this.canvas.width / (window.devicePixelRatio || 1);
-                    const h = this.canvas.height / (window.devicePixelRatio || 1);
-                    const ctx = this.ctx;
+                        // Draw
+                        let unitW = w / this.maxCandles; let candleW = unitW * 0.7; let spacing = unitW * 0.3;
 
-                    ctx.clearRect(0, 0, w, h);
+                        this.candles.forEach((c, i) => {
+                            let isGreen = c.c >= c.o; let color = isGreen ? '#0ecb81' : '#f6465d';
+                            let x = i * unitW + spacing / 2;
+                            let yH = h - ((c.h - min) / range) * h; let yL = h - ((c.l - min) / range) * h;
+                            let yO = h - ((c.o - min) / range) * h; let yC = h - ((c.c - min) / range) * h;
 
-                    // Background
-                    ctx.fillStyle = '#0b0e11'; ctx.fillRect(0, 0, w, h);
+                            ctx.fillStyle = color; ctx.strokeStyle = color;
+                            ctx.beginPath(); ctx.moveTo(x + candleW / 2, yH); ctx.lineTo(x + candleW / 2, yL); ctx.stroke();
+                            let top = Math.min(yO, yC); let height = Math.abs(yO - yC); if (height < 1) height = 1;
+                            ctx.fillRect(x, top, candleW, height);
 
-                    // Grid
-                    ctx.strokeStyle = '#2b3139'; ctx.lineWidth = 1; ctx.beginPath();
-                    for (let x = w % 80; x < w; x += 80) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
-                    for (let y = h % 80; y < h; y += 80) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
-                    ctx.stroke();
+                            // Vol
+                            let volHeight = (Math.abs(c.c - c.o) / range) * h * 0.5 + 5;
+                            ctx.globalAlpha = 0.2; ctx.fillRect(x, h - volHeight, candleW, volHeight); ctx.globalAlpha = 1.0;
+                        });
 
-                    let min = Math.min(...this.candles.map(c => c.l)) - 20;
-                    let max = Math.max(...this.candles.map(c => c.h)) + 20;
-                    let range = max - min; if (range < 1) range = 1;
+                        // Price Line
+                        let priceY = h - ((this.lastPrice - min) / range) * h;
+                        ctx.strokeStyle = '#f0b90b'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.moveTo(0, priceY); ctx.lineTo(w, priceY); ctx.stroke(); ctx.setLineDash([]);
+                        ctx.fillStyle = '#f0b90b'; ctx.fillRect(w - 60, priceY - 9, 60, 18);
+                        ctx.fillStyle = '#000'; ctx.font = 'bold 10px sans-serif'; ctx.fillText(this.lastPrice.toFixed(2), w - 55, priceY + 3);
 
-                    // Draw
-                    let unitW = w / this.maxCandles; let candleW = unitW * 0.7; let spacing = unitW * 0.3;
-
-                    this.candles.forEach((c, i) => {
-                        let isGreen = c.c >= c.o; let color = isGreen ? '#0ecb81' : '#f6465d';
-                        let x = i * unitW + spacing / 2;
-                        let yH = h - ((c.h - min) / range) * h; let yL = h - ((c.l - min) / range) * h;
-                        let yO = h - ((c.o - min) / range) * h; let yC = h - ((c.c - min) / range) * h;
-
-                        ctx.fillStyle = color; ctx.strokeStyle = color;
-                        ctx.beginPath(); ctx.moveTo(x + candleW / 2, yH); ctx.lineTo(x + candleW / 2, yL); ctx.stroke();
-                        let top = Math.min(yO, yC); let height = Math.abs(yO - yC); if (height < 1) height = 1;
-                        ctx.fillRect(x, top, candleW, height);
-
-                        // Vol
-                        let volHeight = (Math.abs(c.c - c.o) / range) * h * 0.5 + 5;
-                        ctx.globalAlpha = 0.2; ctx.fillRect(x, h - volHeight, candleW, volHeight); ctx.globalAlpha = 1.0;
-                    });
-
-                    // Price Line
-                    let priceY = h - ((this.lastPrice - min) / range) * h;
-                    ctx.strokeStyle = '#f0b90b'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.moveTo(0, priceY); ctx.lineTo(w, priceY); ctx.stroke(); ctx.setLineDash([]);
-                    ctx.fillStyle = '#f0b90b'; ctx.fillRect(w - 60, priceY - 9, 60, 18);
-                    ctx.fillStyle = '#000'; ctx.font = 'bold 10px sans-serif'; ctx.fillText(this.lastPrice.toFixed(2), w - 55, priceY + 3);
-
-                    // Crosshair
-                    if (this.crosshair.visible) {
-                        ctx.strokeStyle = '#fff'; ctx.setLineDash([4, 4]);
-                        ctx.beginPath(); ctx.moveTo(0, this.crosshair.y); ctx.lineTo(w, this.crosshair.y);
-                        ctx.moveTo(this.crosshair.x, 0); ctx.lineTo(this.crosshair.x, h); ctx.stroke();
-                        this.crosshair.price = (min + ((h - this.crosshair.y) / h) * range).toFixed(2);
-                    }
-                },
-                updateCrosshair(e) {
-                    const r = this.canvas.getBoundingClientRect();
-                    this.crosshair.x = e.clientX - r.left; this.crosshair.y = e.clientY - r.top; this.crosshair.visible = true;
-                },
-                hideCrosshair() { this.crosshair.visible = false; }
-            }));
-        });
-    </script>
+                        // Crosshair
+                        if (this.crosshair.visible) {
+                            ctx.strokeStyle = '#fff'; ctx.setLineDash([4, 4]);
+                            ctx.beginPath(); ctx.moveTo(0, this.crosshair.y); ctx.lineTo(w, this.crosshair.y);
+                            ctx.moveTo(this.crosshair.x, 0); ctx.lineTo(this.crosshair.x, h); ctx.stroke();
+                            this.crosshair.price = (min + ((h - this.crosshair.y) / h) * range).toFixed(2);
+                        }
+                    },
+                    updateCrosshair(e) {
+                        const r = this.canvas.getBoundingClientRect();
+                        this.crosshair.x = e.clientX - r.left; this.crosshair.y = e.clientY - r.top; this.crosshair.visible = true;
+                    },
+                    hideCrosshair() { this.crosshair.visible = false; }
+                }));
+            });
+        </script>
 </body>
 
 </html>
