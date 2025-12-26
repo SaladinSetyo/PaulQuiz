@@ -450,8 +450,8 @@
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100">
 
-            <!-- Dark overlay background -->
-            <div class="absolute inset-0 bg-black/98 backdrop-blur-xl"></div>
+            <!-- SOLID Dark overlay background - NO transparency -->
+            <div class="absolute inset-0 bg-[#0b0e11]"></div>
 
             <!-- Modal content -->
             <div
@@ -501,8 +501,8 @@
         <div x-show="showTutorial" style="display: none;"
             class="fixed inset-0 z-[999] flex items-center justify-center p-4" @click.self="showTutorial = false">
 
-            <!-- Dark overlay background -->
-            <div class="absolute inset-0 bg-black/98 backdrop-blur-xl"></div>
+            <!-- SOLID Dark overlay background - NO transparency -->
+            <div class="absolute inset-0 bg-[#0b0e11]"></div>
 
             <!-- Modal content -->
             <div
