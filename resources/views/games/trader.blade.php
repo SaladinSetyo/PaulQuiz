@@ -175,13 +175,15 @@
                                 </tr>
                             </thead>
                             <tbody class="text-white">
-                                <tr class="bg-[#1e2329]/20 border-b border-[#2b3139] hover:bg-[#1e2329]/40 transition-colors group">
+                                <tr
+                                    class="bg-[#1e2329]/20 border-b border-[#2b3139] hover:bg-[#1e2329]/40 transition-colors group">
                                     <td class="px-4 py-2 font-bold text-[#f0b90b]">BTCUSDT Perp</td>
                                     <td class="px-4 py-2 font-bold"
                                         :class="myPosition?.type==='buy' ? 'text-emerald-400' : 'text-rose-400'"
                                         x-text="myPosition?.type==='buy'?'Long':'Short'"></td>
                                     <td class="px-4 py-2 text-right" x-text="myPosition?.amount"></td>
-                                    <td class="px-4 py-2 text-right text-slate-300" x-text="myPosition?.entry.toFixed(2)">
+                                    <td class="px-4 py-2 text-right text-slate-300"
+                                        x-text="myPosition?.entry.toFixed(2)">
                                     </td>
                                     <td class="px-4 py-2 text-right text-slate-300" x-text="lastPrice.toFixed(2)"></td>
                                     <td class="px-4 py-2 font-bold text-right"
@@ -208,7 +210,7 @@
                             <span class="text-xs font-bold opacity-50">No Active Positions</span>
                         </div>
                     </div>
-                    
+
                     <!-- Trade History Tab -->
                     <div x-show="activeTab === 'history'">
                         <table class="w-full text-left font-mono text-[10px]" x-show="tradeHistory.length > 0">
@@ -225,12 +227,16 @@
                             <tbody class="text-white">
                                 <template x-for="trade in tradeHistory" :key="trade.timestamp">
                                     <tr class="border-b border-[#2b3139] hover:bg-[#1e2329]/20 transition-colors">
-                                        <td class="px-4 py-2 text-slate-400" x-text="new Date(trade.timestamp).toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit', second: '2-digit'})"></td>
-                                        <td class="px-4 py-2 font-bold" 
+                                        <td class="px-4 py-2 text-slate-400"
+                                            x-text="new Date(trade.timestamp).toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit', second: '2-digit'})">
+                                        </td>
+                                        <td class="px-4 py-2 font-bold"
                                             :class="trade.side === 'buy' ? 'text-emerald-400' : 'text-rose-400'"
                                             x-text="trade.side === 'buy' ? 'Long' : 'Short'"></td>
-                                        <td class="px-4 py-2 text-right text-slate-300" x-text="trade.entry.toFixed(2)"></td>
-                                        <td class="px-4 py-2 text-right text-slate-300" x-text="trade.exit.toFixed(2)"></td>
+                                        <td class="px-4 py-2 text-right text-slate-300" x-text="trade.entry.toFixed(2)">
+                                        </td>
+                                        <td class="px-4 py-2 text-right text-slate-300" x-text="trade.exit.toFixed(2)">
+                                        </td>
                                         <td class="px-4 py-2 text-right font-bold"
                                             :class="trade.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'"
                                             x-text="(trade.pnl >= 0 ? '+' : '') + trade.pnl.toFixed(2)"></td>
@@ -241,7 +247,7 @@
                                 </template>
                             </tbody>
                         </table>
-                        
+
                         <div x-show="tradeHistory.length === 0"
                             class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 gap-2">
                             <svg class="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,11 +495,11 @@
 
         <!-- TUTORIAL MODAL -->
         <div x-show="showTutorial" style="display: none;"
-            class="fixed inset-0 z-[250] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            class="fixed inset-0 z-[250] flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
             @click.self="showTutorial = false">
 
             <div
-                class="bg-[#1e2329] rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                class="bg-[#1e2329]/95 backdrop-blur-lg rounded-2xl border border-[#474d57] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 <!-- Tutorial Header -->
                 <div
                     class="sticky top-0 bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
@@ -759,8 +765,7 @@
                     this.resizeObserver.observe(document.getElementById('chartContainer'));
 
                     this.startInternalLoops();
-                    requestAnimationFrame(() => this.renderLoop());
-
+                    
                     // Show tutorial for first-time users
                     if (!this.tutorialCompleted) {
                         setTimeout(() => this.showTutorial = true, 1000);
@@ -806,6 +811,25 @@
                             this.timer = 20; // Changed: now 20 seconds for open
                         }
                     }, 1000);
+
+                    // Update price every 1 second (instead of 60 FPS)
+                    setInterval(() => {
+                        if (this.gameOver) return;
+
+                        this.prevPrice = this.lastPrice;
+                        // Reduced volatility: 0.1% - 0.3% per second
+                        let volatility = this.phase === 'locked' ? 0.003 : 0.001;
+                        let change = (Math.random() - 0.5) * 2 * this.lastPrice * volatility;
+                        this.lastPrice += change;
+
+                        let lc = this.candles[this.candles.length - 1];
+                        lc.c = this.lastPrice;
+                        if (this.lastPrice > lc.h) lc.h = this.lastPrice;
+                        if (this.lastPrice < lc.l) lc.l = this.lastPrice;
+
+                        this.draw();
+                    }, 1000); // 1 second update
+
                     setInterval(() => {
                         let o = this.lastPrice; this.candles.push({ o, h: o, l: o, c: o });
                         if (this.candles.length > this.maxCandles) this.candles.shift();
@@ -813,13 +837,7 @@
                     setInterval(() => this.generateOrderBook(), 1000);
                 },
 
-                renderLoop() {
-                    this.prevPrice = this.lastPrice;
-                    this.lastPrice += (Math.random() - 0.5) * (this.phase === 'locked' ? 5 : 1);
-                    let lc = this.candles[this.candles.length - 1]; lc.c = this.lastPrice;
-                    if (this.lastPrice > lc.h) lc.h = this.lastPrice; if (this.lastPrice < lc.l) lc.l = this.lastPrice;
-                    this.draw(); requestAnimationFrame(() => this.renderLoop());
-                },
+                // Removed renderLoop - now using setInterval in startInternalLoops
 
                 placeOrder(type) {
                     if (this.balance < this.betAmount) return;
