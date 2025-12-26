@@ -1056,9 +1056,9 @@
             <div x-show="window.game?.showGameOverModal"
                 style="display: none; position: fixed; inset: 0; z-index: 9999999 !important;">
 
-                <!-- SOLID BLACK BACKGROUND -->
+                <!-- SEMI-TRANSPARENT BACKGROUND - Show game behind -->
                 <div
-                    style="position: absolute; inset: 0; background-color: rgb(0, 0, 0) !important; z-index: 9999998 !important;">
+                    style="position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(8px); z-index: 9999998 !important;">
                 </div>
 
                 <!-- MODAL CONTENT -->
@@ -1111,9 +1111,9 @@
                 style="display: none; position: fixed; inset: 0; z-index: 9999999 !important;"
                 @click.self="window.game.showTutorial = false">
 
-                <!-- SOLID BLACK BACKGROUND -->
+                <!-- SEMI-TRANSPARENT BACKGROUND - Show game behind -->
                 <div
-                    style="position: absolute; inset: 0; background-color: rgb(0, 0, 0) !important; z-index: 9999998 !important;">
+                    style="position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.85) !important; backdrop-filter: blur(8px); z-index: 9999998 !important;">
                 </div>
 
                 <!-- MODAL CONTENT -->
