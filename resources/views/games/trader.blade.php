@@ -48,6 +48,143 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        /* ===== SMOOTH ANIMATION SYSTEM ===== */
+        /* Base smooth transitions */
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .smooth-transition-fast {
+            transition: all 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .smooth-color {
+            transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+
+        .smooth-transform {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .smooth-opacity {
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        /* Price Flash Animations (Pintu Pro Style) */
+        @keyframes flashUp {
+            0% {
+                background-color: rgba(14, 203, 129, 0);
+            }
+
+            30% {
+                background-color: rgba(14, 203, 129, 0.25);
+            }
+
+            100% {
+                background-color: rgba(14, 203, 129, 0);
+            }
+        }
+
+        @keyframes flashDown {
+            0% {
+                background-color: rgba(246, 70, 93, 0);
+            }
+
+            30% {
+                background-color: rgba(246, 70, 93, 0.25);
+            }
+
+            100% {
+                background-color: rgba(246, 70, 93, 0);
+            }
+        }
+
+        .price-flash-up {
+            animation: flashUp 0.6s ease-out;
+        }
+
+        .price-flash-down {
+            animation: flashDown 0.6s ease-out;
+        }
+
+        /* Smooth number transitions */
+        .number-update {
+            transition: transform 0.2s ease-out;
+        }
+
+        .number-update:active {
+            transform: scale(1.05);
+        }
+
+        /* Smooth hover effects */
+        .hover-lift {
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fade in animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Slide in from right */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        /* Custom scrollbar smooth */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #2b3139 #14161b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #14161b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2b3139;
+            border-radius: 3px;
+            transition: background 0.2s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b4149;
+        }
     </style>
 </head>
 
@@ -67,8 +204,10 @@
 
             <div class="hidden md:flex items-center gap-6 border-l border-[#2b3139] pl-6 h-full">
                 <div class="flex flex-col justify-center h-full">
-                    <span class="text-[12px] font-bold text-emerald-400" x-data
-                        x-text="window.game?.lastPrice?.toFixed(2) ?? '---'"></span>
+                    <span class="text-[12px] font-bold smooth-color" 
+                          :class="window.game?.lastPrice >= window.game?.prevPrice ? 'text-emerald-400' : 'text-rose-400'"
+                          x-data
+                          x-text="window.game?.lastPrice?.toFixed(2) ?? '---'"></span>
                     <span class="text-[10px] text-slate-500 font-medium">Mark Price</span>
                 </div>
                 <div class="flex flex-col justify-center h-full">
@@ -92,10 +231,15 @@
                     x-text="window.game?.formatTimer() ?? '00:00'"></span>
             </div>
 
-            <div class="flex flex-col items-end leading-none">
-                <span class="text-[10px] text-slate-500 font-bold uppercase mb-0.5">Wallet</span>
-                <span class="font-mono font-bold text-white text-[13px]"
-                    x-text="'$' + (window.userBalance?.toLocaleString('en-US') ?? '1,000')"></span>
+            <!-- ENHANCED BALANCE DISPLAY -->
+            <div class="flex items-center gap-3 bg-[#2b3139]/50 px-4 py-2 rounded-lg border border-[#3b4149]">
+                <div class="flex flex-col items-end leading-none">
+                    <span class="text-[9px] text-slate-500 font-bold uppercase mb-1 tracking-wider">Balance</span>
+                    <span class="font-mono font-bold text-white text-lg"
+                        x-text="'$' + (window.userBalance?.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) ?? '1,000.00')">
+                        $1,000.00
+                    </span>
+                </div>
             </div>
 
             <a href="{{ route('homepage') }}"
@@ -111,11 +255,12 @@
 
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
-        class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]">
+        class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]"
+        style="max-height: calc(100vh - 48px);">
 
         <!-- COL 1: CHART (Main) -->
-        <div
-            class="flex flex-col min-w-0 min-h-[400px] lg:min-h-0 bg-[#0b0e11] relative border-r border-[#2b3139] overflow-hidden">
+        <div class="flex flex-col min-w-0 min-h-[400px] lg:min-h-0 bg-[#0b0e11] relative border-r border-[#2b3139] overflow-hidden"
+            style="min-height: 0;">
             <!-- Chart Toolbar -->
             <div
                 class="h-9 border-b border-[#2b3139] flex items-center px-4 gap-4 text-[11px] font-bold text-slate-500 bg-[#0b0e11]">
@@ -145,8 +290,8 @@
             </div>
 
             <!-- Bottom Tabs: Positions & History -->
-            <div class="h-[200px] border-t border-[#2b3139] bg-[#0b0e11] flex flex-col shrink-0"
-                x-data="{ activeTab: 'positions' }">
+            <div class="border-t border-[#2b3139] bg-[#0b0e11] flex flex-col shrink-0"
+                style="height: min(300px, calc(100vh - 500px)); min-height: 180px;" x-data="{ activeTab: 'positions' }">
                 <div class="h-9 flex items-center px-4 gap-6 border-b border-[#2b3139] bg-[#14161b]">
                     <span @click="activeTab = 'positions'"
                         :class="activeTab === 'positions' ? 'text-[#f0b90b] border-b-2 border-[#f0b90b]' : 'text-slate-500 hover:text-white'"
