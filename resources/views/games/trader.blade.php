@@ -450,12 +450,12 @@
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100">
 
-            <!-- SOLID Black overlay - Covers everything -->
-            <div class="absolute inset-0 bg-black"></div>
+            <!-- SOLID overlay - completely opaque -->
+            <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.97);"></div>
 
-            <!-- Glassmorphism Modal Box -->
+            <!-- Professional Modal Box -->
             <div
-                class="relative bg-gradient-to-br from-[#1e2329]/80 to-[#14161b]/80 backdrop-blur-2xl p-8 rounded-3xl border border-white/10 text-center shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] max-w-md mx-4 z-10">
+                class="relative bg-gradient-to-br from-[#1e2329] via-[#1a1d24] to-[#14161b] p-8 rounded-2xl border border-[#f6465d]/30 text-center shadow-[0_20px_60px_0_rgba(0,0,0,0.9)] max-w-md mx-4 z-10">
                 <div class="text-7xl mb-4">💀</div>
                 <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase tracking-tighter">GAME OVER</h2>
                 <p class="text-slate-400 mb-6">Balance habis! Survival streak kamu berakhir.</p>
@@ -501,15 +501,15 @@
         <div x-show="showTutorial" style="display: none;"
             class="fixed inset-0 z-[999] flex items-center justify-center p-4" @click.self="showTutorial = false">
 
-            <!-- SOLID Black overlay - Covers everything -->
-            <div class="absolute inset-0 bg-black"></div>
+            <!-- SOLID overlay - completely opaque -->
+            <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.97);"></div>
 
-            <!-- Glassmorphism Modal Box -->
+            <!-- Professional Modal Box -->
             <div
-                class="relative bg-gradient-to-br from-[#1e2329]/85 to-[#14161b]/85 backdrop-blur-3xl rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] max-w-2xl w-full max-h-[90vh] overflow-hidden z-10">
-                <!-- Tutorial Header with Glassmorphism -->
+                class="relative bg-gradient-to-br from-[#1e2329] via-[#1a1d24] to-[#14161b] rounded-2xl border border-[#474d57]/50 shadow-[0_20px_60px_0_rgba(0,0,0,0.9)] max-w-2xl w-full max-h-[90vh] overflow-hidden z-10">
+                <!-- Tutorial Header -->
                 <div
-                    class="bg-gradient-to-r from-[#181a20]/90 to-[#1e2329]/90 backdrop-blur-xl px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                    class="bg-gradient-to-r from-[#181a20] to-[#1e2329] px-6 py-4 border-b border-[#2b3139]/50 flex justify-between items-center">
                     <div>
                         <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
                         <p class="text-xs text-slate-500 mt-1">Step <span x-text="tutorialStep + 1"></span> of 6</p>
@@ -524,14 +524,13 @@
                 </div>
 
                 <!-- Progress Bar -->
-                <div class="bg-black/30 h-1.5">
-                    <div class="bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/70 h-full transition-all duration-300 shadow-[0_0_10px_rgba(240,185,11,0.5)]"
+                <div class="bg-[#0b0e11]/80 h-1.5">
+                    <div class="bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] h-full transition-all duration-300 shadow-[0_0_10px_rgba(240,185,11,0.5)]"
                         :style="`width: ${((tutorialStep + 1) / 6) * 100}%`"></div>
                 </div>
 
                 <!-- Scrollable Content -->
-                <div class="overflow-y-auto max-h-[calc(90vh-180px)]"
-                    style="scrollbar-width: none; -ms-overflow-style: none;">
+                <div class="overflow-y-auto max-h-[calc(90vh-180px)] custom-scrollbar">
                     <div class="p-6">
                         <!-- Step 0: Welcome -->
                         <div x-show="tutorialStep === 0" class="space-y-4">
@@ -686,26 +685,26 @@
                     </div>
                 </div>
 
-                <!-- Tutorial Navigation with Glassmorphism -->
+                <!-- Tutorial Navigation -->
                 <div
-                    class="bg-gradient-to-r from-[#181a20]/90 to-[#1e2329]/90 backdrop-blur-xl px-6 py-4 border-t border-white/5 flex justify-between items-center">
+                    class="bg-gradient-to-r from-[#181a20] to-[#1e2329] px-6 py-4 border-t border-[#2b3139]/50 flex justify-between items-center">
                     <button @click="if(tutorialStep > 0) tutorialStep--" :disabled="tutorialStep === 0"
-                        :class="tutorialStep === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/5'"
+                        :class="tutorialStep === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#2b3139]/50'"
                         class="px-4 py-2 rounded-lg font-bold text-sm transition-all text-slate-400">
                         ← Previous
                     </button>
 
-                    <div class="flex gap-1.5">
+                    <div class="flex gap-2">
                         <template x-for="i in 6" :key="i">
                             <div class="h-2 rounded-full transition-all duration-300"
-                                :class="tutorialStep === i-1 ? 'bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/70 w-8 shadow-[0_0_8px_rgba(240,185,11,0.6)]' : 'bg-white/10 w-2'">
+                                :class="tutorialStep === i-1 ? 'bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] w-8' : 'bg-slate-700 w-2'">
                             </div>
                         </template>
                     </div>
 
                     <button
                         @click="if(tutorialStep < 5) { tutorialStep++ } else { showTutorial = false; tutorialCompleted = true; saveGame(); }"
-                        class="px-6 py-2 rounded-lg font-bold text-sm transition-all bg-gradient-to-r from-[#f0b90b] to-[#f0b90b]/80 hover:from-[#f0b90b]/90 hover:to-[#f0b90b]/70 text-[#0b0e11] shadow-[0_0_10px_rgba(240,185,11,0.3)]">
+                        class="px-6 py-3 rounded-lg font-bold text-sm transition-all bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] hover:from-[#f8d12f] hover:to-[#f0b90b] text-[#0b0e11] shadow-lg">
                         <span x-text="tutorialStep === 5 ? 'Mulai Trading! 🚀' : 'Next →'"></span>
                     </button>
                 </div>
