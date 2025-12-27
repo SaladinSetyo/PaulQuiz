@@ -21,8 +21,32 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+
 <body class="font-sans antialiased bg-primary-50/30 dark:bg-dark-900 text-gray-900 dark:text-gray-100">
-    <div class="min-h-screen">
+    <div x-data="{
+            isDark: localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches),
+            
+            init() {
+                this.applyTheme();
+                this.$watch('isDark', value => {
+                    this.applyTheme();
+                    localStorage.setItem('theme', value ? 'dark' : 'light');
+                });
+            },
+            
+            toggleTheme() {
+                this.isDark = !this.isDark;
+            },
+            
+            applyTheme() {
+                if (this.isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        }" x-init="init()" class="min-h-screen">
+
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -39,6 +63,9 @@
         <main>
             {{ $slot }}
         </main>
+
+        <!-- Theme Toggle Button -->
+        @include('components.theme-toggle')
     </div>
 </body>
 

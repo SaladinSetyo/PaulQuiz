@@ -71,7 +71,30 @@
 
 <body id="top"
     class="font-sans antialiased bg-slate-50 dark:bg-dark-900 text-gray-900 dark:text-white selection:bg-primary-500 selection:text-white">
-    <div class="flex flex-col min-h-screen">
+    <div x-data="{
+            isDark: localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches),
+            mobileMenuOpen: false,
+            
+            init() {
+                this.applyTheme();
+                this.$watch('isDark', value => {
+                    this.applyTheme();
+                    localStorage.setItem('theme', value ? 'dark' : 'light');
+                });
+            },
+            
+            toggleTheme() {
+                this.isDark = !this.isDark;
+            },
+            
+            applyTheme() {
+                if (this.isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        }" x-init="init()" class="flex flex-col min-h-screen">
         <!-- Header -->
         <header
             class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 dark:bg-dark-900/80 backdrop-blur-md border-b border-gray-100 dark:border-white/5">
@@ -122,7 +145,7 @@
 
                                                 <x-dropdown-link :href="route('logout')"
                                                     onclick="event.preventDefault();
-                                                                                                                                                                                                                                                                    this.closest('form').submit();">
+                                                                                                                                                                                                                                                                                    this.closest('form').submit();">
                                                     {{ __('Log Out') }}
                                                 </x-dropdown-link>
                                             </form>
@@ -146,14 +169,67 @@
                     </div>
                     <!-- Hamburger -->
                     <div class="-me-2 flex items-center sm:hidden">
-                        <button
-                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen"
+                            class="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-800 smooth-transition-fast">
+                            <svg x-show="!mobileMenuOpen" class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
+                            <svg x-show="mobileMenuOpen" class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div x-show=\"mobileMenuOpen\" 
+                 x-transition:enter=\"transition ease-out duration-200\"
+                 x-transition:enter-start=\"opacity-0 -translate-y-4\"
+                 x-transition:enter-end=\"opacity-100 translate-y-0\"
+                 x-transition:leave=\"transition ease-in duration-150\"
+                 x-transition:leave-start=\"opacity-100 translate-y-0\"
+                 x-transition:leave-end=\"opacity-0 -translate-y-4\"
+                 @click.away=\"mobileMenuOpen = false\"
+                 class=\"sm:hidden absolute top-full left-0 right-0 bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-dark-700 shadow-lg\">
+                <div class=\"px-4 py-6 space-y-4\">
+                    <a href=\"{{ route('games.trader') }}\"
+                       class=\"block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-dark-800 rounded-lg smooth-transition-fast\">
+                        Game Zone
+                    </a>
+                    
+                    @if (Route::has('login'))
+                        @auth
+                            <a href=\"{{ route('dashboard') }}\"
+                               class=\"block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-dark-800 rounded-lg smooth-transition-fast\">
+                                Dashboard
+                            </a>
+                            <a href=\"{{ route('profile.edit') }}\"
+                               class=\"block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-dark-800 rounded-lg smooth-transition-fast\">
+                                Profile
+                            </a>
+                            <form method=\"POST\" action=\"{{ route('logout') }}\">
+                                @csrf
+                                <button type=\"submit\"
+                                    class=\"w-full text-left block px-4 py-2 text-base font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg smooth-transition-fast\">
+                                    Log Out
+                                </button>
+                            </form>
+                        @else
+                            <a href=\"{{ route('login') }}\"
+                               class=\"block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-dark-800 rounded-lg smooth-transition-fast\">
+                                Log in
+                            </a>
+                            @if (Route::has('register'))
+                                <a href=\"{{ route('register') }}\"
+                                   class=\"block px-4 py-3 text-base font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-lg smooth-transition-fast\">
+                                    Register
+                                </a>
+                            @endif
+                        @endauth
+                    @endif
                 </div>
             </div>
         </header>
@@ -819,6 +895,9 @@
                 </div>
             </div>
         </footer>
+
+        <!-- Theme Toggle Button -->
+        @include('components.theme-toggle')
     </div>
 </body>
 

@@ -204,10 +204,9 @@
 
             <div class="hidden md:flex items-center gap-6 border-l border-[#2b3139] pl-6 h-full">
                 <div class="flex flex-col justify-center h-full">
-                    <span class="text-[12px] font-bold smooth-color" 
-                          :class="window.game?.lastPrice >= window.game?.prevPrice ? 'text-emerald-400' : 'text-rose-400'"
-                          x-data
-                          x-text="window.game?.lastPrice?.toFixed(2) ?? '---'"></span>
+                    <span class="text-[12px] font-bold smooth-color"
+                        :class="window.game?.lastPrice >= window.game?.prevPrice ? 'text-emerald-400' : 'text-rose-400'"
+                        x-data x-text="window.game?.lastPrice?.toFixed(2) ?? '---'"></span>
                     <span class="text-[10px] text-slate-500 font-medium">Mark Price</span>
                 </div>
                 <div class="flex flex-col justify-center h-full">
@@ -295,11 +294,11 @@
                 <div class="h-9 flex items-center px-4 gap-6 border-b border-[#2b3139] bg-[#14161b]">
                     <span @click="activeTab = 'positions'"
                         :class="activeTab === 'positions' ? 'text-[#f0b90b] border-b-2 border-[#f0b90b]' : 'text-slate-500 hover:text-white'"
-                        class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer transition-colors">Positions
+                        class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer smooth-transition-fast">Positions
                         <span x-text="myPosition ? '(1)' : '(0)'"></span></span>
                     <span @click="activeTab = 'history'"
                         :class="activeTab === 'history' ? 'text-[#f0b90b] border-b-2 border-[#f0b90b]' : 'text-slate-500 hover:text-white'"
-                        class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer transition-colors">Trade
+                        class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer smooth-transition-fast">Trade
                         History
                         <span x-text="'(' + tradeHistory.length + ')'"></span></span>
                 </div>
