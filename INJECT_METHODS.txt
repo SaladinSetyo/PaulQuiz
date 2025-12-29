@@ -1,0 +1,87 @@
+
+                    // Leverage & Order Types Helper Methods
+                    getCurrentLeverageMultiplier() {
+                        const multipliers = { 'spot': 1, 'cross': 3, 'iso': 10 };
+                        return multipliers[this.activeLeverage] || 1;
+                    },
+
+                    setLeverage(type) {
+                        this.activeLeverage = type;
+                    },
+
+                    setOrderType(type) {
+                        this.orderType = type;
+                    },
+
+                    setTimeframe(tf) {
+                        this.activeTimeframe = tf;
+                        if (this.candleInterval) clearInterval(this.candleInterval);
+                        const intervalMs = this.timeframeIntervals[tf];
+                        this.candleInterval = setInterval(() => {
+                            const o = this.lastPrice;
+                            this.candles.push({ o, h: o, l: o, c: o });
+                            if (this.candles.length > this.maxCandles) this.candles.shift();
+                        }, intervalMs);
+                    },
+
+                    switchTab(tab) {
+                        this.activeTab = tab;
+                    },
+
+                    calculateCurrentPnL() {
+                        if (!this.myPosition) return 0;
+                        const leverage = this.myPosition.leverage || 1;
+                        const priceDiff = this.lastPrice - this.myPosition.entry;
+                        const direction = this.myPosition.type === 'buy' ? 1 : -1;
+                        return (priceDiff * direction * leverage * this.myPosition.amount) / this.myPosition.entry;
+                    },
+
+                    calculateCurrentROI() {
+                        if (!this.myPosition) return 0;
+                        return (this.calculateCurrentPnL() / this.myPosition.amount) * 100;
+                    },
+
+                    calculateEstimatedROI() {
+                        const leverage = this.getCurrentLeverageMultiplier();
+                        const priceChange = 0.02; // Assume 2% movement
+                        const roi = priceChange * leverage * 100;
+                        return roi > 0 ? '+' + roi.toFixed(0) + '%' : roi.toFixed(0) + '%';
+                    },
+
+                    async resetProgress() {
+                        if (!confirm('Reset balance to $1,000? Your leaderboard score will be preserved.')) return;
+                        
+                        if (window.isAuthenticated && this.totalProfit > 0) {
+                            try {
+                                await fetch('/api/games/trader/save', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                    },
+                                    body: JSON.stringify({
+                                        total_trades: this.totalTrades,
+                                        total_profit: this.totalProfit,
+                                        best_streak: this.bestStreak
+                                    })
+                                });
+                            } catch(e) { console.error('Save error:', e); }
+                        }
+                        
+                        this.balance = 1000;
+                        this.totalTrades = 0;
+                        this.winningTrades = 0;
+                        this.losingTrades = 0;
+                        this.bestStreak = 0;
+                        this.survivalStreak = 0;
+                        this.totalProfit = 0;
+                        this.myPosition = null;
+                        this.tradeHistory = [];
+                        this.showGameOverModal = false;
+                        this.phase = 'open';
+                        this.timer = 20;
+                        window.userBalance = 1000;
+                        localStorage.removeItem('cryptoTradingPanic');
+                        alert('Progress reset! Balance restored to $1,000.');
+                    },
+

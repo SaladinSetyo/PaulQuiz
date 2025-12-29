@@ -1,0 +1,21 @@
+
+                    // Leverage & Order Types (ADD AFTER tradeHistory: [],)
+                    activeLeverage: 'spot',
+                    orderType: 'market',
+                    limitPrice: null,
+                    stopPrice: null,
+                    pendingOrders: [],
+
+                    // Timeframe (ADD AFTER)
+                    activeTimeframe: '1s',
+                    timeframeIntervals: {
+                        '1s': 3000,
+                        '15m': 15000,
+                        '1H': 60000,
+                        '4H': 240000
+                    },
+                    candleInterval: null,
+
+                    // Tabs (ADD AFTER)
+                    activeTab: 'positions',
+
