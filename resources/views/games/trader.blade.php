@@ -254,7 +254,8 @@
 
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
-        class="h-screen flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-hidden bg-[#0b0e11]">
+        class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]"
+        style="max-height: calc(100vh - 48px);">
 
         <!-- Mobile Tabs (Only on Mobile) -->
         <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
