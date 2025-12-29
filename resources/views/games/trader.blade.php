@@ -504,9 +504,9 @@
 
             <div class="p-4 flex flex-col gap-5 overflow-y-auto">
                 <div class="flex bg-[#2b3139] rounded p-[2px] shrink-0">
-                    <button
-                        class="flex-1 py-1.5 rounded text-[10px] font-bold bg-[#474d57] text-white shadow-sm">Limit</button>
-                    <button
+                        <button @click="setOrderType('market')" :class="orderType === 'market' ? 'bg-[#2b3139] text-white' : 'text-slate-500'" class="flex-1 py-2 text-[11px] font-bold transition-colors">Market</button>
+                        <button @click="setOrderType('limit')" :class="orderType === 'limit' ? 'bg-[#2b3139] text-white' : 'text-slate-500'" class="flex-1 py-2 text-[11px] font-bold transition-colors">Limit</button>
+                        <button @click="setOrderType('stop')" :class="orderType === 'stop' ? 'bg-[#2b3139] text-white' : 'text-slate-500'" class="flex-1 py-2 text-[11px] font-bold transition-colors">Stop</button>
                         class="flex-1 py-1.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-colors">Market</button>
                     <button
                         class="flex-1 py-1.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-colors">Stop</button>
