@@ -76,6 +76,13 @@ Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submit'])->name('
 // Game Routes
 Route::get('/games/trader', [App\Http\Controllers\GameController::class, 'trader'])->name('games.trader');
 
+// Game API Routes
+Route::prefix('api/games/trader')->group(function () {
+    Route::post('/save', [App\Http\Controllers\GamesController::class, 'saveProgress'])->middleware('auth');
+    Route::get('/leaderboard', [App\Http\Controllers\GamesController::class, 'getLeaderboard']);
+    Route::post('/reset', [App\Http\Controllers\GamesController::class, 'resetProgress'])->middleware('auth');
+});
+
 require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -1,0 +1,47 @@
+<!-- Leaderboard Toggle Button (Bottom-Right) -->
+<div x-data="{ showLeaderboard: false, leaders: [] }" x-init="
+        fetch('/api/games/trader/leaderboard')
+            .then(r => r.json())
+            .then(data => leaders = data)
+            .catch(err => console.error('Leaderboard error:', err));
+     "
+    class="fixed right-0 top-12 h-[calc(100vh-3rem)] w-80 bg-[#1e2329] border-l border-[#2b3139] transform transition-transform duration-300 z-50"
+    :class="showLeaderboard ? 'translate-x-0' : 'translate-x-full'">
+
+    <!-- Toggle Button -->
+    <button @click="showLeaderboard = !showLeaderboard"
+        class="absolute left-0 bottom-20 -translate-x-full bg-[#f0b90b] px-2 py-4 rounded-l text-2xl hover:bg-[#d9a009] transition-colors">
+        🏆
+    </button>
+
+    <!-- Leaderboard Content -->
+    <div class="p-4 h-full overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-white">Leaderboard</h3>
+            <span class="text-xs text-slate-500">Live</span>
+        </div>
+
+        <template x-if="leaders.length === 0">
+            <div class="text-center text-slate-500 py-8">
+                <div class="text-4xl mb-2">👤</div>
+                <p>No traders yet!</p>
+            </div>
+        </template>
+
+        <div class="space-y-2">
+            <template x-for="(leader, index) in leaders" :key="leader.id">
+                <div class="bg-[#0b0e11] p-3 rounded-lg border border-[#2b3139]">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[#f0b90b] font-bold text-lg" x-text="'#' + (index + 1)"></span>
+                            <span class="text-white font-medium" x-text="leader.username"></span>
+                        </div>
+                        <span class="text-emerald-400 font-mono text-sm"
+                            x-text="'$' + leader.total_profit.toLocaleString()"></span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-1" x-text="leader.total_trades + ' trades'"></div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>

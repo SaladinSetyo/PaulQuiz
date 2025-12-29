@@ -1,0 +1,87 @@
+<!-- MODALS - POSITIONED OUTSIDE GRID FOR PROPER Z-INDEX -->
+
+<!-- RESULT POPUP - COMPLETELY SOLID, NO OVERLAP -->
+<div x-show="showResult" style="display: none;"
+    class="fixed inset-0 z-[9999] flex items-center justify-center"
+    x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0 scale-90"
+    x-transition:enter-end="opacity-100 scale-100">
+    
+    <!-- 100% SOLID BLACK BACKDROP -->
+    <div class="absolute inset-0 bg-black" @click="showResult = false"></div>
+    
+    <!-- MODAL CONTENT -->
+    <div class="relative bg-[#0B0E11] p-8 rounded-xl border-3 text-center shadow-2xl max-w-md w-full mx-4 z-10 transform transition-all duration-300"
+         :class="lastWin ? 'border-[#25A764]' : 'border-[#E53E3E]'">
+        <div class="text-6xl mb-4" x-text="lastWin ? '💰' : '💸'"></div>
+        <h2 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter"
+            x-text="lastWin ? 'Take Profit' : 'Stop Loss'"></h2>
+        <div class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Trade Result</div>
+
+        <div class="bg-[#0b0e11] p-4 rounded-xl border border-[#2b3139]">
+            <div class="flex justify-between text-[11px] font-bold text-slate-500 mb-1">
+                <span>Total PnL</span>
+                <span>Date</span>
+            </div>
+            <div class="flex justify-between items-end">
+                <div class="text-3xl font-mono font-bold tracking-tight"
+                    :class="lastWin ? 'text-[#0ecb81]' : 'text-[#f6465d]'"
+                    x-text="(lastWin ? '+' : '') + '$' + Math.abs(lastPnL).toFixed(2)"></div>
+                <div class="text-[10px] text-slate-500 font-mono" x-text="new Date().toLocaleTimeString()"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- GAME OVER MODAL - COMPLETELY SOLID -->
+<div x-show="showGameOverModal" style="display: none;"
+    class="fixed inset-0 z-[9998] flex items-center justify-center"
+    x-transition:enter="transition ease-out duration-300" 
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100">
+
+    <!-- 100% SOLID BLACK BACKDROP -->
+    <div class="absolute inset-0 bg-black"></div>
+
+    <!-- MODAL CONTENT -->
+    <div class="relative bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md mx-4 z-10">
+        <div class="text-7xl mb-4">💀</div>
+        <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase tracking-tighter">GAME OVER</h2>
+        <p class="text-slate-400 mb-6">Balance habis! Survival streak kamu berakhir.</p>
+
+        <!-- Stats Grid -->
+        <div class="bg-[#0b0e11] p-4 rounded-xl border border-[#2b3139] mb-6 space-y-2">
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500 font-bold">Total Trades:</span>
+                <span class="text-white font-mono" x-text="totalTrades"></span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500 font-bold">Win Rate:</span>
+                <span class="text-white font-mono"
+                    x-text="totalTrades > 0 ? ((winningTrades/totalTrades)*100).toFixed(1) + '%' : '0%'"></span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-slate-500 font-bold">Best Streak:</span>
+                <span class="text-emerald-400 font-mono font-bold" x-text="bestStreak + ' trades'"></span>
+            </div>
+            <div class="flex justify-between text-sm border-t border-[#2b3139] pt-2">
+                <span class="text-slate-500 font-bold">Total Profit:</span>
+                <span class="font-mono font-bold"
+                    :class="totalProfit >= 0 ? 'text-emerald-400' : 'text-[#f6465d]'"
+                    x-text="(totalProfit >= 0 ? '+' : '') + '$' + totalProfit.toFixed(2)"></span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3">
+            <button @click="restartGame()"
+                class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all active:scale-95">
+                🔄 Main Lagi
+            </button>
+            <a href="{{ route('homepage') }}"
+                class="flex-1 bg-[#2b3139] hover:bg-[#474d57] text-white px-6 py-3 rounded-lg font-bold text-sm transition-all active:scale-95 flex items-center justify-center">
+                🏠 Home
+            </a>
+        </div>
+    </div>
+</div>

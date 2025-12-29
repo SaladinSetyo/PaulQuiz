@@ -185,6 +185,13 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #3b4149;
         }
+
+        /* Mobile tabs visibility */
+        @media (min-width: 1024px) {
+            .mobile-tabs-container {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -254,11 +261,11 @@
 
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
-        class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]"
+        class="flex-grow flex flex-col lg:grid lg:grid-cols-[minmax(600px,1fr)_280px_320px] lg:gap-0 overflow-y-auto lg:overflow-hidden bg-[#0b0e11]"
         style="max-height: calc(100vh - 48px);">
 
         <!-- Mobile Tabs (Only on Mobile) -->
-        <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
+        <div class="mobile-tabs-container lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
             <button @click="window.mobileTab = 'chart'"
                 :class="window.mobileTab === 'chart' ? 'border-b-2 border-[#f0b90b] text-white' : 'text-slate-500'"
                 class="flex-1 py-3 text-sm font-bold smooth-transition-fast">
@@ -276,11 +283,12 @@
             </button>
         </div>
         <!-- COL 1: CHART (Main) -->
-        <div class="flex flex-col min-w-0 min-h-[400px] lg:min-h-0 bg-[#0b0e11] relative border-r border-[#2b3139] overflow-hidden"
-            style="min-height: 0;">
+        <div class="flex flex-col min-w-0 bg-[#0b0e11] relative border-r border-[#2b3139] overflow-hidden"
+            :class="window.mobileTab === 'chart' || !window.mobileTab ? 'flex' : 'hidden lg:flex'"
+            style="height: 100%; min-height: 400px;">
             <!-- Chart Toolbar -->
             <div
-                class="h-9 border-b border-[#2b3139] flex items-center px-4 gap-4 text-[11px] font-bold text-slate-500 bg-[#0b0e11]">
+                class="h-9 border-b border-[#2b3139] flex items-center px-4 gap-4 text-[11px] font-bold text-slate-500 bg-[#0b0e11] shrink-0">
                 <span class="text-white hover:bg-[#2b3139] px-2 py-0.5 rounded cursor-pointer">Time</span>
                 <span class="text-[#f0b90b] bg-[#2b3139] px-2 py-0.5 rounded cursor-pointer">1s</span>
                 <span
@@ -293,9 +301,10 @@
                 <span class="text-emerald-500 text-[10px] flex items-center gap-1">● Live</span>
             </div>
 
-            <!-- Canvas Container -->
-            <div id="chartContainer" class="flex-grow relative w-full h-full bg-[#0b0e11] crs-crosshair min-h-0"
-                @mousemove="updateCrosshair" @mouseleave="hideCrosshair">
+            <!-- Canvas Container - Fixed Height -->
+            <div id="chartContainer" class="relative w-full bg-[#0b0e11] cursor-crosshair"
+                style="flex: 1 1 0%; min-height: 0; height: calc(100% - 48px - 180px);" @mousemove="updateCrosshair"
+                @mouseleave="hideCrosshair">
                 <canvas id="tradeCanvas" class="absolute inset-0 w-full h-full block"></canvas>
 
                 <!-- Crosshair Label -->
@@ -438,17 +447,18 @@
                 <span>Total</span>
             </div>
 
-            <div class="flex-1 overflow-y-auto font-mono text-[10px] relative"
+            <div class="flex-1 overflow-y-auto font-mono text-[10px] relative flex flex-col"
                 style="scrollbar-width: thin; scrollbar-color: #2b3139 #14161b;">
                 <!-- Sells -->
-                <div class="flex-1 overflow-hidden flex flex-col-reverse justify-start">
+                <div class="flex-1 overflow-hidden" style="display: flex; flex-direction: column-reverse;">
                     <template x-for="ask in asks" :key="ask.id">
-                        <div
-                            class="flex justify-between px-3 py-[1px] relative hover:bg-[#2b3139] cursor-pointer group h-[18px] items-center">
-                            <span class="text-[#f6465d] group-hover:text-white z-10"
+                        <div class="flex justify-between px-3 py-[2px] relative hover:bg-[#2b3139] cursor-pointer group min-h-[18px] items-center tabular-nums"
+                            style="display: flex !important; flex-shrink: 0;">
+                            <span class="text-[#f6465d] group-hover:text-white z-10 text-[9px] font-mono"
                                 x-text="ask.price.toFixed(2)"></span>
-                            <span class="text-slate-400 z-10" x-text="ask.amount.toFixed(3)"></span>
-                            <span class="text-slate-600 z-10"
+                            <span class="text-slate-400 z-10 text-[9px] font-mono"
+                                x-text="ask.amount.toFixed(3)"></span>
+                            <span class="text-slate-600 z-10 text-[9px] font-mono"
                                 x-text="(ask.price * ask.amount/1000).toFixed(0)+'k'"></span>
                             <div class="absolute right-0 top-0 bottom-0 bg-[#f6465d]/10 transition-all"
                                 :style="'width: '+ (ask.amount*30) +'%'"></div>
@@ -476,18 +486,18 @@
                 </div>
 
                 <!-- Buys -->
-                <div class="flex-1 overflow-hidden">
+                <div class="flex-1 overflow-hidden" style="display: flex; flex-direction: column;">
                     <template x-for="bid in bids" :key="bid.id">
-                        <div
-                            class="flex justify-between px-3 py-[1px] relative hover:bg-[#2b3139] cursor-pointer group h-[18px] items-center">
-                            <span class="text-[#0ecb81] group-hover:text-white z-10"
+                        <div class="flex justify-between px-3 py-[2px] relative hover:bg-[#2b3139] cursor-pointer group min-h-[18px] items-center tabular-nums"
+                            style="display: flex !important; flex-shrink: 0;">
+                            <span class="text-[#0ecb81] group-hover:text-white z-10 text-[9px] font-mono"
                                 x-text="bid.price.toFixed(2)"></span>
-                            <span class="text-slate-400 z-10" x-text="bid.amount.toFixed(3)"></span>
-                            <span class="text-slate-600 z-10"
+                            <span class="text-slate-400 z-10 text-[9px] font-mono"
+                                x-text="bid.amount.toFixed(3)"></span>
+                            <span class="text-slate-600 z-10 text-[9px] font-mono"
                                 x-text="(bid.price * bid.amount/1000).toFixed(0)+'k'"></span>
                             <div class="absolute right-0 top-0 bottom-0 bg-[#0ecb81]/10 transition-all"
-                                :style="'width: '+ (bid.amount*30) +'%'"></div>
-                        </div>
+                                :style="'width: '+ (bid.amount*30) +'%'"></div </div>
                     </template>
                 </div>
             </div>
@@ -496,20 +506,25 @@
         <!-- COL 3: TRADE FORM (Fixed 300px) -->
         <div class="flex flex-col bg-[#1e2329] min-w-0 border-l border-[#2b3139]">
             <!-- Tabs -->
-            <div class="flex bg-[#181a20] text-[11px] font-bold border-b border-[#2b3139] shrink-0">
-                <button class="flex-1 py-3 text-[#f0b90b] border-t-2 border-[#f0b90b] bg-[#1e2329]">Spot</button>
-                <button class="flex-1 py-3 text-slate-500 hover:text-white transition-colors">Cross 3x</button>
-                <button class="flex-1 py-3 text-slate-500 hover:text-white transition-colors">Iso 10x</button>
+            <div class="flex bg-[#181a20] font-bold border-b border-[#2b3139] shrink-0 text-[9px] sm:text-[10px]">
+                <button
+                    class="flex-1 py-3 px-2 text-[#f0b90b] border-t-2 border-[#f0b90b] bg-[#1e2329] min-w-fit whitespace-nowrap">Spot</button>
+                <button
+                    class="flex-1 py-3 px-2 text-slate-500 hover:text-white transition-colors min-w-fit whitespace-nowrap">Cross
+                    3x</button>
+                <button
+                    class="flex-1 py-3 px-2 text-slate-500 hover:text-white transition-colors min-w-fit whitespace-nowrap">Iso
+                    10x</button>
             </div>
 
             <div class="p-4 flex flex-col gap-5 overflow-y-auto">
-                <div class="flex bg-[#2b3139] rounded p-[2px] shrink-0">
+                <div class="flex bg-[#2b3139] rounded p-[2px] shrink-0 gap-0.5">
                     <button
-                        class="flex-1 py-1.5 rounded text-[10px] font-bold bg-[#474d57] text-white shadow-sm">Limit</button>
+                        class="flex-1 py-2 px-3 rounded text-[9px] sm:text-[10px] font-bold bg-[#474d57] text-white shadow-sm min-w-fit">Limit</button>
                     <button
-                        class="flex-1 py-1.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-colors">Market</button>
+                        class="flex-1 py-2 px-3 rounded text-[9px] sm:text-[10px] font-bold text-slate-400 hover:text-white transition-colors min-w-fit">Market</button>
                     <button
-                        class="flex-1 py-1.5 rounded text-[10px] font-bold text-slate-400 hover:text-white transition-colors">Stop</button>
+                        class="flex-1 py-2 px-3 rounded text-[9px] sm:text-[10px] font-bold text-slate-400 hover:text-white transition-colors min-w-fit">Stop</button>
                 </div>
 
                 <div class="space-y-4">
@@ -565,14 +580,36 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="grid grid-cols-2 gap-3 mt-auto mb-4">
+                <div class="grid grid-cols-2 gap-4 mt-6 px-1">
                     <button @click="placeOrder('buy')" :disabled="window.game?.phase!=='open' || myPosition"
-                        class="h-11 rounded bg-[#0ecb81] hover:bg-[#0da86b] disabled:opacity-50 disabled:cursor-not-allowed text-white text-[13px] font-bold shadow-lg transition-all active:scale-[0.98]">
-                        Buy / Long
+                        class="group relative h-14 rounded-xl bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:via-emerald-500 hover:to-teal-500 disabled:opacity-40 disabled:cursor-not-allowed disabled:grayscale text-white font-black shadow-[0_8px_20px_rgba(16,185,129,0.4)] hover:shadow-[0_12px_30px_rgba(16,185,129,0.6)] transition-all duration-300 active:scale-[0.97] disabled:shadow-none overflow-hidden">
+                        <!-- Shine effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
+                        </div>
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center justify-center gap-2 text-sm tracking-wider">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            BUY / LONG
+                        </span>
                     </button>
                     <button @click="placeOrder('sell')" :disabled="window.game?.phase!=='open' || myPosition"
-                        class="h-11 rounded bg-[#f6465d] hover:bg-[#d93a4e] disabled:opacity-50 disabled:cursor-not-allowed text-white text-[13px] font-bold shadow-lg transition-all active:scale-[0.98]">
-                        Sell / Short
+                        class="group relative h-14 rounded-xl bg-gradient-to-br from-rose-500 via-red-600 to-pink-600 hover:from-rose-400 hover:via-red-500 hover:to-pink-500 disabled:opacity-40 disabled:cursor-not-allowed disabled:grayscale text-white font-black shadow-[0_8px_20px_rgba(244,63,94,0.4)] hover:shadow-[0_12px_30px_rgba(244,63,94,0.6)] transition-all duration-300 active:scale-[0.97] disabled:shadow-none overflow-hidden">
+                        <!-- Shine effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
+                        </div>
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center justify-center gap-2 text-sm tracking-wider">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                            </svg>
+                            SELL / SHORT
+                        </span>
                     </button>
                 </div>
             </div>
@@ -674,6 +711,66 @@
                 <div class="bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
                     <div>
                         <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
+             <!-- TOP HEADER: Logo, Balance, Timer, Back -->
+    <div class="h-12 bg-[#14161b] border-b border-[#2b3139] flex items-center justify-between px-4 shrink-0">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('homepage') }}"
+                class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
+                <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span class="text-sm font-semibold">Back</span>
+            </a>
+            <div class="h-6 w-px bg-[#2b3139]"></div>
+            <h1 class="text-base font-black text-white tracking-tight flex items-center gap-2">
+                <span class="text-2xl">🎮</span> CRYPTO TRADING PANIC
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <!-- Timer Display -->
+            <div class="flex items-center gap-2 bg-[#1e2329] px-4 py-2 rounded-lg border border-[#2b3139]">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        :class="phase === 'open' ? 'text-emerald-500' : 'text-[#f6465d]'">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-xs font-bold uppercase tracking-wider"
+                        :class="phase === 'open' ? 'text-emerald-500' : 'text-[#f6465d]'"
+                        x-text="phase === 'open' ? 'OPEN' : 'LOCKED'"></span>
+                </div>
+                <div class="h-4 w-px bg-[#2b3139]"></div>
+                <span class="text-white font-mono text-sm font-bold" x-text="formatTimer()">00:20</span>
+            </div>
+
+            <!-- Balance Display -->
+            <div class="flex items-center gap-2 bg-[#1e2329] px-4 py-2 rounded-lg border border-[#2b3139]">
+                <svg class="w-4 h-4 text-[#f0b90b]" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-white font-mono text-sm font-bold" x-text="'$' + balance.toFixed(2)">$1,000.00</span>
+            </div>
+
+            <!-- Help/Tutorial Button -->
+            <button @click="showTutorial = true"
+                class="flex items-center gap-2 bg-[#2b3139] hover:bg-[#474d57] px-3 py-2 rounded-lg transition-colors group">
+                <svg class="w-4 h-4 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-xs font-bold text-slate-400 group-hover:text-white">Help</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN GRID LAYOUT -->
                         <p class="text-xs text-slate-500 mt-1">Step <span x-text="tutorialStep + 1"></span> of 6</p>
                     </div>
                     <button @click="showTutorial = false; tutorialCompleted = true; saveGame();"
@@ -1416,55 +1513,6 @@
             </div>
         </div>
 
-<!-- Leaderboard Toggle Button (Bottom-Right) -->
-<div x-data="{ showLeaderboard: false, leaders: [] }" x-init="
-        fetch('/api/games/trader/leaderboard')
-            .then(r => r.json())
-            .then(data => leaders = data)
-            .catch(err => console.error('Leaderboard error:', err));
-     "
-    class="fixed right-0 top-12 h-[calc(100vh-3rem)] w-80 bg-[#1e2329] border-l border-[#2b3139] transform transition-transform duration-300 z-50"
-    :class="showLeaderboard ? 'translate-x-0' : 'translate-x-full'">
-
-    <!-- Toggle Button -->
-    <button @click="showLeaderboard = !showLeaderboard"
-        class="absolute left-0 bottom-20 -translate-x-full bg-[#f0b90b] px-2 py-4 rounded-l text-2xl hover:bg-[#d9a009] transition-colors">
-        🏆
-    </button>
-
-    <!-- Leaderboard Content -->
-    <div class="p-4 h-full overflow-y-auto">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-white">Leaderboard</h3>
-            <span class="text-xs text-slate-500">Live</span>
-        </div>
-
-        <template x-if="leaders.length === 0">
-            <div class="text-center text-slate-500 py-8">
-                <div class="text-4xl mb-2">👤</div>
-                <p>No traders yet!</p>
-            </div>
-        </template>
-
-        <div class="space-y-2">
-            <template x-for="(leader, index) in leaders" :key="leader.id">
-                <div class="bg-[#0b0e11] p-3 rounded-lg border border-[#2b3139]">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#f0b90b] font-bold text-lg" x-text="'#' + (index + 1)"></span>
-                            <span class="text-white font-medium" x-text="leader.username"></span>
-                        </div>
-                        <span class="text-emerald-400 font-mono text-sm"
-                            x-text="'
-
-</html> + leader.total_profit.toLocaleString()"></span>
-                    </div>
-                    <div class="text-xs text-slate-500 mt-1" x-text="leader.total_trades + ' trades'"></div>
-                </div>
-            </template>
-        </div>
-    </div>
-</div>
 </body>
 
 </html>
