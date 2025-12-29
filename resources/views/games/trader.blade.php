@@ -1108,9 +1108,9 @@
                             // Calculate PnL
                             let pnl = 0;
                             if (win) {
-                                pnl = this.myPosition.amount * 0.82;
-                                this.lastPnL = pnl;
-                                this.balance += this.myPosition.amount + pnl;
+                                const leverage = this.myPosition.leverage || 1;
+                                const pricePct = (this.lastPrice - this.myPosition.entry) / this.myPosition.entry;
+                                pnl = this.myPosition.amount * Math.abs(pricePct) * leverage;
                             } else {
                                 pnl = -this.myPosition.amount;
                                 this.lastPnL = pnl;
