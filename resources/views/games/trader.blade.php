@@ -305,18 +305,18 @@
                     <span x-text="crosshair.price"></span>
                 </div>
             </div>
-
+                    <div @click="switchTab('positions')" :class="activeTab === 'positions' ? 'text-white border-[#f0b90b]' : 'text-slate-500'" class="flex-1 px-4 py-3 text-[11px] font-bold border-b-2 transition-all cursor-pointer hover:text-white">
             <!-- Bottom Tabs: Positions & History -->
             <div class="border-t border-[#2b3139] bg-[#0b0e11] flex flex-col shrink-0"
                 style="height: min(300px, calc(100vh - 500px)); min-height: 180px;" x-data="{ activeTab: 'positions' }">
                 <div class="h-9 flex items-center px-4 gap-6 border-b border-[#2b3139] bg-[#14161b]">
                     <span @click="activeTab = 'positions'"
-                        :class="activeTab === 'positions' ? 'text-[#f0b90b] border-b-2 border-[#f0b90b]' : 'text-slate-500 hover:text-white'"
+                    <div @click="switchTab('orders')" :class="activeTab === 'orders' ? 'text-white border-[#f0b90b]' : 'text-slate-500'" class="flex-1 px-4 py-3 text-[11px] font-bold border-b-2 transition-all cursor-pointer hover:text-white">
                         class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer smooth-transition-fast">Positions
                         <span x-text="myPosition ? '(1)' : '(0)'"></span></span>
                     <span @click="activeTab = 'history'"
                         :class="activeTab === 'history' ? 'text-[#f0b90b] border-b-2 border-[#f0b90b]' : 'text-slate-500 hover:text-white'"
-                        class="text-[11px] font-bold h-full flex items-center px-1 cursor-pointer smooth-transition-fast">Trade
+                    <div @click="switchTab('history')" :class="activeTab === 'history' ? 'text-white border-[#f0b90b]' : 'text-slate-500'" class="flex-1 px-4 py-3 text-[11px] font-bold border-b-2 transition-all cursor-pointer hover:text-white">
                         History
                         <span x-text="'(' + tradeHistory.length + ')'"></span></span>
                 </div>
