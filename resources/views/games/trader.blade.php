@@ -255,7 +255,7 @@
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
         class="h-screen flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-hidden bg-[#0b0e11]">
-        
+
         <!-- Mobile Tabs (Only on Mobile) -->
         <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
             <button @click="window.mobileTab = 'chart'"
@@ -581,7 +581,8 @@
                             </div>
                             <div class="flex justify-between text-[10px] items-center">
                                 <span class="text-slate-500 font-bold">Est. ROI</span>
-                                <span class="text-emerald-400 font-mono font-bold">+82%</span>
+                                <span class="text-emerald-400 font-mono font-bold"
+                                    x-text="calculateEstimatedROI()"></span>
                             </div>
                         </div>
                     </div>
