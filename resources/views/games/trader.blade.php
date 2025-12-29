@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -262,17 +262,17 @@
             <button @click="window.mobileTab = 'chart'"
                 :class="window.mobileTab === 'chart' ? 'border-b-2 border-[#f0b90b] text-white' : 'text-slate-500'"
                 class="flex-1 py-3 text-sm font-bold smooth-transition-fast">
-                📈 Chart
+                ðŸ“ˆ Chart
             </button>
             <button @click="window.mobileTab = 'trade'"
                 :class="window.mobileTab === 'trade' ? 'border-b-2 border-[#f0b90b] text-white' : 'text-slate-500'"
                 class="flex-1 py-3 text-sm font-bold smooth-transition-fast">
-                💰 Trade
+                ðŸ’° Trade
             </button>
             <button @click="window.mobileTab = 'positions'"
                 :class="window.mobileTab === 'positions' ? 'border-b-2 border-[#f0b90b] text-white' : 'text-slate-500'"
                 class="flex-1 py-3 text-sm font-bold smooth-transition-fast">
-                📊 Position
+                ðŸ“Š Position
             </button>
         </div>
         <!-- COL 1: CHART (Main) -->
@@ -290,7 +290,7 @@
                 <div class="w-[1px] h-3 bg-[#2b3139]"></div>
                 <span class="hover:text-white cursor-pointer">Indicators</span>
                 <div class="flex-grow"></div>
-                <span class="text-emerald-500 text-[10px] flex items-center gap-1">● Live</span>
+                <span class="text-emerald-500 text-[10px] flex items-center gap-1">â— Live</span>
             </div>
 
             <!-- Canvas Container -->
@@ -497,9 +497,9 @@
         <div class="flex flex-col bg-[#1e2329] min-w-0 border-l border-[#2b3139]">
             <!-- Tabs -->
             <div class="flex bg-[#181a20] text-[11px] font-bold border-b border-[#2b3139] shrink-0">
-                <button class="flex-1 py-3 text-[#f0b90b] border-t-2 border-[#f0b90b] bg-[#1e2329]">Spot</button>
-                <button class="flex-1 py-3 text-slate-500 hover:text-white transition-colors">Cross 3x</button>
-                <button class="flex-1 py-3 text-slate-500 hover:text-white transition-colors">Iso 10x</button>
+                <button @click="setLeverage('spot')" :class="activeLeverage === 'spot' ? 'text-[#f0b90b] border-[#f0b90b]' : 'text-slate-500'" class="flex-1 py-3 border-t-2 bg-[#1e2329] transition-colors">Spot</button>
+                <button @click="setLeverage('cross')" :class="activeLeverage === 'cross' ? 'text-[#f0b90b] border-[#f0b90b]' : 'text-slate-500'" class="flex-1 py-3 transition-colors">Cross 3x</button>
+                <button @click="setLeverage('iso')" :class="activeLeverage === 'iso' ? 'text-[#f0b90b] border-[#f0b90b]' : 'text-slate-500'" class="flex-1 py-3 transition-colors">Iso 10x</button>
             </div>
 
             <div class="p-4 flex flex-col gap-5 overflow-y-auto">
@@ -586,7 +586,7 @@
 
             <div
                 class="bg-[#1e2329] p-8 rounded-2xl border border-[#474d57] text-center shadow-2xl min-w-[320px] transform hover:scale-105 transition-transform duration-300">
-                <div class="text-6xl mb-4" x-text="lastWin ? '💰' : '💸'"></div>
+                <div class="text-6xl mb-4" x-text="lastWin ? 'ðŸ’°' : 'ðŸ’¸'"></div>
                 <h2 class="text-3xl font-black text-white mb-1 uppercase tracking-tighter"
                     x-text="lastWin ? 'Take Profit' : 'Stop Loss'"></h2>
                 <div class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Trade Result</div>
@@ -619,7 +619,7 @@
             <!-- 100% SOLID MODAL BOX -->
             <div
                 class="relative bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md mx-4 z-10">
-                <div class="text-7xl mb-4">💀</div>
+                <div class="text-7xl mb-4">ðŸ’€</div>
                 <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase tracking-tighter">GAME OVER</h2>
                 <p class="text-slate-400 mb-6">Balance habis! Survival streak kamu berakhir.</p>
 
@@ -650,11 +650,11 @@
                 <div class="flex gap-3">
                     <button @click="restartGame()"
                         class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all active:scale-95">
-                        🔄 Main Lagi
+                        ðŸ”„ Main Lagi
                     </button>
                     <a href="{{ route('homepage') }}"
                         class="flex-1 bg-[#2b3139] hover:bg-[#474d57] text-white px-6 py-3 rounded-lg font-bold text-sm transition-all active:scale-95 flex items-center justify-center">
-                        🏠 Home
+                        ðŸ  Home
                     </a>
                 </div>
             </div>
@@ -673,7 +673,7 @@
                 <!-- Tutorial Header SOLID -->
                 <div class="bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
                     <div>
-                        <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
+                        <h3 class="text-xl font-bold text-white">ðŸ“š Crypto Trading Panic Tutorial</h3>
                         <p class="text-xs text-slate-500 mt-1">Step <span x-text="tutorialStep + 1"></span> of 6</p>
                     </div>
                     <button @click="showTutorial = false; tutorialCompleted = true; saveGame();"
@@ -697,7 +697,7 @@
                         <!-- Step 0: Welcome -->
                         <div x-show="tutorialStep === 0" class="space-y-4">
                             <div class="text-center mb-6">
-                                <div class="text-6xl mb-4">🎮</div>
+                                <div class="text-6xl mb-4">ðŸŽ®</div>
                                 <h4 class="text-2xl font-bold text-white mb-2">Selamat Datang!</h4>
                                 <p class="text-slate-400">Di Crypto Trading Panic - Game survival trading yang edukatif
                                 </p>
@@ -705,20 +705,20 @@
 
                             <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#2b3139] space-y-3">
                                 <div class="flex items-start gap-3">
-                                    <span class="text-2xl">⏱️</span>
+                                    <span class="text-2xl">â±ï¸</span>
                                     <div>
                                         <p class="font-bold text-white">Mekanik Game:</p>
                                         <ul class="text-sm text-slate-400 mt-1 space-y-1">
-                                            <li>• 20 detik untuk trading (Open Market)</li>
-                                            <li>• 10 detik untuk settlement (Locked)</li>
-                                            <li>• Balance $0 = <span class="text-[#f6465d] font-bold">GAME OVER</span>
+                                            <li>â€¢ 20 detik untuk trading (Open Market)</li>
+                                            <li>â€¢ 10 detik untuk settlement (Locked)</li>
+                                            <li>â€¢ Balance $0 = <span class="text-[#f6465d] font-bold">GAME OVER</span>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 <div class="flex items-start gap-3">
-                                    <span class="text-2xl">🎯</span>
+                                    <span class="text-2xl">ðŸŽ¯</span>
                                     <div>
                                         <p class="font-bold text-white">Tujuan:</p>
                                         <p class="text-sm text-slate-400 mt-1">Profit untuk bertahan hidup & belajar
@@ -731,53 +731,53 @@
 
                         <!-- Step 1: Chart -->
                         <div x-show="tutorialStep === 1" class="space-y-4">
-                            <h4 class="text-xl font-bold text-white">📊 Memahami Chart</h4>
+                            <h4 class="text-xl font-bold text-white">ðŸ“Š Memahami Chart</h4>
                             <div class="bg-[#0b0e11] p-4 rounded-lg">
                                 <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='100' viewBox='0 0 400 100'%3E%3Crect x='20' y='30' width='8' height='40' fill='%230ecb81'/%3E%3Cline x1='24' y1='20' x2='24' y2='80' stroke='%230ecb81' stroke-width='1'/%3E%3Crect x='80' y='50' width='8' height='30' fill='%23f6465d'/%3E%3Cline x1='84' y1='40' x2='84' y2='85' stroke='%23f6465d' stroke-width='1'/%3E%3C/svg%3E"
                                     alt="Candles" class="w-full">
                             </div>
                             <div class="text-sm text-slate-300 space-y-2">
-                                <p><span class="text-emerald-400 font-bold">■ Candle Hijau</span> = Harga NAIK (Close >
+                                <p><span class="text-emerald-400 font-bold">â–  Candle Hijau</span> = Harga NAIK (Close >
                                     Open)</p>
-                                <p><span class="text-[#f6465d] font-bold">■ Candle Merah</span> = Harga TURUN (Close <
+                                <p><span class="text-[#f6465d] font-bold">â–  Candle Merah</span> = Harga TURUN (Close <
                                         Open)</p>
-                                        <p class="mt-3 text-slate-500">💡 <strong>Tips:</strong> Perhatikan pola candle
+                                        <p class="mt-3 text-slate-500">ðŸ’¡ <strong>Tips:</strong> Perhatikan pola candle
                                             untuk prediksi harga selanjutnya!</p>
                             </div>
                         </div>
 
                         <!-- Step 2: Long vs Short -->
                         <div x-show="tutorialStep === 2" class="space-y-4">
-                            <h4 class="text-xl font-bold text-white">📈 Long vs Short</h4>
+                            <h4 class="text-xl font-bold text-white">ðŸ“ˆ Long vs Short</h4>
 
                             <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-emerald-400 space-y-2">
-                                <p class="font-bold text-emerald-400">LONG (Buy) = Bet harga NAIK ⬆️</p>
-                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $65,500 = <span
+                                <p class="font-bold text-emerald-400">LONG (Buy) = Bet harga NAIK â¬†ï¸</p>
+                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 â†’ Exit $65,500 = <span
                                         class="text-emerald-400">+$41 profit!</span></p>
                             </div>
 
                             <div class="bg-[#0b0e11] p-4 rounded-lg border-l-4 border-[#f6465d] space-y-2">
-                                <p class="font-bold text-[#f6465d]">SHORT (Sell) = Bet harga TURUN ⬇️</p>
-                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 → Exit $64,500 = <span
+                                <p class="font-bold text-[#f6465d]">SHORT (Sell) = Bet harga TURUN â¬‡ï¸</p>
+                                <p class="text-xs text-slate-400">Contoh: Entry $65,000 â†’ Exit $64,500 = <span
                                         class="text-emerald-400">+$41 profit!</span></p>
                             </div>
 
                             <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-lg">
-                                <p class="text-xs text-amber-200">⚠️ ROE = 82% dari bet amount jika WIN!</p>
+                                <p class="text-xs text-amber-200">âš ï¸ ROE = 82% dari bet amount jika WIN!</p>
                             </div>
                         </div>
 
                         <!-- Step 3: Risk Management -->
                         <div x-show="tutorialStep === 3" class="space-y-4">
-                            <h4 class="text-xl font-bold text-white">⚖️ Risk Management</h4>
+                            <h4 class="text-xl font-bold text-white">âš–ï¸ Risk Management</h4>
 
                             <div class="bg-[#f6465d]/10 border-2 border-[#f6465d] p-4 rounded-lg">
-                                <p class="font-bold text-[#f6465d] mb-2">🚨 JANGAN BET SEMUA!</p>
+                                <p class="font-bold text-[#f6465d] mb-2">ðŸš¨ JANGAN BET SEMUA!</p>
                                 <p class="text-sm text-slate-300">Jika kalah 1x, balance langsung $0 = GAME OVER</p>
                             </div>
 
                             <div class="bg-[#0b0e11] p-4 rounded-lg border border-emerald-500/30">
-                                <p class="font-bold text-emerald-400 mb-3">✅ Rekomendasi: Bet 10-20% per trade</p>
+                                <p class="font-bold text-emerald-400 mb-3">âœ… Rekomendasi: Bet 10-20% per trade</p>
                                 <div class="text-xs text-slate-400 space-y-1 font-mono">
                                     <p>Balance: $1,000</p>
                                     <p>Bet Amount: $100-200 (10-20%)</p>
@@ -788,7 +788,7 @@
 
                         <!-- Step 4: Order Book -->
                         <div x-show="tutorialStep === 4" class="space-y-4">
-                            <h4 class="text-xl font-bold text-white">📖 Membaca Order Book</h4>
+                            <h4 class="text-xl font-bold text-white">ðŸ“– Membaca Order Book</h4>
 
                             <div class="bg-[#0b0e11] p-3 rounded-lg text-xs font-mono space-y-1">
                                 <div class="flex justify-between text-[#f6465d]">
@@ -816,7 +816,7 @@
                                     (Resistance/Tekanan jual)</p>
                                 <p><span class="text-emerald-400 font-bold">Green (Bids)</span> = Buy orders
                                     (Support/Tekanan beli)</p>
-                                <p class="text-slate-500 text-xs mt-3">💡 Spread kecil = Likuiditas tinggi = Lebih mudah
+                                <p class="text-slate-500 text-xs mt-3">ðŸ’¡ Spread kecil = Likuiditas tinggi = Lebih mudah
                                     masuk/keluar posisi</p>
                             </div>
                         </div>
@@ -824,7 +824,7 @@
                         <!-- Step 5: Ready to Trade -->
                         <div x-show="tutorialStep === 5" class="space-y-4">
                             <div class="text-center">
-                                <div class="text-6xl mb-4">🚀</div>
+                                <div class="text-6xl mb-4">ðŸš€</div>
                                 <h4 class="text-2xl font-bold text-white mb-2">Siap Trading!</h4>
                                 <p class="text-slate-400">Kamu sudah siap untuk memulai Crypto Trading Panic</p>
                             </div>
@@ -832,15 +832,15 @@
                             <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-lg">
                                 <p class="font-bold text-emerald-400 mb-2">Yang Sudah Kamu Pelajari:</p>
                                 <ul class="text-sm text-slate-300 space-y-1">
-                                    <li>✅ Cara baca candlestick chart</li>
-                                    <li>✅ Perbedaan Long vs Short</li>
-                                    <li>✅ Risk management (bet 10-20%)</li>
-                                    <li>✅ Membaca order book</li>
+                                    <li>âœ… Cara baca candlestick chart</li>
+                                    <li>âœ… Perbedaan Long vs Short</li>
+                                    <li>âœ… Risk management (bet 10-20%)</li>
+                                    <li>âœ… Membaca order book</li>
                                 </ul>
                             </div>
 
                             <div class="bg-[#0b0e11] p-4 rounded-lg border border-[#f0b90b]/30">
-                                <p class="text-xs text-slate-400 mb-2">🎯 <strong class="text-white">Goal:</strong></p>
+                                <p class="text-xs text-slate-400 mb-2">ðŸŽ¯ <strong class="text-white">Goal:</strong></p>
                                 <p class="text-sm text-slate-300">Profit untuk bertahan hidup & capai high score!</p>
                             </div>
                         </div>
@@ -852,7 +852,7 @@
                     <button @click="if(tutorialStep > 0) tutorialStep--" :disabled="tutorialStep === 0"
                         :class="tutorialStep === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[#2b3139]/50'"
                         class="px-4 py-2 rounded-lg font-bold text-sm transition-all text-slate-400">
-                        ← Previous
+                        â† Previous
                     </button>
 
                     <div class="flex gap-2">
@@ -866,7 +866,7 @@
                     <button
                         @click="if(tutorialStep < 5) { tutorialStep++ } else { showTutorial = false; tutorialCompleted = true; saveGame(); }"
                         class="px-6 py-3 rounded-lg font-bold text-sm transition-all bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] hover:from-[#f8d12f] hover:to-[#f0b90b] text-[#0b0e11] shadow-lg">
-                        <span x-text="tutorialStep === 5 ? 'Mulai Trading! 🚀' : 'Next →'"></span>
+                        <span x-text="tutorialStep === 5 ? 'Mulai Trading! ðŸš€' : 'Next â†’'"></span>
                     </button>
                 </div>
             </div>
@@ -908,6 +908,27 @@
                     lastWin: false,
                     lastPnL: 0,
                     tradeHistory: [],
+
+                    // Leverage & Order Types (ADD AFTER tradeHistory: [],)
+                    activeLeverage: 'spot',
+                    orderType: 'market',
+                    limitPrice: null,
+                    stopPrice: null,
+                    pendingOrders: [],
+
+                    // Timeframe (ADD AFTER)
+                    activeTimeframe: '1s',
+                    timeframeIntervals: {
+                        '1s': 3000,
+                        '15m': 15000,
+                        '1H': 60000,
+                        '4H': 240000
+                    },
+                    candleInterval: null,
+
+                    // Tabs (ADD AFTER)
+                    activeTab: 'positions',
+
 
                     // Canvas
                     crosshair: { x: 0, y: 0, visible: false, price: 0 },
@@ -1136,6 +1157,95 @@
                         this.saveGame();
                     },
 
+
+
+                    // Leverage & Order Types Helper Methods
+                    getCurrentLeverageMultiplier() {
+                        const multipliers = { 'spot': 1, 'cross': 3, 'iso': 10 };
+                        return multipliers[this.activeLeverage] || 1;
+                    },
+
+                    setLeverage(type) {
+                        this.activeLeverage = type;
+                    },
+
+                    setOrderType(type) {
+                        this.orderType = type;
+                    },
+
+                    setTimeframe(tf) {
+                        this.activeTimeframe = tf;
+                        if (this.candleInterval) clearInterval(this.candleInterval);
+                        const intervalMs = this.timeframeIntervals[tf];
+                        this.candleInterval = setInterval(() => {
+                            const o = this.lastPrice;
+                            this.candles.push({ o, h: o, l: o, c: o });
+                            if (this.candles.length > this.maxCandles) this.candles.shift();
+                        }, intervalMs);
+                    },
+
+                    switchTab(tab) {
+                        this.activeTab = tab;
+                    },
+
+                    calculateCurrentPnL() {
+                        if (!this.myPosition) return 0;
+                        const leverage = this.myPosition.leverage || 1;
+                        const priceDiff = this.lastPrice - this.myPosition.entry;
+                        const direction = this.myPosition.type === 'buy' ? 1 : -1;
+                        return (priceDiff * direction * leverage * this.myPosition.amount) / this.myPosition.entry;
+                    },
+
+                    calculateCurrentROI() {
+                        if (!this.myPosition) return 0;
+                        return (this.calculateCurrentPnL() / this.myPosition.amount) * 100;
+                    },
+
+                    calculateEstimatedROI() {
+                        const leverage = this.getCurrentLeverageMultiplier();
+                        const priceChange = 0.02; // Assume 2% movement
+                        const roi = priceChange * leverage * 100;
+                        return roi > 0 ? '+' + roi.toFixed(0) + '%' : roi.toFixed(0) + '%';
+                    },
+
+                    async resetProgress() {
+                        if (!confirm('Reset balance to $1,000? Your leaderboard score will be preserved.')) return;
+                        
+                        if (window.isAuthenticated && this.totalProfit > 0) {
+                            try {
+                                await fetch('/api/games/trader/save', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                    },
+                                    body: JSON.stringify({
+                                        total_trades: this.totalTrades,
+                                        total_profit: this.totalProfit,
+                                        best_streak: this.bestStreak
+                                    })
+                                });
+                            } catch(e) { console.error('Save error:', e); }
+                        }
+                        
+                        this.balance = 1000;
+                        this.totalTrades = 0;
+                        this.winningTrades = 0;
+                        this.losingTrades = 0;
+                        this.bestStreak = 0;
+                        this.survivalStreak = 0;
+                        this.totalProfit = 0;
+                        this.myPosition = null;
+                        this.tradeHistory = [];
+                        this.showGameOverModal = false;
+                        this.phase = 'open';
+                        this.timer = 20;
+                        window.userBalance = 1000;
+                        localStorage.removeItem('cryptoTradingPanic');
+                        alert('Progress reset! Balance restored to $1,000.');
+                    },
+
+
                     formatTimer() { return `00:${this.timer.toString().padStart(2, '0')}`; },
 
                     generateOrderBook() {
@@ -1229,7 +1339,7 @@
                     class="flex items-center justify-center min-h-screen p-4">
                     <div
                         class="bg-[#1e2329] p-8 rounded-2xl border-2 border-[#f6465d] text-center shadow-2xl max-w-md w-full">
-                        <div class="text-7xl mb-4">💀</div>
+                        <div class="text-7xl mb-4">ðŸ’€</div>
                         <h2 class="text-4xl font-black text-[#f6465d] mb-2 uppercase">GAME OVER</h2>
                         <p class="text-slate-400 mb-6">Balance habis! Survival streak berakhir.</p>
 
@@ -1287,13 +1397,13 @@
                         <!-- Header -->
                         <div class="bg-[#181a20] px-6 py-4 border-b border-[#2b3139] flex justify-between items-center">
                             <div>
-                                <h3 class="text-xl font-bold text-white">📚 Crypto Trading Panic Tutorial</h3>
+                                <h3 class="text-xl font-bold text-white">ðŸ“š Crypto Trading Panic Tutorial</h3>
                                 <p class="text-xs text-slate-500 mt-1">Step <span
                                         x-text="(window.game?.tutorialStep || 0) + 1"></span> of 6</p>
                             </div>
                             <button
                                 @click="window.game.showTutorial = false; window.game.tutorialCompleted = true; window.game.saveGame();"
-                                class="text-slate-500 hover:text-white text-2xl font-bold">×</button>
+                                class="text-slate-500 hover:text-white text-2xl font-bold">Ã—</button>
                         </div>
 
                         <!-- Progress Bar -->
@@ -1306,83 +1416,83 @@
                         <div class="overflow-y-auto flex-1 p-6">
                             <div x-show="(window.game?.tutorialStep || 0) === 0" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">🎮</div>
+                                    <div class="text-6xl mb-4">ðŸŽ®</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Selamat Datang!</h2>
                                     <p class="text-slate-300">Game survival trading edukatif</p>
                                 </div>
                                 <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
-                                    <p class="text-white font-bold">⏱️ Mekanik Game:</p>
-                                    <p class="text-slate-300 text-sm">• 20 detik Open Market</p>
-                                    <p class="text-slate-300 text-sm">• 10 detik Locked Phase</p>
-                                    <p class="text-slate-300 text-sm">• Balance $0 = GAME OVER</p>
+                                    <p class="text-white font-bold">â±ï¸ Mekanik Game:</p>
+                                    <p class="text-slate-300 text-sm">â€¢ 20 detik Open Market</p>
+                                    <p class="text-slate-300 text-sm">â€¢ 10 detik Locked Phase</p>
+                                    <p class="text-slate-300 text-sm">â€¢ Balance $0 = GAME OVER</p>
                                 </div>
                             </div>
 
                             <div x-show="(window.game?.tutorialStep || 0) === 1" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">📊</div>
+                                    <div class="text-6xl mb-4">ðŸ“Š</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Candlestick Chart</h2>
                                 </div>
                                 <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
-                                    <p class="text-emerald-400 font-bold">🟢 Candle Hijau = Harga NAIK</p>
-                                    <p class="text-[#f6465d] font-bold">🔴 Candle Merah = Harga TURUN</p>
+                                    <p class="text-emerald-400 font-bold">ðŸŸ¢ Candle Hijau = Harga NAIK</p>
+                                    <p class="text-[#f6465d] font-bold">ðŸ”´ Candle Merah = Harga TURUN</p>
                                 </div>
                             </div>
 
                             <div x-show="(window.game?.tutorialStep || 0) === 2" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">⚔️</div>
+                                    <div class="text-6xl mb-4">âš”ï¸</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Long vs Short</h2>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="bg-emerald-500/10 border-2 border-emerald-500/30 p-4 rounded-xl">
-                                        <p class="text-emerald-400 font-bold mb-2">📈 LONG</p>
-                                        <p class="text-slate-300 text-sm">Bet harga NAIK ⬆️</p>
+                                        <p class="text-emerald-400 font-bold mb-2">ðŸ“ˆ LONG</p>
+                                        <p class="text-slate-300 text-sm">Bet harga NAIK â¬†ï¸</p>
                                     </div>
                                     <div class="bg-rose-500/10 border-2 border-rose-500/30 p-4 rounded-xl">
-                                        <p class="text-[#f6465d] font-bold mb-2">📉 SHORT</p>
-                                        <p class="text-slate-300 text-sm">Bet harga TURUN ⬇️</p>
+                                        <p class="text-[#f6465d] font-bold mb-2">ðŸ“‰ SHORT</p>
+                                        <p class="text-slate-300 text-sm">Bet harga TURUN â¬‡ï¸</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div x-show="(window.game?.tutorialStep || 0) === 3" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">🛡️</div>
+                                    <div class="text-6xl mb-4">ðŸ›¡ï¸</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Risk Management</h2>
                                 </div>
                                 <div class="bg-[#f6465d]/10 border-2 border-[#f6465d] p-5 rounded-xl">
-                                    <p class="text-[#f6465d] font-black text-2xl mb-2">🚨 JANGAN BET SEMUA!</p>
+                                    <p class="text-[#f6465d] font-black text-2xl mb-2">ðŸš¨ JANGAN BET SEMUA!</p>
                                     <p class="text-slate-300 text-sm">Satu loss = Game Over</p>
                                 </div>
                                 <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl">
-                                    <p class="text-emerald-400 font-bold">✅ Bet 10-20% Balance</p>
+                                    <p class="text-emerald-400 font-bold">âœ… Bet 10-20% Balance</p>
                                     <p class="text-slate-300 text-sm">Agar bisa survive</p>
                                 </div>
                             </div>
 
                             <div x-show="(window.game?.tutorialStep || 0) === 4" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">📖</div>
+                                    <div class="text-6xl mb-4">ðŸ“–</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Order Book</h2>
                                 </div>
                                 <div class="bg-[#14161b] p-5 rounded-xl space-y-3">
-                                    <p class="text-[#f6465d] font-bold">🔴 Asks = Sell Orders</p>
-                                    <p class="text-emerald-400 font-bold">🟢 Bids = Buy Orders</p>
+                                    <p class="text-[#f6465d] font-bold">ðŸ”´ Asks = Sell Orders</p>
+                                    <p class="text-emerald-400 font-bold">ðŸŸ¢ Bids = Buy Orders</p>
                                 </div>
                             </div>
 
                             <div x-show="(window.game?.tutorialStep || 0) === 5" class="space-y-4">
                                 <div class="text-center mb-6">
-                                    <div class="text-6xl mb-4">🚀</div>
+                                    <div class="text-6xl mb-4">ðŸš€</div>
                                     <h2 class="text-3xl font-black text-white mb-2">Siap Trading!</h2>
                                 </div>
                                 <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-xl">
                                     <p class="text-emerald-400 font-bold mb-2">Yang Sudah Dipelajari:</p>
-                                    <p class="text-slate-300 text-sm">✅ Candlestick Chart</p>
-                                    <p class="text-slate-300 text-sm">✅ Long vs Short</p>
-                                    <p class="text-slate-300 text-sm">✅ Risk Management</p>
-                                    <p class="text-slate-300 text-sm">✅ Order Book</p>
+                                    <p class="text-slate-300 text-sm">âœ… Candlestick Chart</p>
+                                    <p class="text-slate-300 text-sm">âœ… Long vs Short</p>
+                                    <p class="text-slate-300 text-sm">âœ… Risk Management</p>
+                                    <p class="text-slate-300 text-sm">âœ… Order Book</p>
                                 </div>
                             </div>
                         </div>
@@ -1393,7 +1503,7 @@
                                 :disabled="(window.game?.tutorialStep || 0) === 0"
                                 :class="(window.game?.tutorialStep || 0) === 0 ? 'opacity-30' : 'hover:bg-[#2b3139]/50'"
                                 class="px-4 py-2 rounded-lg font-bold text-sm text-slate-400">
-                                ← Previous
+                                â† Previous
                             </button>
 
                             <div class="flex gap-2">
@@ -1408,7 +1518,7 @@
                                 @click="if((window.game?.tutorialStep || 0) < 5) { window.game.tutorialStep++ } else { window.game.showTutorial = false; window.game.tutorialCompleted = true; window.game.saveGame(); }"
                                 class="px-6 py-3 rounded-lg font-bold text-sm bg-gradient-to-r from-[#f0b90b] to-[#f8d12f] hover:from-[#f8d12f] hover:to-[#f0b90b] text-[#0b0e11]">
                                 <span
-                                    x-text="(window.game?.tutorialStep || 0) === 5 ? 'Mulai Trading! 🚀' : 'Next →'"></span>
+                                    x-text="(window.game?.tutorialStep || 0) === 5 ? 'Mulai Trading! ðŸš€' : 'Next â†’'"></span>
                             </button>
                         </div>
                     </div>
@@ -1429,7 +1539,7 @@
     <!-- Toggle Button -->
     <button @click="showLeaderboard = !showLeaderboard"
         class="absolute left-0 bottom-20 -translate-x-full bg-[#f0b90b] px-2 py-4 rounded-l text-2xl hover:bg-[#d9a009] transition-colors">
-        🏆
+        ðŸ†
     </button>
 
     <!-- Leaderboard Content -->
@@ -1441,7 +1551,7 @@
 
         <template x-if="leaders.length === 0">
             <div class="text-center text-slate-500 py-8">
-                <div class="text-4xl mb-2">👤</div>
+                <div class="text-4xl mb-2">ðŸ‘¤</div>
                 <p>No traders yet!</p>
             </div>
         </template>
@@ -1468,3 +1578,5 @@
 </body>
 
 </html>
+
+
