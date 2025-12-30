@@ -1126,6 +1126,11 @@
                         }
                     },
 
+                    updateHeaderBalance() {
+                        window.userBalance = this.balance;
+                        window.dispatchEvent(new CustomEvent('balance-update', { detail: this.balance }));
+                    },
+
                     // localStorage Methods
                     loadGame() {
                         try {
@@ -1210,8 +1215,8 @@
 
                     generateOrderBook() {
                         const price = this.lastPrice;
-                        this.asks = Array.from({ length: 15 }, (_, i) => ({ id: 'a' + i, price: price + 0.5 + (i * 1.5) + Math.random(), amount: Math.random() }));
-                        this.bids = Array.from({ length: 15 }, (_, i) => ({ id: 'b' + i, price: price - 0.5 - (i * 1.5) - Math.random(), amount: Math.random() }));
+                        this.asks = Array.from({ length: 30 }, (_, i) => ({ id: 'a' + i, price: price + 0.5 + (i * 1.5) + Math.random(), amount: Math.random() }));
+                        this.bids = Array.from({ length: 30 }, (_, i) => ({ id: 'b' + i, price: price - 0.5 - (i * 1.5) - Math.random(), amount: Math.random() }));
 
                         if (this.asks.length > 0 && this.bids.length > 0) {
                             let bestAsk = this.asks[0].price;
