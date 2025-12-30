@@ -438,7 +438,7 @@
 
         <!-- COL 2: ORDER BOOK (Fixed 280px on Desktop) -->
         <div
-            class="flex flex-col border-r border-[#2b3139] bg-[#14161b] min-w-0 h-[300px] lg:h-auto order-3 lg:order-none border-t lg:border-t-0 border-[#2b3139] overflow-hidden">
+            class="flex flex-col border-r border-[#2b3139] bg-[#14161b] min-w-0 h-[300px] lg:h-full order-3 lg:order-none border-t lg:border-t-0 border-[#2b3139] overflow-hidden">
             <div class="h-9 flex items-center px-3 border-b border-[#2b3139] bg-[#181a20]">
                 <span class="text-[11px] font-bold text-white">Order Book</span>
             </div>
@@ -1149,6 +1149,29 @@
                         } catch (e) {
                             console.error('Error loading game:', e);
                         }
+                    },
+
+                    resetProgress() {
+                        if (!confirm('Reset game progress? Balance will reset to $1,000.')) return;
+
+                        // Reset Alpine State
+                        this.balance = 1000;
+                        this.totalTrades = 0;
+                        this.winningTrades = 0;
+                        this.losingTrades = 0;
+                        this.bestStreak = 0;
+                        this.totalProfit = 0;
+                        this.survivalStreak = 0;
+                        this.tradeHistory = [];
+                        this.myPosition = null;
+                        this.gameOver = false;
+                        this.phase = 'open';
+
+                        // Sync Global
+                        window.userBalance = 1000;
+                        this.saveGame();
+
+                        alert('Game has been reset to $1,000!');
                     },
 
                     saveGame() {
