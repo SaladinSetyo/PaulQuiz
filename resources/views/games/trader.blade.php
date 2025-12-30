@@ -1014,7 +1014,10 @@
 
                     placeOrder(type) {
                         if (this.balance < this.betAmount) return;
-                        this.balance -= this.betAmount; window.userBalance = this.balance;
+                        const oldBalance = this.balance;
+                        this.balance -= this.betAmount; 
+                        window.userBalance = this.balance;
+                        console.log(`💰 Balance: $${oldBalance} → $${this.balance} (deducted $${this.betAmount})`);
                         this.myPosition = { 
                             type: type, 
                             entry: this.lastPrice, 
