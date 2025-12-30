@@ -231,14 +231,27 @@
             </div>
 
             <!-- ENHANCED BALANCE DISPLAY -->
-            <div class="flex items-center gap-3 bg-[#2b3139]/50 px-4 py-2 rounded-lg border border-[#3b4149]">
-                <div class="flex flex-col items-end leading-none">
-                    <span class="text-[9px] text-slate-500 font-bold uppercase mb-1 tracking-wider">Balance</span>
-                    <span class="font-mono font-bold text-white text-lg"
-                        x-text="'$' + (window.userBalance?.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) ?? '1,000.00')">
-                        $1,000.00
-                    </span>
-                </div>
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-[#2b3139] rounded-lg">
+                <svg class="w-4 h-4 text-[#f0b90b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                    </path>
+                </svg>
+                <span class="text-[11px] font-bold text-white"
+                    x-text="'$' + (window.userBalance?.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) ?? '1,000.00')">
+                    $1,000.00
+                </span>
+                <!-- Reset Button -->
+                <button
+                    @click="if(confirm('Reset game progress? This will reset your balance to $1,000.')) { balance = 1000; totalTrades = 0; winningTrades = 0; losingTrades = 0; bestStreak = 0; totalProfit = 0; survivalStreak = 0; tradeHistory = []; myPosition = null; gameOver = false; saveGame(); window.userBalance = 1000; alert('Game reset! Balance: $1,000'); }"
+                    class="ml-2 w-6 h-6 flex items-center justify-center rounded hover:bg-[#3b4149] text-slate-400 hover:text-white transition-colors"
+                    title="Reset Progress">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                        </path>
+                    </svg>
+                </button>
             </div>
 
             <a href="{{ route('homepage') }}"
@@ -255,7 +268,7 @@
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
         class="h-screen flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] bg-[#0b0e11]">
-        
+
         <!-- Mobile Tabs (Only on Mobile) -->
         <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
             <button @click="window.mobileTab = 'chart'"
@@ -1015,12 +1028,12 @@
                     placeOrder(type) {
                         if (this.balance < this.betAmount) return;
                         const oldBalance = this.balance;
-                        this.balance -= this.betAmount; 
+                        this.balance -= this.betAmount;
                         window.userBalance = this.balance;
                         console.log(`💰 Balance: $${oldBalance} → $${this.balance} (deducted $${this.betAmount})`);
-                        this.myPosition = { 
-                            type: type, 
-                            entry: this.lastPrice, 
+                        this.myPosition = {
+                            type: type,
+                            entry: this.lastPrice,
                             amount: this.betAmount,
                             leverage: this.activeLeverage // NEW: Capture current leverage mode
                         };
@@ -1037,8 +1050,8 @@
                         let pnl = 0;
                         if (win) {
                             // Apply leverage multiplier to profit
-                            const leverageMultiplier = this.myPosition.leverage === 'iso' ? 10 : 
-                                                       this.myPosition.leverage === 'cross' ? 3 : 1;
+                            const leverageMultiplier = this.myPosition.leverage === 'iso' ? 10 :
+                                this.myPosition.leverage === 'cross' ? 3 : 1;
                             pnl = this.myPosition.amount * 0.82 * leverageMultiplier; // NEW: Leverage affects profit
                             this.lastPnL = pnl;
                             this.balance += this.myPosition.amount + pnl;
@@ -1427,55 +1440,53 @@
             </div>
         </div>
 
-<!-- Leaderboard Toggle Button (Bottom-Right) -->
-<div x-data="{ showLeaderboard: false, leaders: [] }" x-init="
+        <!-- Leaderboard Toggle Button (Bottom-Right) -->
+        <div x-data="{ showLeaderboard: false, leaders: [] }" x-init="
         fetch('/api/games/trader/leaderboard')
             .then(r => r.json())
             .then(data => leaders = data)
             .catch(err => console.error('Leaderboard error:', err));
-     "
-    class="fixed right-0 top-12 h-[calc(100vh-3rem)] w-80 bg-[#1e2329] border-l border-[#2b3139] transform transition-transform duration-300 z-50"
-    :class="showLeaderboard ? 'translate-x-0' : 'translate-x-full'">
+     " class="fixed right-0 top-12 h-[calc(100vh-3rem)] w-80 bg-[#1e2329] border-l border-[#2b3139] transform transition-transform duration-300 z-50"
+            :class="showLeaderboard ? 'translate-x-0' : 'translate-x-full'">
 
-    <!-- Toggle Button -->
-    <button @click="showLeaderboard = !showLeaderboard"
-        class="absolute left-0 bottom-20 -translate-x-full bg-[#f0b90b] px-2 py-4 rounded-l text-2xl hover:bg-[#d9a009] transition-colors">
-        🏆
-    </button>
+            <!-- Toggle Button -->
+            <button @click="showLeaderboard = !showLeaderboard"
+                class="absolute left-0 bottom-20 -translate-x-full bg-[#f0b90b] px-2 py-4 rounded-l text-2xl hover:bg-[#d9a009] transition-colors">
+                🏆
+            </button>
 
-    <!-- Leaderboard Content -->
-    <div class="p-4 h-full overflow-y-auto">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-white">Leaderboard</h3>
-            <span class="text-xs text-slate-500">Live</span>
-        </div>
+            <!-- Leaderboard Content -->
+            <div class="p-4 h-full overflow-y-auto">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white">Leaderboard</h3>
+                    <span class="text-xs text-slate-500">Live</span>
+                </div>
 
-        <template x-if="leaders.length === 0">
-            <div class="text-center text-slate-500 py-8">
-                <div class="text-4xl mb-2">👤</div>
-                <p>No traders yet!</p>
-            </div>
-        </template>
+                <template x-if="leaders.length === 0">
+                    <div class="text-center text-slate-500 py-8">
+                        <div class="text-4xl mb-2">👤</div>
+                        <p>No traders yet!</p>
+                    </div>
+                </template>
 
-        <div class="space-y-2">
-            <template x-for="(leader, index) in leaders" :key="leader.id">
-                <div class="bg-[#0b0e11] p-3 rounded-lg border border-[#2b3139]">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#f0b90b] font-bold text-lg" x-text="'#' + (index + 1)"></span>
-                            <span class="text-white font-medium" x-text="leader.username"></span>
-                        </div>
-                        <span class="text-emerald-400 font-mono text-sm"
-                            x-text="'
+                <div class="space-y-2">
+                    <template x-for="(leader, index) in leaders" :key="leader.id">
+                        <div class="bg-[#0b0e11] p-3 rounded-lg border border-[#2b3139]">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[#f0b90b] font-bold text-lg" x-text="'#' + (index + 1)"></span>
+                                    <span class="text-white font-medium" x-text="leader.username"></span>
+                                </div>
+                                <span class="text-emerald-400 font-mono text-sm" x-text="'
 
 </html> + leader.total_profit.toLocaleString()"></span>
-                    </div>
-                    <div class="text-xs text-slate-500 mt-1" x-text="leader.total_trades + ' trades'"></div>
+                            </div>
+                            <div class="text-xs text-slate-500 mt-1" x-text="leader.total_trades + ' trades'"></div>
+                        </div>
+                    </template>
                 </div>
-            </template>
+            </div>
         </div>
-    </div>
-</div>
 </body>
 
 </html>
