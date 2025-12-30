@@ -254,9 +254,8 @@
 
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
-        class="flex-grow flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] overflow-y-auto lg:overflow-hidden bg-[#0b0e11]"
-        style="max-height: calc(100vh - 48px);">
-
+        class="h-screen flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] bg-[#0b0e11]">
+        
         <!-- Mobile Tabs (Only on Mobile) -->
         <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
             <button @click="window.mobileTab = 'chart'"
@@ -494,7 +493,7 @@
         </div>
 
         <!-- COL 3: TRADE FORM (Fixed 300px) -->
-        <div class="flex flex-col bg-[#1e2329] min-w-0 border-l border-[#2b3139]">
+        <div class="h-full flex flex-col bg-[#1e2329] min-w-0 border-l border-[#2b3139] overflow-hidden">
             <!-- Tabs -->
             <div class="flex bg-[#181a20] text-[11px] font-bold border-b border-[#2b3139] shrink-0">
                 <button class="flex-1 py-3 text-[#f0b90b] border-t-2 border-[#f0b90b] bg-[#1e2329]">Spot</button>
