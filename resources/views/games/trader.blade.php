@@ -908,6 +908,7 @@
                     lastWin: false,
                     lastPnL: 0,
                     tradeHistory: [],
+                    activeLeverage: 'spot', // NEW: Track current leverage mode (spot/cross/iso)
 
                     // Canvas
                     crosshair: { x: 0, y: 0, visible: false, price: 0 },
