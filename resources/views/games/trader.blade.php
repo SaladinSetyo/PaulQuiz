@@ -449,7 +449,7 @@
                 <span>Total</span>
             </div>
 
-            <div class="flex-1 overflow-y-auto font-mono text-[10px] relative"
+            <div class="flex-1 h-full flex flex-col overflow-y-auto font-mono text-[10px] relative"
                 style="scrollbar-width: thin; scrollbar-color: #2b3139 #14161b;">
                 <!-- Sells -->
                 <div class="flex-1 overflow-hidden flex flex-col-reverse justify-start">
@@ -524,11 +524,6 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="flex justify-between text-[11px] font-bold text-slate-400">
-                        <span>Avbl Balance</span>
-                        <span class="text-white"><span x-text="Math.floor(balance)"></span> USDT</span>
-                    </div>
-
                     <!-- Price Input -->
                     <div
                         class="flex items-center bg-[#2b3139] rounded border border-[#2b3139] h-10 hover:border-[#f0b90b] transition-colors group">
