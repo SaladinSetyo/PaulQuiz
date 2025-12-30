@@ -1016,6 +1016,35 @@
                             this.draw();
                         }, 1000); // 1 second update
 
+                        // Canvas Events with RAF Throttling for Smooth Crosshair
+                        let rafPending = false;
+                        let lastMouseEvent = null;
+
+                        const updateCrosshair = () => {
+                            if (!lastMouseEvent) return;
+                            const rect = this.canvas.getBoundingClientRect();
+                            const x = lastMouseEvent.clientX - rect.left;
+                            const y = lastMouseEvent.clientY - rect.top;
+
+                            const candleW = (rect.width - 140) / this.maxCandles;
+                            const priceMin = Math.min(...this.candles.map(c => c.l), this.lastPrice);
+                            const priceMax = Math.max(...this.candles.map(c => c.h), this.lastPrice);
+                            const chartH = rect.height - 60;
+                            const priceAtY = priceMax - ((y - 20) / chartH) * (priceMax - priceMin);
+
+                            this.crosshair = { x, y, visible: true, price: priceAtY };
+                            this.draw(); // Optimized redraw only when needed
+                            rafPending = false;
+                        };
+
+                        this.canvas.addEventListener('mousemove', (e) => {
+                            lastMouseEvent = e;
+                            if (!rafPending) {
+                                rafPending = true;
+                                requestAnimationFrame(updateCrosshair);
+                            }
+                        });
+
                         setInterval(() => {
                             let o = this.lastPrice; this.candles.push({ o, h: o, l: o, c: o });
                             if (this.candles.length > this.maxCandles) this.candles.shift();
