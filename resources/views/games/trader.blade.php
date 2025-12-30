@@ -243,7 +243,7 @@
                     $1,000.00
                 </span>
                 <!-- Reset Button -->
-                <button @click="window.game?.resetProgress()"
+                <button onclick="window.game && window.game.resetProgress()"
                     class="ml-2 w-6 h-6 flex items-center justify-center rounded hover:bg-[#3b4149] text-slate-400 hover:text-white transition-colors"
                     title="Reset Progress">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
