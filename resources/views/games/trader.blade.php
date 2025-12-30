@@ -1034,7 +1034,10 @@
                         // Calculate PnL
                         let pnl = 0;
                         if (win) {
-                            pnl = this.myPosition.amount * 0.82;
+                            // Apply leverage multiplier to profit
+                            const leverageMultiplier = this.myPosition.leverage === 'iso' ? 10 : 
+                                                       this.myPosition.leverage === 'cross' ? 3 : 1;
+                            pnl = this.myPosition.amount * 0.82 * leverageMultiplier; // NEW: Leverage affects profit
                             this.lastPnL = pnl;
                             this.balance += this.myPosition.amount + pnl;
                         } else {
