@@ -237,8 +237,9 @@
                         d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
                     </path>
                 </svg>
-                <span class="text-[11px] font-bold text-white"
-                    x-text="'$' + (window.userBalance?.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) ?? '1,000.00')">
+                <span class="text-[11px] font-bold text-white" x-data="{ currentBalance: window.userBalance || 1000 }"
+                    @balance-update.window="currentBalance = $event.detail"
+                    x-text="'$' + (currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}))">
                     $1,000.00
                 </span>
                 <!-- Reset Button -->
@@ -266,7 +267,7 @@
 
     <!-- MAIN GRID LAYOUT -->
     <div x-data="proTrader()" x-init="initTrader()" x-cloak
-        class="h-screen flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] bg-[#0b0e11]">
+        class="flex-1 h-full min-h-0 flex flex-col lg:grid lg:grid-cols-[1fr_280px_300px] bg-[#0b0e11]">
 
         <!-- Mobile Tabs (Only on Mobile) -->
         <div class="lg:hidden flex border-b border-[#2b3139] bg-[#14161b]">
@@ -1052,7 +1053,7 @@
                         if (this.balance < this.betAmount) return;
                         const oldBalance = this.balance;
                         this.balance -= this.betAmount;
-                        window.userBalance = this.balance;
+                        this.updateHeaderBalance();
                         console.log(`💰 Balance: $${oldBalance} → $${this.balance} (deducted $${this.betAmount})`);
                         this.myPosition = {
                             type: type,
@@ -1073,8 +1074,7 @@
                         let pnl = 0;
                         if (win) {
                             // Apply leverage multiplier to profit
-                            const leverageMultiplier = this.myPosition.leverage === 'iso' ? 10 :
-                                this.myPosition.leverage === 'cross' ? 3 : 1;
+                            const leverageMultiplier = this.getCurrentLeverageMultiplier();
                             pnl = this.myPosition.amount * 0.82 * leverageMultiplier; // NEW: Leverage affects profit
                             this.lastPnL = pnl;
                             this.balance += this.myPosition.amount + pnl;
@@ -1163,7 +1163,7 @@
                         this.phase = 'open';
 
                         // Sync Global
-                        window.userBalance = 1000;
+                        this.updateHeaderBalance();
                         this.saveGame();
 
                         alert('Game has been reset to $1,000!');
