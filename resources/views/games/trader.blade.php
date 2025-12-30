@@ -1016,7 +1016,12 @@
                     placeOrder(type) {
                         if (this.balance < this.betAmount) return;
                         this.balance -= this.betAmount; window.userBalance = this.balance;
-                        this.myPosition = { type: type, entry: this.lastPrice, amount: this.betAmount };
+                        this.myPosition = { 
+                            type: type, 
+                            entry: this.lastPrice, 
+                            amount: this.betAmount,
+                            leverage: this.activeLeverage // NEW: Capture current leverage mode
+                        };
                     },
 
                     settle() {
