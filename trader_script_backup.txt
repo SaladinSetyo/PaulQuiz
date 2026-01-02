@@ -1,0 +1,400 @@
+                winningTrades: 0,
+                losingTrades: 0,
+                lastPrice: 65000.00,
+                prevPrice: 65000.00,
+                betAmount: 100,
+                candles: [],
+                canvas: null,
+                ctx: null,
+                maxCandles: 150,
+                myPosition: null,
+                showResult: false,
+                lastWin: false,
+                lastPnL: 0,
+                activeLeverage: 'spot',
+                tradeHistory: [],
+
+                // Init
+                initTrader() {
+                    console.log('🚀 Initializing Trader...');
+                    this.loadGame();
+                    window.userBalance = this.balance;
+                    window.game = this;
+
+                    setTimeout(() => {
+                        this.canvas = this.$refs.tradeCanvas;
+                        if (!this.canvas) return;
+
+                        this.setupCanvas();
+                        this.fillHistory();
+                        this.startLoops();
+                        this.setupEvents();
+                        this.draw();
+
+                        console.log('✅ Trader Ready');
+                    }, 100);
+
+                    this.updateHeaderBalance();
+                },
+
+                // Canvas Setup
+                setupCanvas() {
+                    const container = this.canvas.parentElement;
+                    const dpr = window.devicePixelRatio || 1;
+
+                    this.canvas.style.width = container.clientWidth + 'px';
+                    this.canvas.style.height = container.clientHeight + 'px';
+                    this.canvas.width = container.clientWidth * dpr;
+                    this.canvas.height = container.clientHeight * dpr;
+
+                    this.ctx = this.canvas.getContext('2d');
+                    this.ctx.scale(dpr, dpr);
+                },
+
+                // Generate History
+                fillHistory() {
+                    this.candles = [];
+                    let p = 65000;
+
+                    for (let i = 0; i < this.maxCandles; i++) {
+                        const seed = Date.now() - (this.maxCandles - i) * 1000;
+                        const random = Math.sin(seed) * 10000 - Math.floor(Math.sin(seed) * 10000);
+
+                        const o = p;
+                        const change = (random - 0.5) * 40;
+                        const c = o + change;
+                        const h = Math.max(o, c) + random * 8;
+                        const l = Math.min(o, c) - random * 8;
+
+                        this.candles.push({ o, h, l, c });
+                        p = c;
+                    }
+
+                    this.lastPrice = p;
+                    this.prevPrice = p;
+                },
+
+                // Main Loops
+                startLoops() {
+                    // Phase timer
+                    setInterval(() => {
+                        if (this.gameOver) return;
+
+                        const now = Math.floor(Date.now() / 1000);
+                        const cycle = now % 30;
+
+                        if (cycle < 20) {
+                            if (this.phase === 'locked') {
+                                this.settle();
+                                this.phase = 'open';
+                            }
+                            this.timer = 20 - cycle;
+                        } else {
+                            this.phase = 'locked';
+                            this.timer = 30 - cycle;
+                        }
+                    }, 1000);
+
+                    // Price updates
+                    setInterval(() => {
+                        if (this.gameOver || !this.candles.length) return;
+
+                        const now = Math.floor(Date.now() / 1000);
+                        const random = Math.sin(now) * 10000 - Math.floor(Math.sin(now) * 10000);
+
+                        this.prevPrice = this.lastPrice;
+                        const volatility = this.phase === 'locked' ? 0.008 : 0.004;
+                        const change = (random - 0.5) * 200 * volatility * (this.lastPrice / 20000);
+                        this.lastPrice += change;
+
+                        const lc = this.candles[this.candles.length - 1];
+                        if (lc) {
+                            lc.c = this.lastPrice;
+                            if (this.lastPrice > lc.h) lc.h = this.lastPrice;
+                            if (this.lastPrice < lc.l) lc.l = this.lastPrice;
+                        }
+
+                        if (now % 3 === 0 && (!this._lastCandleTime || this._lastCandleTime !== now)) {
+                            this._lastCandleTime = now;
+
+                            const o = this.lastPrice;
+                            let candleVol = (random - 0.5) * 80;
+                            if (Math.abs(candleVol) < 15) candleVol = candleVol >= 0 ? 15 : -15;
+
+                            const c = o + candleVol;
+                            const wickSpread = Math.abs(candleVol) * 0.6;
+                            const h = Math.max(o, c) + wickSpread * (0.3 + random * 0.7);
+                            const l = Math.min(o, c) - wickSpread * (0.3 + random * 0.7);
+
+                            this.candles.push({ o, h, l, c });
+                            if (this.candles.length > this.maxCandles) this.candles.shift();
+                        }
+
+                        this.draw();
+                    }, 1000);
+                },
+
+                // Setup Events
+                setupEvents() {
+                    const chartContainer = document.getElementById('chartContainer');
+                    if (!chartContainer) return;
+
+                    chartContainer.addEventListener('mousemove', (e) => {
+                        const r = this.canvas.getBoundingClientRect();
+                        this.crosshair = {
+                            x: e.clientX - r.left,
+                            y: e.clientY - r.top,
+                            visible: true
+                        };
+                        requestAnimationFrame(() => this.draw());
+                    });
+
+                    chartContainer.addEventListener('mouseleave', () => {
+                        this.crosshair = { x: 0, y: 0, visible: false };
+                        requestAnimationFrame(() => this.draw());
+                    });
+                },
+
+                // Draw Chart
+                draw() {
+                    if (!this.ctx || !this.canvas) return;
+
+                    try {
+                        const w = this.canvas.width / (window.devicePixelRatio || 1);
+                        const h = this.canvas.height / (window.devicePixelRatio || 1);
+                        const ctx = this.ctx;
+
+                        ctx.clearRect(0, 0, w, h);
+                        ctx.fillStyle = '#0b0e11';
+                        ctx.fillRect(0, 0, w, h);
+
+                        // Grid
+                        ctx.strokeStyle = '#2b3139';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        for (let x = w % 80; x < w; x += 80) {
+                            ctx.moveTo(x, 0);
+                            ctx.lineTo(x, h);
+                        }
+                        for (let y = h % 80; y < h; y += 80) {
+                            ctx.moveTo(0, y);
+                            ctx.lineTo(w, y);
+                        }
+                        ctx.stroke();
+
+                        // Visible candles
+                        const candlesPerScreen = 60;
+                        const startIdx = Math.max(0, this.candles.length - candlesPerScreen);
+                        const visibleCandles = this.candles.slice(startIdx);
+
+                        if (!visibleCandles.length) return;
+
+                        // Auto-scale Y
+                        let visibleMin = Infinity, visibleMax = -Infinity;
+                        visibleCandles.forEach(c => {
+                            if (c.l < visibleMin) visibleMin = c.l;
+                            if (c.h > visibleMax) visibleMax = c.h;
+                        });
+
+                        const vRange = visibleMax - visibleMin;
+                        const min = visibleMin - (vRange * 0.1);
+                        const max = visibleMax + (vRange * 0.1);
+                        const range = max - min;
+
+                        // Draw candles
+                        const candleWidth = 12;
+                        const candleSpacing = 3;
+                        const totalCandleWidth = candleWidth + candleSpacing;
+
+                        visibleCandles.forEach((c, i) => {
+                            const isGreen = c.c >= c.o;
+                            const bodyColor = isGreen ? '#0ecb81' : '#f6465d';
+                            const wickColor = isGreen ? '#0aa06a' : '#d63a4f';
+
+                            const x = w - (visibleCandles.length - i) * totalCandleWidth + candleSpacing;
+
+                            const yH = h - ((c.h - min) / range) * h;
+                            const yL = h - ((c.l - min) / range) * h;
+                            const yO = h - ((c.o - min) / range) * h;
+                            const yC = h - ((c.c - min) / range) * h;
+
+                            const bodyTop = Math.min(yO, yC);
+                            const bodyBottom = Math.max(yO, yC);
+                            let bodyHeight = bodyBottom - bodyTop;
+                            if (bodyHeight < 3) bodyHeight = 3;
+
+                            // Wicks
+                            ctx.strokeStyle = wickColor;
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.moveTo(x + candleWidth / 2, yH);
+                            ctx.lineTo(x + candleWidth / 2, bodyTop);
+                            ctx.stroke();
+                            ctx.beginPath();
+                            ctx.moveTo(x + candleWidth / 2, bodyBottom);
+                            ctx.lineTo(x + candleWidth / 2, yL);
+                            ctx.stroke();
+
+                            // Body
+                            ctx.shadowColor = bodyColor;
+                            ctx.shadowBlur = 3;
+                            ctx.fillStyle = bodyColor;
+                            ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
+                            ctx.shadowBlur = 0;
+
+                            // Border
+                            ctx.strokeStyle = wickColor;
+                            ctx.lineWidth = 0.5;
+                            ctx.strokeRect(x, bodyTop, candleWidth, bodyHeight);
+
+                            // Volume
+                            const volHeight = Math.min((Math.abs(c.c - c.o) / range) * h * 0.15 + 3, h * 0.18);
+                            ctx.globalAlpha = 0.12;
+                            ctx.fillStyle = bodyColor;
+                            ctx.fillRect(x, h - volHeight, candleWidth, volHeight);
+                            ctx.globalAlpha = 1.0;
+                        });
+
+                        // Position line
+                        if (this.myPosition) {
+                            const posY = Math.round(h - ((this.myPosition.entry - min) / range) * h);
+                            const color = this.myPosition.type === 'buy' ? '#0ecb81' : '#f6465d';
+
+                            ctx.strokeStyle = color;
+                            ctx.setLineDash([5, 3]);
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(0, posY);
+                            ctx.lineTo(w, posY);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            ctx.fillStyle = color;
+                            ctx.fillRect(w - 60, posY - 10, 60, 20);
+                            ctx.fillStyle = '#fff';
+                            ctx.font = 'bold 12px sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(this.myPosition.entry.toFixed(2), w - 30, posY);
+                        }
+
+                        // Price line
+                        const priceY = Math.round(h - ((this.lastPrice - min) / range) * h);
+                        ctx.shadowColor = '#f0b90b';
+                        ctx.shadowBlur = 10;
+                        ctx.strokeStyle = '#f0b90b';
+                        ctx.setLineDash([2, 2]);
+                        ctx.beginPath();
+                        ctx.moveTo(0, priceY);
+                        ctx.lineTo(w, priceY);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                        ctx.shadowBlur = 0;
+
+                        ctx.fillStyle = '#f0b90b';
+                        ctx.fillRect(w - 60, priceY - 10, 60, 20);
+                        ctx.fillStyle = '#000';
+                        ctx.font = 'bold 12px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(this.lastPrice.toFixed(2), w - 30, priceY);
+
+                        ctx.textAlign = 'start';
+                        ctx.textBaseline = 'alphabetic';
+
+                    } catch (e) {
+                        console.error('Draw error:', e);
+                    }
+                },
+
+                // Trading
+                placeOrder(type) {
+                    const bet = parseFloat(this.betAmount);
+                    if (this.balance < bet) return;
+
+                    this.balance -= bet;
+                    this.updateHeaderBalance();
+
+                    this.myPosition = {
+                        type: type,
+                        entry: this.lastPrice,
+                        amount: bet
+                    };
+                },
+
+                settle() {
+                    if (!this.myPosition) return;
+
+                    const exitPrice = this.lastPrice;
+                    const entry = this.myPosition.entry;
+                    const amount = this.myPosition.amount;
+                    const leverage = this.getLeverageMultiplier();
+
+                    let priceDiff = this.myPosition.type === 'buy' ? (exitPrice - entry) : (entry - exitPrice);
+                    let profitPercent = (priceDiff / entry) * 100;
+                    let pnl = (amount * profitPercent * leverage) / 100;
+
+                    const isWin = pnl >= 0;
+                    this.balance = parseFloat(this.balance) + parseFloat(pnl);
+
+                    this.totalTrades++;
+                    if (isWin) this.winningTrades++;
+
+                    this.lastWin = isWin;
+                    this.lastPnL = pnl;
+                    this.showResult = true;
+
+                    this.myPosition = null;
+                    this.updateHeaderBalance();
+                    this.saveGame();
+
+                    setTimeout(() => this.showResult = false, 3000);
+
+                    if (this.balance <= 0) this.gameOver = true;
+                },
+
+                getLeverageMultiplier() {
+                    if (this.activeLeverage === 'cross 3x') return 3;
+                    if (this.activeLeverage === 'iso 10x') return 10;
+                    return 1;
+                },
+
+                // Utils
+                formatTimer() {
+                    return `00:${this.timer.toString().padStart(2, '0')}`;
+                },
+
+                updateHeaderBalance() {
+                    window.dispatchEvent(new CustomEvent('balance-update', { detail: this.balance }));
+                },
+
+                saveGame() {
+                    const gameState = {
+                        balance: this.balance,
+                        totalTrades: this.totalTrades,
+                        winningTrades: this.winningTrades,
+                        losingTrades: this.losingTrades
+                    };
+                    localStorage.setItem('proTraderGame', JSON.stringify(gameState));
+                },
+
+                loadGame() {
+                    const saved = localStorage.getItem('proTraderGame');
+                    if (saved) {
+                        const state = JSON.parse(saved);
+                        Object.assign(this, state);
+                    }
+                },
+
+                resetProgress() {
+                    if (confirm('Reset all progress? This cannot be undone!')) {
+                        localStorage.removeItem('proTraderGame');
+                        location.reload();
+                    }
+                }
+            }));
+        });
+    </script>
+</body>
+
+</html>
