@@ -67,9 +67,12 @@ class QuizController extends Controller
             'answers.*' => 'required|integer|exists:answers,id',
         ]);
 
+        // Count each question of this quiz at most once, ignoring answers that belong to other quizzes
         $correctAnswers = Answer::whereIn('id', $validated['answers'])
             ->where('is_correct', true)
-            ->count();
+            ->whereHas('question', fn ($query) => $query->where('quiz_id', $quiz->id))
+            ->distinct()
+            ->count('question_id');
 
         $totalQuestions = $quiz->questions->count();
         $score = ($totalQuestions > 0) ? ($correctAnswers / $totalQuestions) * 100 : 0;
@@ -81,9 +84,11 @@ class QuizController extends Controller
                 'score' => round($score),
             ]);
 
-            // Award points to the user
-            $user = Auth::user();
-            $user->increment('points', round($score)); // Add quiz score to user's total points
+            // Only the best score per quiz counts toward points: a retry earns just the improvement over the previous best
+            $pointsEarned = max(0, round($score) - ($attempts->max('score') ?? 0));
+            if ($pointsEarned > 0) {
+                Auth::user()->increment('points', $pointsEarned);
+            }
         }
 
         return redirect()->route('quizzes.show', $quiz)->with('success', 'Kuis telah diselesaikan! Skor Anda: ' . round($score) . '%');
