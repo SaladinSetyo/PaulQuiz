@@ -171,23 +171,17 @@ Default-nya memakai driver `database` (tabel dibuat oleh migrasi), jadi tidak pe
 
 | Seeder | Isi |
 |---|---|
-| `RolesAndPermissionsSeeder` | Role `admin` & `user` (Spatie) + akun demo `admin@example.com` dan `user@example.com` (password `password`, sudah terverifikasi). |
+| `RolesAndPermissionsSeeder` | Role `admin` & `user` (Spatie) + akun demo `admin@example.com` (kolom `role` = `admin`) dan `user@example.com` (password `password`, sudah terverifikasi). Aman dijalankan ulang. |
 | `ModuleSeeder` | 4 modul: *Apa itu fintech*, *Jenis-jenis Fintech berikut contohnya*, *Keamanan digital dan privasi*, *Regulasi dan perlindungan*. |
 | `ContentSeeder` | Modul 1: 1 artikel, 3 video YouTube, 3 infografis (ditandai *featured*). |
 | `QuizSeeder` | Kuis *Kuis Dasar Fintech* (3 soal pilihan ganda) di Modul 1. |
 
-### Mengaktifkan akun admin
+### Menjadikan pengguna sebagai admin
 
-Middleware `role:admin` memeriksa kolom `users.role`, sedangkan seeder hanya menetapkan role melalui Spatie. Kolom tersebut bernilai default `user`, sehingga akun admin demo mendapat **403** saat membuka `/admin`. Set secara manual:
-
-```bash
-php artisan tinker --execute="App\Models\User::where('email','admin@example.com')->update(['role'=>'admin']);"
-```
-
-Atau langsung lewat SQLite:
+Middleware `role:admin` memeriksa kolom `users.role`. Untuk mempromosikan pengguna lain menjadi admin, set kolom tersebut sekaligus role Spatie-nya:
 
 ```bash
-sqlite3 database/database.sqlite "UPDATE users SET role='admin' WHERE email='admin@example.com';"
+php artisan tinker --execute="\$u = App\Models\User::where('email', 'nama@email.com')->first(); \$u->update(['role' => 'admin']); \$u->assignRole('admin');"
 ```
 
 ### Reset data
@@ -195,8 +189,6 @@ sqlite3 database/database.sqlite "UPDATE users SET role='admin' WHERE email='adm
 ```bash
 php artisan migrate:fresh --seed
 ```
-
-Setelah itu ulangi langkah mengaktifkan akun admin di atas.
 
 ---
 
@@ -208,13 +200,14 @@ php artisan test
 
 Test memakai SQLite in-memory (lihat `phpunit.xml`), jadi tidak menyentuh database lokal.
 
-| Suite | Hasil |
+| Suite | Cakupan |
 |---|---|
-| Unit | ✅ lulus |
-| Feature: Authentication, Email Verification, Password Confirmation, Password Update, Registration, Profile | ✅ lulus |
-| Feature: Password Reset | ⚠️ 3 test gagal |
+| `Feature/Auth/*` | Login (termasuk input email tetap terisi setelah gagal login), logout, register, verifikasi email, konfirmasi & update password, reset password dengan `CustomResetPassword` |
+| `Feature/AdminAccessTest` | Akun admin hasil seeder bisa membuka `/admin`; pengguna biasa mendapat 403 |
+| `Feature/ProfileTest` | Update profil & hapus akun |
+| `Feature/ExampleTest`, `Unit/ExampleTest` | Smoke test halaman utama |
 
-**Total: 22 lulus, 3 gagal.** Ketiga test reset password masih memakai `Notification::assertSentTo($user, ResetPassword::class)`, sedangkan `User::sendPasswordResetNotification()` mengirim `App\Notifications\CustomResetPassword`. Test perlu diarahkan ke kelas notifikasi custom tersebut.
+**Hasil saat ini: 28 test lulus (64 assertions).**
 
 ---
 
@@ -226,7 +219,7 @@ Test memakai SQLite in-memory (lihat `phpunit.xml`), jadi tidak menyentuh databa
 | `composer install` gagal karena `ext-mbstring` / `ext-dom` | Instal ekstensi PHP yang kurang (lihat [Kebutuhan Sistem](#kebutuhan-sistem)). |
 | `Vite manifest not found` | Jalankan `npm run build` (atau `npm run dev` saat pengembangan). |
 | `database.sqlite does not exist` | `touch database/database.sqlite` lalu migrasi ulang. |
-| `/admin` menampilkan **403** | Kolom `users.role` belum `admin`; lihat [Mengaktifkan akun admin](#mengaktifkan-akun-admin). |
+| `/admin` menampilkan **403** untuk akun admin | Kolom `users.role` belum `admin` (mis. database lama). Jalankan `php artisan db:seed --class=RolesAndPermissionsSeeder` atau lihat [Menjadikan pengguna sebagai admin](#menjadikan-pengguna-sebagai-admin). |
 | Registrasi error saat mengirim email | Set `MAIL_MAILER=log` untuk lokal, atau isi kredensial SMTP yang valid. |
 | Video di modul tidak tampil | Video di-embed dari YouTube, sehingga membutuhkan koneksi internet. |
 | `npm install` memperingatkan *install scripts blocked* (esbuild) | Aman diabaikan; build Vite tetap berjalan karena binary esbuild sudah tersedia lewat paket platform. |

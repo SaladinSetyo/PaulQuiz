@@ -26,15 +26,15 @@
 ## Daftar Isi
 
 - [Tentang Project](#tentang-project)
-- [Fitur Utama](#fitur-utama)
 - [Tampilan Aplikasi](#tampilan-aplikasi)
+- [Fitur Utama](#fitur-utama)
 - [Tech Stack](#tech-stack)
 - [Menjalankan Secara Lokal](#menjalankan-secara-lokal)
 - [Akun Demo](#akun-demo)
 - [Testing](#testing)
 - [Struktur Project](#struktur-project)
 - [Dokumentasi Lanjutan](#dokumentasi-lanjutan)
-- [Catatan & Known Issues](#catatan--known-issues)
+- [Catatan Pengembangan](#catatan-pengembangan)
 - [Author](#author)
 
 ---
@@ -54,6 +54,33 @@ Di sisi pengelola, tersedia **Admin Panel** untuk mengelola modul, konten, kuis 
 - Banyak pemula ingin mencoba trading tanpa memahami risikonya.
 
 PaulQuiz menjawabnya dengan materi singkat yang mudah dicerna, kuis untuk mengukur pemahaman, dan simulasi untuk merasakan risiko pasar secara aman.
+
+---
+
+## Tampilan Aplikasi
+
+| Halaman Utama | Daftar Modul |
+|---|---|
+| ![Homepage](docs/screenshots/01-homepage.png) | ![Modul](docs/screenshots/02-modules.png) |
+| **Detail Modul** | **Kuis** |
+| ![Detail modul](docs/screenshots/03-module-detail.png) | ![Kuis](docs/screenshots/04-quiz.png) |
+| **Hasil Kuis & Riwayat Percobaan** | **Login / Register** |
+| ![Hasil kuis](docs/screenshots/05-quiz-result.png) | ![Login](docs/screenshots/08-login.png) |
+| **Crypto Trader Panic: Tutorial** | **Crypto Trader Panic: Gameplay** |
+| ![Tutorial game](docs/screenshots/06-trader-tutorial.png) | ![Game](docs/screenshots/07-trader-game.png) |
+| **Leaderboard** | **Statistik Pengguna** |
+| ![Leaderboard](docs/screenshots/09-leaderboard.png) | ![Statistik](docs/screenshots/10-user-stats.png) |
+| **Admin Dashboard** | **Admin: Manajemen Modul** |
+| ![Admin dashboard](docs/screenshots/11-admin-dashboard.png) | ![Admin modul](docs/screenshots/12-admin-modules.png) |
+| **Admin: Manajemen Kuis** | **Admin: Manajemen Konten** |
+| ![Admin kuis](docs/screenshots/13-admin-quizzes.png) | ![Admin konten](docs/screenshots/14-admin-contents.png) |
+
+<details>
+<summary>Tangkapan layar halaman utama secara penuh</summary>
+
+![Homepage full](docs/screenshots/01-homepage-full.jpg)
+
+</details>
 
 ---
 
@@ -92,33 +119,6 @@ Simulasi trading BTC/USDT bergaya exchange profesional (chart candlestick, order
 - Tebakan benar = **+82%** dari taruhan; tebakan salah = taruhan hangus. Saldo habis = **GAME OVER**.
 - Tutorial interaktif 6 langkah, riwayat 50 trade terakhir, statistik win/loss & *streak*.
 - Progres disimpan di `localStorage`, jadi permainan berlanjut setelah halaman dimuat ulang.
-
----
-
-## Tampilan Aplikasi
-
-| Halaman Utama | Daftar Modul |
-|---|---|
-| ![Homepage](docs/screenshots/01-homepage.png) | ![Modul](docs/screenshots/02-modules.png) |
-| **Detail Modul** | **Kuis** |
-| ![Detail modul](docs/screenshots/03-module-detail.png) | ![Kuis](docs/screenshots/04-quiz.png) |
-| **Hasil Kuis & Riwayat Percobaan** | **Login / Register** |
-| ![Hasil kuis](docs/screenshots/05-quiz-result.png) | ![Login](docs/screenshots/08-login.png) |
-| **Crypto Trader Panic: Tutorial** | **Crypto Trader Panic: Gameplay** |
-| ![Tutorial game](docs/screenshots/06-trader-tutorial.png) | ![Game](docs/screenshots/07-trader-game.png) |
-| **Leaderboard** | **Statistik Pengguna** |
-| ![Leaderboard](docs/screenshots/09-leaderboard.png) | ![Statistik](docs/screenshots/10-user-stats.png) |
-| **Admin Dashboard** | **Admin: Manajemen Modul** |
-| ![Admin dashboard](docs/screenshots/11-admin-dashboard.png) | ![Admin modul](docs/screenshots/12-admin-modules.png) |
-| **Admin: Manajemen Kuis** | **Admin: Manajemen Konten** |
-| ![Admin kuis](docs/screenshots/13-admin-quizzes.png) | ![Admin konten](docs/screenshots/14-admin-contents.png) |
-
-<details>
-<summary>Tangkapan layar halaman utama secara penuh</summary>
-
-![Homepage full](docs/screenshots/01-homepage-full.jpg)
-
-</details>
 
 ---
 
@@ -193,19 +193,13 @@ Panduan lengkap, termasuk konfigurasi MySQL, SMTP, dan *troubleshooting*, ada di
 
 ## Akun Demo
 
-Seeder `RolesAndPermissionsSeeder` membuat dua akun yang sudah terverifikasi:
+Seeder `RolesAndPermissionsSeeder` membuat dua akun yang sudah terverifikasi dan siap dipakai:
 
 | Peran | Email | Password |
 |---|---|---|
 | Admin | `admin@example.com` | `password` |
 | User | `user@example.com` | `password` |
 
-> **Penting:** akses `/admin` diperiksa dari kolom `users.role`, sedangkan seeder hanya memberi role Spatie. Agar akun admin bisa membuka Admin Panel, jalankan sekali setelah seeding:
->
-> ```bash
-> php artisan tinker --execute="App\Models\User::where('email','admin@example.com')->update(['role'=>'admin']);"
-> ```
->
 > Ganti password akun demo sebelum deploy ke produksi.
 
 ---
@@ -216,7 +210,7 @@ Seeder `RolesAndPermissionsSeeder` membuat dua akun yang sudah terverifikasi:
 php artisan test
 ```
 
-Test suite (Pest) mencakup alur autentikasi dan profil. Status saat ini: **22 dari 25 test lulus**. Tiga test di `PasswordResetTest` masih mengharapkan notifikasi bawaan Breeze (`ResetPassword`), sedangkan aplikasi sudah memakai `CustomResetPassword` dengan template ber-branding, sehingga test tersebut perlu disesuaikan.
+Test suite (Pest) mencakup autentikasi (login, register, verifikasi email, reset password dengan notifikasi `CustomResetPassword`), profil, dan hak akses Admin Panel. Status saat ini: **28 test lulus** (64 assertions).
 
 ---
 
@@ -260,13 +254,11 @@ docs/                     # Dokumentasi & screenshot
 
 ---
 
-## Catatan & Known Issues
+## Catatan Pengembangan
 
-- **Role admin pada seeder.** Lihat [Akun Demo](#akun-demo): kolom `users.role` perlu di-set `admin` secara manual.
-- **Test reset password.** 3 test perlu diperbarui ke `CustomResetPassword` (lihat [Testing](#testing)).
-- **Form login/register.** Atribut `:value="old('email')"` pada `<input>` biasa dibaca Alpine.js sebagai ekspresi JS, sehingga muncul error `old is not defined` di console dan input lama tidak terisi kembali setelah validasi gagal.
-- **Navbar halaman utama.** Tautan *Game Zone* tampil dua kali.
-- **Poin kuis** bertambah di setiap percobaan (maksimal 3), bukan hanya dari skor terbaik.
+- **Poin kuis** bertambah di setiap percobaan (maksimal 3 kali), bukan hanya dari skor terbaik.
+- **Konten eksternal.** Video (YouTube) dan infografis dimuat dari sumber luar, sehingga membutuhkan koneksi internet.
+- **Akun demo** memakai password default dari seeder; ganti sebelum deploy ke produksi.
 
 ---
 

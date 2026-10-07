@@ -164,7 +164,7 @@ Catatan:
 | `/user-dashboard` | ↪ login | ✅ | ❌ 403 |
 | Admin Panel (`/admin/*`) | ↪ login | ❌ 403 | ✅ |
 
-Pembatasan Modul 1 untuk tamu ada di `ModuleController::show` dan `QuizController::show` (dicek dari `module_id`). Peran admin/user diperiksa oleh `RoleMiddleware` berdasarkan kolom `users.role`.
+Pembatasan Modul 1 untuk tamu ada di `ModuleController::show` dan `QuizController::show` (dicek dari `module_id`). Peran admin/user diperiksa oleh `RoleMiddleware` berdasarkan kolom `users.role`. Seeder mengisi kolom ini (`admin`) sekaligus role Spatie untuk akun admin demo; pengguna baru hasil registrasi otomatis bernilai `user`.
 
 ---
 
