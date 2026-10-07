@@ -203,11 +203,12 @@ Test memakai SQLite in-memory (lihat `phpunit.xml`), jadi tidak menyentuh databa
 | Suite | Cakupan |
 |---|---|
 | `Feature/Auth/*` | Login (termasuk input email tetap terisi setelah gagal login), logout, register, verifikasi email, konfirmasi & update password, reset password dengan `CustomResetPassword` |
+| `Feature/QuizScoringTest` | Poin hanya dari skor terbaik per kuis, percobaan ulang hanya menambah selisih, jawaban dari kuis lain tidak dihitung |
 | `Feature/AdminAccessTest` | Akun admin hasil seeder bisa membuka `/admin`; pengguna biasa mendapat 403 |
 | `Feature/ProfileTest` | Update profil & hapus akun |
 | `Feature/ExampleTest`, `Unit/ExampleTest` | Smoke test halaman utama |
 
-**Hasil saat ini: 28 test lulus (64 assertions).**
+**Hasil saat ini: 32 test lulus (70 assertions).**
 
 ---
 

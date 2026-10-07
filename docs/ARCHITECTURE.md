@@ -222,11 +222,12 @@ Semua resource admin adalah `Route::resource` penuh (index, create, store, show,
 Diimplementasikan di `app/Http/Controllers/QuizController.php`.
 
 1. Jawaban divalidasi: setiap soal wajib dijawab dan ID jawaban harus ada di tabel `answers`.
-2. **Skor** = `jumlah jawaban benar ÷ jumlah soal × 100`, dibulatkan.
+2. **Skor** = `jumlah soal yang dijawab benar ÷ jumlah soal × 100`, dibulatkan. Hanya jawaban yang memang milik kuis tersebut yang dihitung, dan setiap soal maksimal dihitung sekali.
 3. Untuk pengguna login:
    - Setiap pengiriman disimpan sebagai `quiz_attempts`.
    - Maksimal **3 percobaan** per kuis.
    - Setelah mendapat **skor 100**, kuis terkunci dan tidak bisa dikerjakan lagi.
+   - Poin hanya bertambah jika skor baru melampaui skor terbaik sebelumnya (lihat [Poin & Leaderboard](#poin--leaderboard)).
 4. Untuk tamu: skor ditampilkan, tetapi tidak disimpan dan tidak menambah poin.
 
 ```mermaid
@@ -237,7 +238,9 @@ flowchart TD
     C -- Ya --> X[Tolak: sudah sempurna]
     C -- Tidak --> D{Percobaan ≥ 3?}
     D -- Ya --> Y[Tolak: batas percobaan habis]
-    D -- Tidak --> E[Hitung skor] --> F[Simpan quiz_attempts] --> G["points += skor"] --> R
+    D -- Tidak --> E[Hitung skor] --> F[Simpan quiz_attempts] --> G{"Skor > skor terbaik<br/>sebelumnya?"}
+    G -- Ya --> H["points += skor − skor terbaik"] --> R
+    G -- Tidak --> R
 ```
 
 ### Poin & Leaderboard
@@ -245,7 +248,9 @@ flowchart TD
 | Aksi | Poin |
 |---|---|
 | Membuka modul (pengguna login) | **+5** untuk setiap konten non-kuis di modul tersebut, hanya pada kunjungan pertama (dijamin oleh `user_progress` yang unik) |
-| Mengerjakan kuis | **+skor** (0–100) pada setiap percobaan |
+| Mengerjakan kuis | Hanya **skor terbaik** per kuis yang dihitung. Percobaan pertama menambah poin sebesar skornya; percobaan ulang hanya menambah **selisih** jika skornya lebih tinggi. Total poin dari satu kuis = skor terbaiknya (maks. 100). |
+
+Contoh: percobaan 1 skor 33 → +33, percobaan 2 skor 67 → +34, percobaan 3 skor 33 → +0. Total poin kuis = 67.
 
 Leaderboard (`LeaderboardController`) mengurutkan seluruh pengguna berdasarkan `points` secara menurun. Halaman statistik (`users.stats`) menampilkan progres konten dan riwayat kuis seorang pengguna.
 

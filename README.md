@@ -34,6 +34,7 @@
 - [Testing](#testing)
 - [Struktur Project](#struktur-project)
 - [Dokumentasi Lanjutan](#dokumentasi-lanjutan)
+- [Riwayat Perbaikan](#riwayat-perbaikan)
 - [Catatan Pengembangan](#catatan-pengembangan)
 - [Author](#author)
 
@@ -94,7 +95,7 @@ PaulQuiz menjawabnya dengan materi singkat yang mudah dicerna, kuis untuk menguk
 | **Modul pembelajaran** | 4 modul bawaan: *Apa itu Fintech*, *Jenis-jenis Fintech*, *Keamanan Digital & Privasi*, *Regulasi & Perlindungan*. Konten berupa artikel, video YouTube (otomatis di-embed), infografis, dan kuis. |
 | **Akses tamu** | Tamu bisa membuka Modul 1 beserta kuisnya. Modul lain mengharuskan login. |
 | **Kuis interaktif** | Pilihan ganda dengan skor 0–100. Maksimal **3 percobaan** per kuis, dan kuis terkunci setelah mendapat **nilai sempurna**. Riwayat percobaan ditampilkan. |
-| **Poin & gamifikasi** | +5 poin untuk setiap konten yang pertama kali dibuka, ditambah skor kuis setiap kali kuis dikerjakan. |
+| **Poin & gamifikasi** | +5 poin untuk setiap konten yang pertama kali dibuka, ditambah **skor terbaik** dari setiap kuis. Mengulang kuis hanya menambah poin sebesar selisihnya jika skor baru lebih tinggi. |
 | **Leaderboard & statistik** | Peringkat pengguna berdasarkan poin, plus halaman statistik per pengguna (progres konten & riwayat kuis). |
 | **Notifikasi real-time** | Lonceng notifikasi yang memeriksa notifikasi baru setiap 15 detik (*polling*), dengan tandai-sudah-dibaca satuan maupun sekaligus. |
 | **Status online** | Menampilkan pengguna yang aktif dalam 5 menit terakhir di halaman utama. |
@@ -210,7 +211,7 @@ Seeder `RolesAndPermissionsSeeder` membuat dua akun yang sudah terverifikasi dan
 php artisan test
 ```
 
-Test suite (Pest) mencakup autentikasi (login, register, verifikasi email, reset password dengan notifikasi `CustomResetPassword`), profil, dan hak akses Admin Panel. Status saat ini: **28 test lulus** (64 assertions).
+Test suite (Pest) mencakup autentikasi (login, register, verifikasi email, reset password dengan notifikasi `CustomResetPassword`), profil, hak akses Admin Panel, serta aturan skor & poin kuis. Status saat ini: **32 test lulus** (70 assertions).
 
 ---
 
@@ -254,9 +255,32 @@ docs/                     # Dokumentasi & screenshot
 
 ---
 
+## Riwayat Perbaikan
+
+### Oktober 2026
+
+**Skor & poin kuis**
+
+- **Poin hanya dari skor terbaik.** Sebelumnya setiap percobaan menambah poin sebesar skornya, sehingga mengerjakan kuis 3 kali dengan skor 67, 33, 67 menghasilkan 167 poin (lebih tinggi daripada skor sempurna 100). Sekarang percobaan ulang hanya menambah **selisih** jika skornya melampaui skor terbaik sebelumnya, jadi total poin dari satu kuis = skor terbaiknya (maks. 100).
+- **Validasi jawaban kuis.** Jawaban yang benar dari kuis lain tidak lagi ikut dihitung, dan setiap soal maksimal dihitung sekali. Skor tidak bisa lagi dinaikkan dengan mengirim ID jawaban dari kuis lain.
+- Poin pengguna yang tercatat sebelum perbaikan ini tidak dihitung ulang secara otomatis.
+
+**Akses & tampilan**
+
+- **Akun admin dari seeder** kini langsung bisa membuka Admin Panel. Seeder sekarang mengisi kolom `users.role`, yang diperiksa oleh `RoleMiddleware` (sebelumnya akses `/admin` menghasilkan 403).
+- **Form login/register**: input lama kini diisi lewat Blade, bukan binding Alpine.js. Error `old is not defined` di console hilang dan email tetap terisi setelah login gagal.
+- **Navbar halaman utama**: tautan *Game Zone* yang tampil dua kali untuk tamu sudah dihapus.
+- **Crypto Trader Panic**: error `formatTimer is not a function` saat halaman pertama kali dimuat sudah diperbaiki.
+
+**Testing**
+
+- Test reset password disesuaikan dengan notifikasi `CustomResetPassword`.
+- Test baru: `AdminAccessTest`, `QuizScoringTest`, dan test input email setelah login gagal. Total 32 test lulus.
+
+---
+
 ## Catatan Pengembangan
 
-- **Poin kuis** bertambah di setiap percobaan (maksimal 3 kali), bukan hanya dari skor terbaik.
 - **Konten eksternal.** Video (YouTube) dan infografis dimuat dari sumber luar, sehingga membutuhkan koneksi internet.
 - **Akun demo** memakai password default dari seeder; ganti sebelum deploy ke produksi.
 
