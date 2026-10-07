@@ -130,9 +130,6 @@
                                     </x-dropdown>
                                 </div>
                             @else
-                                <a href="{{ route('games.trader') }}"
-                                    class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Game
-                                    Zone</a>
                                 <span class="h-6 w-px bg-gray-200 dark:bg-gray-700"></span>
                                 <a href="{{ route('login') }}"
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Log

@@ -31,6 +31,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ]
         );
         $admin->assignRole($adminRole);
+        // RoleMiddleware checks the `role` column, so keep it in sync with the Spatie role
+        $admin->update(['role' => 'admin']);
 
         // You can create a default regular user here if needed
         $user = User::firstOrCreate(

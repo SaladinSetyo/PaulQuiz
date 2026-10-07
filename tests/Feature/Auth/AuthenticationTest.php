@@ -31,6 +31,17 @@ test('users can not authenticate with invalid password', function () {
     $this->assertGuest();
 });
 
+test('login form keeps the email after a failed attempt', function () {
+    $user = User::factory()->create();
+
+    $response = $this->from('/login')->followingRedirects()->post('/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
+
+    $response->assertSee('value="'.$user->email.'"', false);
+});
+
 test('users can logout', function () {
     $user = User::factory()->create();
 

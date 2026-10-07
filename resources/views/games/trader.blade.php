@@ -89,7 +89,7 @@
                 <span class="font-bold text-white uppercase text-[10px] tracking-wide"
                     x-text="window.game?.phase === 'open' ? 'TRADING' : 'LOCKED'"></span>
                 <span class="font-mono font-bold text-[#f0b90b] text-sm ml-2"
-                    x-text="window.game?.formatTimer() ?? '00:00'"></span>
+                    x-text="window.game?.formatTimer?.() ?? '00:00'"></span>
             </div>
 
             <div class="flex flex-col items-end leading-none">

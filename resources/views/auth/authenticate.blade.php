@@ -121,7 +121,7 @@
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
                                 <input class="custom-input block w-full px-5 py-3.5 rounded-xl" type="email"
-                                    name="email" :value="old('email')" required autofocus
+                                    name="email" value="{{ old('email') }}" required autofocus
                                     placeholder="nama@email.com" />
                                 <x-input-error :messages="$errors->get('email')" class="mt-1" />
                             </div>
@@ -190,14 +190,14 @@
                                 <label class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Nama
                                     Lengkap</label>
                                 <input class="custom-input block w-full px-5 py-3 rounded-xl" type="text" name="name"
-                                    :value="old('name')" required placeholder="Nama Anda" />
+                                    value="{{ old('name') }}" required placeholder="Nama Anda" />
                             </div>
 
                             <div class="space-y-1">
                                 <label
                                     class="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Email</label>
                                 <input class="custom-input block w-full px-5 py-3 rounded-xl" type="email" name="email"
-                                    :value="old('email')" required placeholder="nama@email.com" />
+                                    value="{{ old('email') }}" required placeholder="nama@email.com" />
                             </div>
 
                             <div class="grid grid-cols-2 gap-3">
